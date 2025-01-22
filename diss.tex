@@ -1,0 +1,46 @@
+\input{common/preamble}
+
+\begin{document}
+
+% Title page, TOC, etc.
+\input{frontmatter/pages}
+
+% Chapter 1
+\input{ch1/ch1}
+
+% Chapter 2
+\input{ch2/ch2}
+
+% % Chapter 3
+\input{ch3/ch3}
+
+% Chapter 4
+\input{ch4/ch4}
+
+% Chapter 5
+\input{ch5/ch5}
+
+% Chapter 6
+\input{ch6/ch6}
+
+% % Chapter 7
+% \input{ch7/ch7}
+
+% Appendices
+\appendix
+
+% Switch to 1" title margins for appendices
+\titlespacing{\chapter}{0in}{-.38in}{11pt}
+
+% Redefine chapter prefix for appendices
+\renewcommand{\cftchappresnum}{APPENDIX }
+\renewcommand{\cftchapaftersnum}{:}
+
+% Appendix 1
+% \input{ap1/ap1}
+
+
+% References
+\input{common/references}
+
+\end{document}

@@ -1,0 +1,81 @@
+\documentclass[11pt,letterpaper,oneside]{report}
+% Layout
+\usepackage[letterpaper, inner=1.25in, outer=1in, top=1in, bottom=1in, nohead]{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{tocloft}
+\usepackage{etoolbox}
+\usepackage[hang,flushmargin]{footmisc}
+
+% Citation style
+\usepackage{cite}
+\usepackage{notoccite}
+
+% Figures
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{subcaption}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{listings}
+
+% Tables
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{multirow}
+\usepackage{hhline}
+\usepackage{stackengine}
+\usepackage{tablefootnote}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+
+% Algorithms
+\usepackage[boxed,longend]{algorithm2e}
+
+% Math
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Typography
+\usepackage{times}
+\usepackage{microtype}
+\usepackage{textcomp}
+
+% Macro support
+\usepackage{xspace}
+\usepackage{color}
+\usepackage{ntheorem}
+\usepackage{placeins}
+
+% Diagrams
+\usepackage{pgf}
+\usepackage{tikz} % extensive form game trees
+\usetikzlibrary{calc} % calculating TikZ coordinates
+\usetikzlibrary{arrows.meta} % arrows for theory diagrams
+\usetikzlibrary{trees}
+
+% Additional Macros
+\newcommand{\khb}       {Kevin Hargovindbhai Bhimani}
+\newcommand{\thesistitle}       {Next-Generation Pulse Shape Simulations: GPU-Accelerated Surface-Event Modeling and Neural Network–Based Pulse Shape Translation}
+
+
+
+\newcommand{\LEG}       {LEGEND}
+\newcommand{\Ltwo}      {{\LEG-200}}
+\newcommand{\Lthou}     {{\LEG-1000}}
+\newcommand{\MJ}        {\textsc{Majorana}}
+\newcommand{\DEM}       {\textsc{Demonstrator}}
+\newcommand{\MJD}       {\textsc{Majorana Demonstrator}}
+\newcommand{\Gerda}     {\textsc{Gerda}}
+\newcommand{\onbb}      {\ensuremath{0\nu\beta\beta}}
+\newcommand{\tdsim}     {EH-Drift simulations}
+\newcommand{\cpp}       {C\texttt{++}}
+
+
+% PDF links
+\usepackage[hidelinks]{hyperref} % backref=page
+
+\input{common/layout}
+
+\input{common/macros}

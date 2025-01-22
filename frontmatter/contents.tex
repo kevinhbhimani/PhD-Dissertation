@@ -1,0 +1,37 @@
+\renewcommand{\contentsname}{TABLE OF CONTENTS}
+\renewcommand{\cfttoctitlefont}{\hfill\normalfont\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill~}
+\renewcommand{\cftdotsep}{1.5}
+\cftsetrmarg{1.0in}
+\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}} % for parts
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % for chapters
+
+\setlength{\cftbeforetoctitleskip}{61pt}
+\setlength{\cftaftertoctitleskip}{28pt}
+
+% format chapter entries like other entries
+% \renewcommand{\cftchapfont}{\normalfont}
+% \renewcommand{\cftchappagefont}{\normalfont}
+% \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+\setlength{\cftbeforechapskip}{15pt}
+\setlength{\cftbeforesecskip}{10pt}
+\setlength{\cftbeforesubsecskip}{12pt}
+\setlength{\cftbeforesubsubsecskip}{10pt}
+
+
+\renewcommand{\cftchappresnum}{CHAPTER~}
+\renewcommand{\cftchapaftersnum}{:}
+\renewcommand{\cftsecpresnum}{Section~}
+\renewcommand{\cftsecaftersnum}{:}
+\renewcommand{\cftsubsecaftersnum}{:}
+\cftsetindents{chapter}{0em}{6.5em}     
+\cftsetindents{section}{2em}{5.5em}
+\cftsetindents{subsection}{4.5em}{3em}
+
+\begin{singlespace}
+\tableofcontents
+\end{singlespace}
+
+
+\clearpage

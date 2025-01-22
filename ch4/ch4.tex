@@ -1,0 +1,179 @@
+\chapter{GPU Powered Waveform Simulations}
+\label{chap4:gpu}
+\section{Introduction}
+ 
+
+
+The {\tdsim} approach better models surface alpha waveforms by incorporating diffusion, self-repulsion, and field recalculations. However, it is computationally expensive. A simulation of an $800$ns event for a surface alpha event with a $10$-micron grid can take up to $7$ hours to run on a supercomputer cluster. The detector is divided into grid points, and each grid point has values such as potentials, charge density, point type, etc. While performing these calculations, the program needs to go through all the grid points one by one to update them. This is especially expensive in the case of solving Poisson's equation for electric potential, where the program has to update every grid point hundreds of times until convergence is achieved. Fig. \ref{fig:CPU_time} shows the run time for the entire program for different grid sizes. In general, smaller the grid, more points needed to update, and the longer the program takes. To correctly model alpha backgrounds, a multitude of simulations involving different detectors, alpha incident positions, radii, heights, surface drift speed, and detector surface charges will need to be run. This would result in simulations running for over 500,000 CPU hours to generate a pulse shape library assuming a 10 micron grid.
+
+
+
+
+
+\begin{figure}
+\centering
+ \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_run_time.png}
+\caption{Run time for events on CPU}
+\label{fig:CPU_time}
+\end{figure}
+
+One way to speed up the {\tdsim} is using parallel calculations using Graphics Processing Units (GPUs). We can transform the entire detector onto the GPU memory so that each GPU kernel represents a grid point. Then we can perform the calculations at each grid point in parallel, and instead of going through the program one grid point at a time, the points can be updated simultaneously. We explored this possibility using the Nvidia CUDA {\cpp} framework. It is expected that performing the relaxation algorithm on GPU would have the biggest improvement on run time. We thus begin with a discussion of 2D Poisson-equation solvers based on iterative relaxation methods, then explains how we adapted them to GPU architectures.
+
+\section{Iterative relaxation algorithms for solving 2D Poisson equation}
+
+A direct solution to most of the Poisson equations does not exist for most geometries, and we rely on numerical techniques to estimate a solution. To solve for the potential in the {\tdsim}, the detector is divided into grid points and assigned the following classification: Point Contact (PC), High Voltage Contact (HVC), Inside the detector, On the Passivated Surface (Passive), Pinchoff points, Ditch, Ditch Edge, and Contact Edge. We treat each point type separately in solving for the potential. The boundary conditions are determined by the geometry of the detector and the impurity concentration. For the passivated surface, the boundary condition is a reflection symmetry about that surface. In absence of surface charge, this means that the electric field lines at the passivated surface are parallel to the surface. Points on the high voltage (HV) or point contact (PC) surfaces have Dirichlet boundary conditions fixed at the contact voltages 
+
+\subsection{Jacobi method}
+A simple way to solve for the potential is to set the boundary condition, run through all the grid points, and estimate the solution at a grid point by the average of four points around it. The code continue iterating through the detector, updating all of the points until the difference $\phi_{i,j}^{n}$ - $\phi_{i,j}^{n-1}$ at n$^{\text{th}}$ iteration at all points is less than the convergence threshold. This method is called the Jacobi method, and the points are updated using Eq. \ref{jacobi}.
+
+The direction of travel through the points is as follows. Start with the bottom leftmost point. Then go through the row left to right and keep repeating moving up a row each time.
+
+
+\begin{equation}{\label{jacobi}}
+ \phi_{i,j}^{n} = \frac{1}{4}  \left(\phi^{n-1}_{i+1,j} + \phi^{n-1}_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^{n-1}_{i,j-1} \right)
+\end{equation}
+here the $n$ denotes the iteration number, $i$ and $j$ are the radii and height of the grid point under consideration. 
+
+\subsection{Gauss-Seidel Method}
+
+While the Jacobi method works well to get a numerical solution, it is slow. One way to speed up the method is to use the newly calculate grid points to update the current grid. This is represented by Eq. \ref{gs_eq} and is termed the Gauss-Seidel method.
+
+
+\begin{equation}{\label{gs_eq}}
+ \phi_{i,j}^{n} = \frac{1}{4}  \left(\phi^{n-1}_{i+1,j} + \phi^n_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^n_{i,j-1} \right)
+\end{equation}
+By incorporating updated values as soon as they are available, Gauss--Seidel converges faster than Jacobi.
+
+\subsection{Successive over-relaxation}
+
+A way to achieve faster convergence in the Gauss-Seidel method is to use a relaxation factor, $\omega$ to extrapolate the solution and accelerate the rate of convergence. The Successive over-relaxation (SOR) method, represented by Eq. \ref{sor_eq}, helps reach convergence quickly and is the method used in Siggen simulations to calculate the electric potential. The value of $\omega$ can be between $1$ and $2$, and there is one optimal value that gives the fastest convergence. We estimated the value to be given by Eq.\ref{omg}, where L is over length and R is the overall radius of the detector in grid units (real value divided by grid size).
+
+\begin{equation}{\label{sor_eq}}
+ \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n-1}_{i+1,j} + \phi^n_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^n_{i,j-1} \right)
+\end{equation}
+
+\begin{equation}{\label{omg}}
+\omega = \frac{1.991 - 1500.0}{L*R}
+\end{equation}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.25\textwidth]{ch4/figs/SOR.png}
+\hspace{1 cm}
+ \includegraphics[width=0.25\textwidth]{ch4/figs/RB-SOR.png}
+\caption{\label{fig: sor_methods} Left: Updating grid points in the SOR method. Red grid points represent all the points that have already been updated. A given grid point is updated using a mixture of old and new values. Right: Updating grid points in Red-Black SOR. All the red grid points are updated in parallel using old values, and the black grid points are updated using the new red grid points.}
+\end{figure}
+
+
+
+\subsection{Red-Black Successive Over-Relaxation}
+
+The Successive over-relaxation (SOR) algorithm significantly reduced the run time for Siggen simulations, but can not be efficiently implemented on GPUs. This is because when a grid point is updated, a combination of new ($\phi^{n}$) and old ($\phi^{n-1}$) values is used, as shown in Fig. \ref{fig: sor_methods}. This cannot be implemented in parallel as the order of update is significant for the SOR method. But we would like to update all the nodes at once on GPU.
+
+To achieve parallelism, we use a modified SOR algorithm termed Red-Black Successive Over-Relaxation (RB-SOR)\cite{RB_SOR_paper}. In RB-SOR, we assign a point as red if (i + j) is even and black if (i + j) is odd. We update all the red points using old values and then use the newly updated values to update the black nodes. The process is represented by Eq. \ref{rb_e} and Eq. \ref{rb_o}. Fig. \ref{fig: sor_methods} depicts how RB-SOR differs from traditional SOR. This method reaches convergence in about the same number of iterations as SOR, but the update at each iteration can now be done in parallel using GPUs. Parallel reduction techniques can be used to check for convergence by finding the maximum difference per point between the $\text{n}$ and $\text{n}-1$ iterations. With the framework set for implementing the relaxation algorithm on the GPU, we are now ready to discuss the programming model used and parallel computing techniques.
+
+\begin{equation}{\label{rb_e}}
+ \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n-1}_{i+1,j} + \phi^{n-1}_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^{n-1}_{i,j-1} \right) \qquad \text{ i+j is even}
+\end{equation}
+
+\begin{equation}{\label{rb_o}}
+ \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n}_{i+1,j} + \phi^n_{i-1,j} + \phi^{n}_{i,j+1} + \phi^n_{i,j-1} \right) \qquad \text{ i+j is odd}
+\end{equation}
+
+\section{GPU programming with CUDA {\cpp} }%\section{CUDA {\cpp} Programming Model}
+
+A Central Processing Unit (CPU) and Graphics Processing Unit (GPU) are designed with different computations in mind. A CPU is designed to execute a sequence of operations as fast as possible, one at a time. Whereas a GPU is designed to execute tens of thousands of operations in parallel. A CPU can perform a single task significantly faster than a GPU, but the GPUs dramatically reduce run time in problems where parallelization can be established, such as adding vectors, manipulating matrices, finding gradients, etc. GPUs are thus extensively used in areas such as computer vision, gaming, and machine learning. A GPU always needs a CPU to drive the workflow.
+
+For our purpose, we used Nvidia GPUs. The Compute Unified Device Architecture (CUDA) is a programming environment that allows writing {\cpp} code on GPUs. CUDA extends the standard {\cpp} environment to enable functions, called kernels, that are executed in parallel by the many threads. The kernel execution is divided into blocks, each with a given number of threads shown in Fig. \ref{fig:GPU_basics_a}.
+
+\begin{figure}
+ \begin{subfigure}{0.48\textwidth}
+ \includegraphics[width=\linewidth]{ch4/figs/grid-of-thread-blocks.png}
+ \caption{Computing nodes organized by blocks and threads.} \label{fig:GPU_basics_a}
+\end{subfigure}%
+\hspace*{\fill}   % maximizeseparation between the subfigures
+ \begin{subfigure}{0.48\textwidth}
+ \includegraphics[width=\linewidth]{ch4/figs/memory-hierarchy.png}
+ \caption{Memory structure showing global and shared memory.} \label{fig:GPU_basics_b}
+ \end{subfigure}
+\caption{GPU architect. Source: NVIDIA CUDA {\cpp}  Programming Guide} \label{fig:GPU_basics}
+\end{figure}
+
+The maximum number of blocks that can be called is $65535$ and the maximum number of threads per block is $1024$. We thus want to find a way to split our detector into blocks and threads and index it appropriately for each grid point (r, z). Our first attempt was to set the height z as the block index and the radius r as a grid index such that z$=10$, r$=15$ would correspond to block $10$ and thread $15$. The z and r values used are in grid units, so we never run into decimal point issues in this approach; however, we quickly ran out of threads on smaller grid sizes as there can be at most $1024$ in a given block. To mitigate the problem, we use modular arithmetic to slice the detector of radius R and height L into rectangles of width R and length = max threads, such that the total number of blocks and grids needed is:
+
+\begin{equation}{\label{nu_b}}
+ \text{Number of blocks = R}\times \text{ceiling} \left( \frac{\text{L}}{\text{max threads}} \right) \\
+\end{equation}
+
+\begin{equation}{\label{nu_g}}
+ \text{Number of threads per block = max threads}
+\end{equation}
+Here $R$ nd $L$ are in terms of number of grid units. Then the for a given (block index) and (thread index), the corresponding r and z are:
+
+\begin{equation}{\label{r_eq}}
+ \text{r = (blockIdx) mod R} \\
+\end{equation}
+
+\begin{equation}{\label{z_eq}}
+ \text{z = floor}\left(\frac{\text{blockIdx}}{\text{R}}\right) \times \text{max threads + threadIdx}
+\end{equation}
+
+With the blocks and grid framework in place, we can focus on memory management. The GPU memory exists in a different space than the CPU memory. To perform any calculation, we need to copy (memcpy operation) the data to GPU memory, perform the task with GPUs, and copy the data back to CPU memory. We assigned constants such as grid size, radius, height, etc to the small shared memory such that both the GPU and CPU can access them simultaneously. Larger arrays such as potentials, point types, and impurities were copied to the large GPU global memory. The GPU also does not perform well on multidimensional arrays, so we flattened them using the formula:
+
+\begin{equation}{\label{flat_array}}
+ \text{Array[i][j][k] = flat array[(i} \times \text{(L+1)}\times \text{(R+1))+((R+1)}\times \text{j)+k]}
+\end{equation}
+
+The nvcc library was used to compile and link the GPU {\cpp} code with the {\tdsim} C code. Using GPUs for only the relaxation algorithm, we achieved a $13$x speed improvement over the CPU-based program. In the new program, the most computationally expensive task was the copying between CPU and GPU memory, which was performed every time step after field recalculation. The run time could be reduced by copying all the data needed at the beginning of the program, performing all the needed calculations on the GPU, and copying back only the necessary data. This requires the implementation of the diffusion and charge drift components and signal calculation on the GPU. Running on GPU does not result in significantly faster run time for these components, but it does reduce the memory transfer at each step, significantly decreasing the run time.
+
+Performing diffusion and self-repulsion in parallel requires addressing one issue: the interference of threads with each other. When the densities are allowed to drift and diffuse, two densities could end up on the same grid point. This would not be an issue on the CPU since points are addressed sequentially, but on the GPU, this would mean that two threads are trying to update the same memory location. This was enough to cause disagreement between CPU and GPU results. CUDA enables the implementation of `atomic operations', which allow a thread to perform a task that is guaranteed to be performed without interference from other threads. Programming the densities to update using atomic operations fixed the discrepancies between the GPU and CPU with no noticeable time loss. 
+
+% For PhD thesis: could add another flow chart for the GPU program and a figure for parallel reduction
+
+Having diffusion and charge drift running on GPU enabled the entire time step loop in Fig. \ref{fig:ehd_flowchart} to run on GPU without copying back to CPU memory. This required careful tracking of the pointers in GPU memory using a C struct to store the locations of all GPU pointers. This struct is initialized in the time step loop by allocating space in GPU memory and copying the required data into it. The calculations are then performed on GPU memory, and only the required data is transferred to the CPU memory.
+
+A final improvement in the run time was achieved by generating the signal on the GPU without the needing to write the charge cloud densities to the file. As shown in Fig. \ref{fig:ehd_flowchart}, the signal was initially calculated by saving snapshots of densities during the program, with the snapshots read later to generate the signal. A faster approach is to calculate the signal collected during each time step on the GPU and skip writing the snapshots to the file. Signal calculation entails summing up the charges collected and multiplying them by the weighting potential. On the GPU, such operations can be performed using a parallel reduction technique. In this technique, two elements of the array are grouped in pairs. Each pair is computed in parallel with the others, halving the overall array size in one step. This reduction is continued until there is one final number: the sum in our case. Using parallel reduction, we generated the signal on the GPU itself. At this point, the only memory element required to be transferred to the CPU was the waveform.
+
+\section{GPU Performance Comparisons and Analysis}
+
+The GPU program accurately reproduced CPU results with less than 0.69 $\%$ difference in the waveforms. Fig. \ref{fig:waveform_comp} shows a comparison between the waveforms from two programs. The difference is primarily due to the different methods of calculating electric potential: SOR in the CPU versus RB-SOR in the GPU. It reduced to $0.045\%$ when both simulations were allowed to relax to a threshold of numerical convergence at the double-precision level.
+
+\begin{figure}
+\centering
+ \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_gpu_wf.png}
+\caption{ Left: Comparison of waveform generated by CPU program verses GPU program in {\tdsim}}
+\label{fig:waveform_comp}
+\end{figure}
+
+\begin{figure}
+\centering
+ \includegraphics[width=0.99\linewidth]{ch4/figs/converge_threshold_dif.png}
+\caption{Difference between the waveforms. The convergence threshold used is $8\times10^{-4}$ which was selected by studying the maximum error and run time for different convergence thresholds.}
+\label{fig:cov_thres_diff} 
+\end{figure}
+
+
+\begin{figure}
+\centering
+ \includegraphics[width=0.99\linewidth]{ch4/figs/sor_cpu_gpu_comp.png}
+\caption{\label{fig:sor_run_time} Left: Time taken to run entire {\tdsim}. Right: Time taken by the field calculation algorithm to converge on an initial setup. Run times are based on a single CPU node on the Longleaf cluster at UNC-Chapel Hill and an Nvidia A100 GPU on the Perlmutter cluster at NERSC.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+ \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_gpu_comp.png}
+\caption{\label{fig:GPU_time} Left: Time taken to run entire {\tdsim}. Right: Time taken by the field calculation algorithm to converge on an initial setup. Run times are based on a single CPU node on the Longleaf cluster at UNC-Chapel Hill and an Nvidia A100 GPU on the Perlmutter cluster at NERSC.}
+\end{figure}
+
+
+The GPU program, however, was extremely fast with grid-size independent execution time. Fig. \ref{fig:GPU_time} shows the time taken by each program. For a $10$ micron grid size, the CPU program took $24642$ seconds ($\sim$ 7 hours) to run while the GPU program took $394$ seconds to run, representing a 62.5x speed up. The biggest contribution to the speed up was the implementation of the electric potential calculation on the GPU, which was also grid-size independent. Other contributions were the fact that the densities did not have to be written to file to generate the signal and that there was no need for a transfer of data from GPU memory to CPU memory at each time step. This speed-up will allow running thousands of simulations, and building a waveform library with different configurations. In the next section, we describe how we intend to use these simulations to model the passivated surface.
+
+
+ \begin{figure}
+    \centering
+    \includegraphics[width=0.99\linewidth]{ch4/figs/gpu_comp.png}
+\caption{\label{fig:GPU_comp} Program run time on various GPU models.}
+\end{figure}
+
+
