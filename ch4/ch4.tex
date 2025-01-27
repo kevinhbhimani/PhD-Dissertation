@@ -46,7 +46,7 @@ By incorporating updated values as soon as they are available, Gauss--Seidel con
 
 \subsection{Successive over-relaxation}
 
-A way to achieve faster convergence in the Gauss-Seidel method is to use a relaxation factor, $\omega$ to extrapolate the solution and accelerate the rate of convergence. The Successive over-relaxation (SOR) method, represented by Eq. \ref{sor_eq}, helps reach convergence quickly and is the method used in Siggen simulations to calculate the electric potential. The value of $\omega$ can be between $1$ and $2$, and there is one optimal value that gives the fastest convergence. We estimated the value to be given by Eq.\ref{omg}, where L is over length and R is the overall radius of the detector in grid units (real value divided by grid size).
+A way to achieve faster convergence in the Gauss-Seidel method is to use a relaxation factor, $\omega$ to extrapolate the solution and accelerate the rate of convergence. The Successive over-relaxation (SOR) method, represented by Eq. \ref{sor_eq}, helps reach convergence quickly and is the method used in Siggen simulations to calculate the electric potential. The value of $\omega$ can be between $1$ and $2$, and there is one optimal value that gives the fastest convergence. We estimated the value to be given by Eq.\ref{omg}, where L is over length and R is the overall radius of the detector in grid units (real value divided by grid size). The CPU version of the {\tdsim} was written using the SOR algorithm which proved to be quite effective at reaching fast converge; however, this cannot be parallelized on GPU. This is because when a grid point is updated, a combination of new ($\phi^{n}$) and old ($\phi^{n-1}$) values is used, as shown in Fig. \ref{fig: sor_methods}. This cannot be implemented in parallel as the order of update is significant for the SOR method and thus cannot be parallelized.
 
 \begin{equation}{\label{sor_eq}}
  \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n-1}_{i+1,j} + \phi^n_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^n_{i,j-1} \right)
@@ -67,10 +67,7 @@ A way to achieve faster convergence in the Gauss-Seidel method is to use a relax
 
 
 \subsection{Red-Black Successive Over-Relaxation}
-
-The Successive over-relaxation (SOR) algorithm significantly reduced the run time for Siggen simulations, but can not be efficiently implemented on GPUs. This is because when a grid point is updated, a combination of new ($\phi^{n}$) and old ($\phi^{n-1}$) values is used, as shown in Fig. \ref{fig: sor_methods}. This cannot be implemented in parallel as the order of update is significant for the SOR method. But we would like to update all the nodes at once on GPU.
-
-To achieve parallelism, we use a modified SOR algorithm termed Red-Black Successive Over-Relaxation (RB-SOR)\cite{RB_SOR_paper}. In RB-SOR, we assign a point as red if (i + j) is even and black if (i + j) is odd. We update all the red points using old values and then use the newly updated values to update the black nodes. The process is represented by Eq. \ref{rb_e} and Eq. \ref{rb_o}. Fig. \ref{fig: sor_methods} depicts how RB-SOR differs from traditional SOR. This method reaches convergence in about the same number of iterations as SOR, but the update at each iteration can now be done in parallel using GPUs. Parallel reduction techniques can be used to check for convergence by finding the maximum difference per point between the $\text{n}$ and $\text{n}-1$ iterations. With the framework set for implementing the relaxation algorithm on the GPU, we are now ready to discuss the programming model used and parallel computing techniques.
+To achieve parallelism, we can use a modified SOR algorithm termed Red-Black Successive Over-Relaxation (RB-SOR)\cite{RB_SOR_paper}. In RB-SOR, we assign a point as red if (i + j) is even and black if (i + j) is odd. We update all the red points using old values and then use the newly updated values to update the black nodes. The process is represented by Eq. \ref{rb_e} and Eq. \ref{rb_o}. Fig. \ref{fig: sor_methods} depicts how RB-SOR differs from traditional SOR. This method reaches convergence in about the same number of iterations as SOR, but the update at each iteration can now be done in parallel using GPUs. Parallel reduction techniques can be used to check for convergence by finding the maximum difference per point between the $\text{n}$ and $\text{n}-1$ iterations. With the framework set for implementing the relaxation algorithm on the GPU, we are now ready to discuss the programming model used and parallel computing techniques.
 
 \begin{equation}{\label{rb_e}}
  \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n-1}_{i+1,j} + \phi^{n-1}_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^{n-1}_{i,j-1} \right) \qquad \text{ i+j is even}
@@ -82,9 +79,9 @@ To achieve parallelism, we use a modified SOR algorithm termed Red-Black Success
 
 \section{GPU programming with CUDA {\cpp} }%\section{CUDA {\cpp} Programming Model}
 
-A Central Processing Unit (CPU) and Graphics Processing Unit (GPU) are designed with different computations in mind. A CPU is designed to execute a sequence of operations as fast as possible, one at a time. Whereas a GPU is designed to execute tens of thousands of operations in parallel. A CPU can perform a single task significantly faster than a GPU, but the GPUs dramatically reduce run time in problems where parallelization can be established, such as adding vectors, manipulating matrices, finding gradients, etc. GPUs are thus extensively used in areas such as computer vision, gaming, and machine learning. A GPU always needs a CPU to drive the workflow.
+A Central Processing Unit (CPU) and Graphics Processing Unit (GPU) are designed with different computations in mind. A CPU is designed to execute a sequence of operations as fast as possible, one at a time. Whereas a GPU is designed to execute tens of thousands of operations in parallel. A CPU can perform a single task significantly faster than a GPU, but the GPUs dramatically reduce run time in problems where parallelization can be established, such as adding vectors, manipulating matrices, finding gradients, etc. GPUs are thus extensively used in areas such as computer vision, gaming, and machine learning. A GPU always needs a CPU to drive the workflow. 
 
-For our purpose, we used Nvidia GPUs. The Compute Unified Device Architecture (CUDA) is a programming environment that allows writing {\cpp} code on GPUs. CUDA extends the standard {\cpp} environment to enable functions, called kernels, that are executed in parallel by the many threads. The kernel execution is divided into blocks, each with a given number of threads shown in Fig. \ref{fig:GPU_basics_a}.
+For our purpose, we used Nvidia GPUs. The Compute Unified Device Architecture (CUDA) is a programming environment that allows writing {\cpp} code on GPUs. CUDA extends the standard {\cpp} environment to enable functions, called kernels, that are executed in parallel by the many threads. GPU performs calculations in kernel which contains the sets of instructions each thread has to follow. The kernel execution is divided into blocks, each with a given number of threads shown in Fig. \ref{fig:GPU_basics_a}. To enable parallelism we need to break down the problem onto the GPU grid and then write instructions for threads and blocks to follow.
 
 \begin{figure}
  \begin{subfigure}{0.48\textwidth}
@@ -138,14 +135,14 @@ A final improvement in the run time was achieved by generating the signal on the
 
 The GPU program accurately reproduced CPU results with less than 0.69 $\%$ difference in the waveforms. Fig. \ref{fig:waveform_comp} shows a comparison between the waveforms from two programs. The difference is primarily due to the different methods of calculating electric potential: SOR in the CPU versus RB-SOR in the GPU. It reduced to $0.045\%$ when both simulations were allowed to relax to a threshold of numerical convergence at the double-precision level.
 
-\begin{figure}
+\begin{figure}[!ht]
 \centering
  \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_gpu_wf.png}
 \caption{ Left: Comparison of waveform generated by CPU program verses GPU program in {\tdsim}}
 \label{fig:waveform_comp}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
 \centering
  \includegraphics[width=0.99\linewidth]{ch4/figs/converge_threshold_dif.png}
 \caption{Difference between the waveforms. The convergence threshold used is $8\times10^{-4}$ which was selected by studying the maximum error and run time for different convergence thresholds.}
@@ -153,27 +150,31 @@ The GPU program accurately reproduced CPU results with less than 0.69 $\%$ diffe
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[!ht]
 \centering
  \includegraphics[width=0.99\linewidth]{ch4/figs/sor_cpu_gpu_comp.png}
 \caption{\label{fig:sor_run_time} Left: Time taken to run entire {\tdsim}. Right: Time taken by the field calculation algorithm to converge on an initial setup. Run times are based on a single CPU node on the Longleaf cluster at UNC-Chapel Hill and an Nvidia A100 GPU on the Perlmutter cluster at NERSC.}
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[!ht]
 \centering
  \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_gpu_comp.png}
 \caption{\label{fig:GPU_time} Left: Time taken to run entire {\tdsim}. Right: Time taken by the field calculation algorithm to converge on an initial setup. Run times are based on a single CPU node on the Longleaf cluster at UNC-Chapel Hill and an Nvidia A100 GPU on the Perlmutter cluster at NERSC.}
 \end{figure}
 
 
-The GPU program, however, was extremely fast with grid-size independent execution time. Fig. \ref{fig:GPU_time} shows the time taken by each program. For a $10$ micron grid size, the CPU program took $24642$ seconds ($\sim$ 7 hours) to run while the GPU program took $394$ seconds to run, representing a 62.5x speed up. The biggest contribution to the speed up was the implementation of the electric potential calculation on the GPU, which was also grid-size independent. Other contributions were the fact that the densities did not have to be written to file to generate the signal and that there was no need for a transfer of data from GPU memory to CPU memory at each time step. This speed-up will allow running thousands of simulations, and building a waveform library with different configurations. In the next section, we describe how we intend to use these simulations to model the passivated surface.
+The GPU program, however, was extremely fast with grid-size independent execution time. Fig. \ref{fig:GPU_time} shows the time taken by each program. For a $10$ micron grid size, the CPU program took $24642$ seconds ($\sim$ 7 hours) to run while the GPU program took $394$ seconds ($\sim$ 7 mins) to run, representing a 62.5x speed up. The biggest contribution to the speed up was the implementation of the electric potential calculation on the GPU, which was also grid-size independent. Other contributions were the fact that the densities did not have to be written to file to generate the signal and that there was no need for a transfer of data from GPU memory to CPU memory at each time step. This speed-up will allow running thousands of simulations, and building a waveform library with different configurations.
 
 
  \begin{figure}
     \centering
     \includegraphics[width=0.99\linewidth]{ch4/figs/gpu_comp.png}
-\caption{\label{fig:GPU_comp} Program run time on various GPU models.}
+\caption{\label{ch4:fig:GPU_comp} Program run time on various GPU models.}
 \end{figure}
 
+Fig. \ref{ch4:fig:GPU_comp} shows how the run time varies for different NVIDIA GPUs. The faster the GPU, the faster the program runs suggesting that we have reached parallelization using sufficient utilization of GPU resources.
+
+\input{ch4/gpu_kernels}
+Table \ref{ch4:tab:gpu_kernels} shows the profiling results of GPU kernels that did not use standard library. The kernel's name is listed alongside its contribution to the total execution time as a percentage Time (\%), its cumulative execution time in nanoseconds Total Time (ns), and the number of times it was executed during profiling (Instances). The table also includes the average execution time per invocation (Avg (ns)), which indicates the computational efficiency of each kernel. Additionally, the thread block dimensions (Blocks (x, y, z)) and grid configuration (Grid (x, y, z)) are reported. The most computationally intensive kernel was the one where self repulsion was performed. This is where we determine where the charges drift to which can contain lots of conditional statements and for loop that can slow down GPU performance. The kernel that was called the most was the relax step of the B-SOR algorithm. This makes sense since for a given time step the program needs to iterate over several times to reach convergence. The block and grid configuration suggest that we are using x composed of the block and grid. This can be improved in the future to use entire gird, although that would be a computational challenge require significant change in the program. In the next section, we describe how we intend to use these simulations can be used model the passivated surface and create a background model component for surface events.
 

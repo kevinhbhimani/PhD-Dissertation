@@ -1,0 +1,35 @@
+\begin{table}[!ht]
+\centering
+\renewcommand{\arraystretch}{1.2} % Adjust row height for readability
+\setlength{\tabcolsep}{4pt} % Adjust column spacing
+\begin{tabular}{|p{0.20\linewidth}|p{0.08\linewidth}|p{0.15\linewidth}|p{0.08\linewidth}|p{0.10\linewidth}|p{0.12\linewidth}|p{0.12\linewidth}|}
+\hline
+Kernel & Time & Total Time & Insta & Avg & Blocks & Grids \\
+ Name &  (\%) & (ns) & -nce &  (ns) & (x,y,z) & (x,y,z) \\
+\hline
+gpu\_self\_repulsion & 22 & 34341037092& 18594& 1846888 & (1024, 1, 1) & (5211, 1, 1) \\
+diff\_update & 16 & 24220569521& 18594& 1302601 & (1024, 1, 1) & (5211, 1, 1) \\
+gpu\_sr\_update & 15 & 23512003680& 18594& 1264494 & (1024, 1, 1) & (5211, 1, 1) \\
+gpu\_diffusion & 11 & 17148963486& 18594& 922284 & (1024, 1, 1) & (5211, 1, 1) \\
+relax\_step & 9 & 14273537269& 51138& 279118& (1024, 1, 1) & (5211, 1, 1) \\
+reset\_rho & 5& 7485611884& 18594& 402582 & (1024, 1, 1) & (5211, 1, 1) \\
+set\_rho\_zero & 3& 4558563525& 9297& 490326 & (1024, 1, 1) & (5211, 1, 1) \\
+update\_impurities & 3& 4455301561& 9297& 479219 & (1024, 1, 1) & (5211, 1, 1) \\
+cal\_esum1 & 2& 2996352557& 10898& 274945 & (1024, 1, 1) & (5211, 1, 1) \\
+surface\_drift & 1 & 2610854165& 18594& 140413 & (1024, 1, 1) & (5211, 1, 1) \\
+cal\_hsum1 & 1 & 2579773466& 10898& 236719 & (1024, 1, 1) & (5211, 1, 1) \\
+hvc\_modicication & 1 & 2143933270& 18594& 115302 & (1024, 1, 1) & (5211, 1, 1) \\
+cal\_hsum2 & 1 & 1982242036& 10898& 181890 & (1024, 1, 1) & (5211, 1, 1) \\
+cal\_esum2 & 1 & 1965082087& 10898& 180315 & (1024, 1, 1) & (5211, 1, 1) \\
+surface\_drift\_calc & 1 & 1737101732& 18594& 93422 & (1024, 1, 1) & (5211, 1, 1) \\
+z\_relection\_set & 0 & 156035808& 25569& 6102 & (1, 1, 1) & (1736, 1, 1) \\
+reflection\_symmetry & 0 & 146862463& 25569& 5743 & (1, 1, 1) & (2543, 1, 1) \\
+relax\_step & 0& 62591212& 1332& 46990 & (1024, 1, 1) & (580, 1, 1) \\
+set\_passivated\_imp & 0& 11662613& 2295& 5081 & (1, 1, 1) & (1737, 1, 1) \\
+z\_relection\_set & 0& 4343140& 666& 6521 & (1, 1, 1) & (579, 1, 1) \\
+reflection\_symmetry & 0& 3912788& 666& 5875 & (1, 1, 1) & (848, 1, 1) \\
+\hline
+\end{tabular}
+\caption{Profiling results of custom GPU kernels during simulation. Time values are expressed as percentages and in nanoseconds.}
+\label{ch4:tab:gpu_kernels}
+\end{table}

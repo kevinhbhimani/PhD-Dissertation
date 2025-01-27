@@ -53,7 +53,7 @@ An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration dept
 
 \begin{figure}
 \centering
-  \includegraphics[width=0.6\linewidth]{ch3/figs/dcr_waveform.pdf}
+  \includegraphics[width=0.5\linewidth]{ch3/figs/dcr_waveform.pdf}
  \caption{An alpha waveform (red) compared to a bulk waveform (blue) in the MJD PPC detector. The DCR effect results in a distinct tail with a smaller slope, as shown by the highlight area in the box.}
 \label{fig:dcr_waveform}
   \end{figure}
@@ -61,71 +61,74 @@ An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration dept
 Pulse shape simulations provide a way to perform alpha background modeling since signal formation in Germanium is well understood. A simulation to model alphas should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion. This warrants a dedicated simulation for surface alphas.
 
 
-% Simulations within the LEGEND collaboration include Siggen \cite{siggen_paper} and SSD simulations \cite{Abt:2021SSD}.
+Simulations within the LEGEND collaboration include Siggen \cite{siggen_paper} and SSD simulations \cite{Abt:2021SSD}.
 
-% \section{Pulse shape simulations till now}
+\section{Pulse shape simulations till now}
 
-% Signal formation in Germanium is well understood via the Shockley-Ramo theorem. This enables building accurate simulations that can model the waveforms. Simulations within the LEGEND collaboration include Siggen and SSD simulations. 
+Signal formation in Germanium is well understood via the Shockley-Ramo theorem. This enables building accurate simulations that can model the waveforms. Simulations within the LEGEND collaboration include Siggen and SSD simulations. 
 
-% Siggen is a C-based program initially developed by David Radford at Oak Ridge National Lab for MJD pulse shape simulations \cite{siggen_paper}. It consists of two components: fieldgen and siggen. Fieldgen is used to calculate the electric potential and weighting potential of point-contact detectors in two-dimensional cylindrical coordinates. The siggen part uses the weighing potential calculated from fieldgen to generate a signal. The simulations can calculate the depletion voltage, the volume of the depletion region, and the capacitance of the detector. Diffusion in siggen is approximated using a Gaussian convolution, and there is no mechanism to account for the self-repulsion of charges as Siggen uses point charges to represent the entire charge cloud.
+Siggen is a C-based program initially developed by David Radford at Oak Ridge National Lab for MJD pulse shape simulations \cite{siggen_paper}. It consists of two components: fieldgen and siggen. Fieldgen is used to calculate the electric potential and weighting potential of point-contact detectors in two-dimensional cylindrical coordinates. The siggen part uses the weighing potential calculated from fieldgen to generate a signal. The simulations can calculate the depletion voltage, the volume of the depletion region, and the capacitance of the detector. Diffusion in siggen is approximated using a Gaussian convolution, and there is no mechanism to account for the self-repulsion of charges as Siggen uses point charges to represent the entire charge cloud.
 
-%A simulated event in Siggen is shown in Fig. \ref{fig:siggen_1d}.
+A simulated event in Siggen is shown in Fig. \ref{fig:siggen_1d}.
 
-% \begin{figure}
-% \centering
-% \includegraphics[width=0.49\linewidth]{ch3/figs/drift_path.png}
-% \includegraphics[width=0.49\linewidth]{ch3/figs/samp_wav_comp.png}
-% \caption{A simulated event showing the path of holes and electrons and the corresponding waveform}.
-% \label{fig:siggen_1d}
-% \end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=0.49\linewidth]{ch3/figs/drift_path.png}
+\includegraphics[width=0.49\linewidth]{ch3/figs/samp_wav_comp.png}
+\caption{A simulated event showing the path of holes and electrons and the corresponding waveform}.
+\label{fig:siggen_1d}
+\end{figure}
 
-% SolidStateDetectors.jl (SSD) is a software package developed by the group of Iris Abt at the Max Planck Institute Munich for the LEGEND experiment \cite{Abt:2021SSD}. It is written in Julia and can perform calculations in all 3 dimensions. SSD can calculate electric fields and potentials outside the detectors and has the ability for parallelization. The SSD enables full 3D diffusion and model self-repulsion in the signal. The charges are tracked individually using their position and velocity.
+SolidStateDetectors.jl (SSD) is a software package developed by the group of Iris Abt at the Max Planck Institute Munich for the LEGEND experiment \cite{Abt:2021SSD}. It is written in Julia and can perform calculations in all 3 dimensions. SSD can calculate electric fields and potentials outside the detectors and has the ability for parallelization. The SSD enables full 3D diffusion and model self-repulsion in the signal. The charges are tracked individually using their position and velocity.
 
-% In bulk, a spherical charge cloud model works very well, but the charge cloud produced by alpha is not necessarily spherical due to the charge trapping and re-release effect on the passivated surface. A simulation to model alpha should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion.
+In bulk, a spherical charge cloud model works very well, but the charge cloud produced by alpha is not necessarily spherical due to the charge trapping and re-release effect on the passivated surface. A simulation to model alpha should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion.
 
-% \begin{figure}
-% \centering
-% \includegraphics[width=0.49\linewidth]{ch3/figs/ssd_e.png}
-% \includegraphics[width=0.49\linewidth]{ch3/figs/ssd_path.png}
-% \caption{Simulated Electric field and charge paths in SSD simulations. It allows for calculations outside the detectors and in full 3 dimensions. \cite{ssd_web}.}
-% \label{fig:ssd_plots}
-% \end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=0.49\linewidth]{ch3/figs/ssd_e.png}
+\includegraphics[width=0.49\linewidth]{ch3/figs/ssd_path.png}
+\caption{Simulated Electric field and charge paths in SSD simulations. It allows for calculations outside the detectors and in full 3 dimensions. \cite{ssd_web}.}
+\label{fig:ssd_plots}
+\end{figure}
 
 
 \section{{\tdsim}}
 
-{\tdsim} are new methods to simulate surface alpha events while directly simulating diffusion and self-repulsion effects. They were initially programmed in C by David Radford and build upon Siggen simulations developed for MJD \cite{siggen_paper}. As charges drift through the detectors, they keeps track of charge densities at a pixel-by-pixel level, which allows for nonspherical charge clouds. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges. The simulation is performed in r and z-direction while assuming $\phi$ symmetry— thus the charge cloud is simulated by a ring. Diffusion is performed in 2D, but the diffusion speed was checked against the diffusion speed of 3D charge clouds. The simulations need a fine grid size to account for the low penetration depth of surface alphas. 
+{\tdsim} are new methods to simulate surface alpha events while directly simulating diffusion and self-repulsion effects. They were initially programmed in C by David Radford and build upon Siggen simulations developed for MJD \cite{siggen_paper}. As charges drift through the detectors, they keeps track of charge densities at a pixel-by-pixel level, which allows for nonspherical charge clouds. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges. The simulation is performed in r and z-direction while assuming $\phi$ symmetry— thus the charge cloud is simulated by a ring. Diffusion is performed in 2D, but the diffusion speed was checked against the diffusion speed of 3D charge clouds. The simulations need a fine grid size to account for the low penetration depth of surface alphas. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges.
+
 
 Fig. \ref{fig:ehd_flowchart} shows how the {\tdsim} program works. The detector is divided into a grid, and charge densities are distributed at a given location based on the impact energy, usually over two adjacent grid points. The boundary conditions are set according to the detector geometry, impurity concentration, surface charge, and bias voltage. Then electric potential and weighting potential are calculated using an over-relaxation algorithm. The capacitance and depletion are estimated. Undepleted regions of a semiconductor detector have no net space charge and no electric field and are indicated by a local minimum in the electrical potential. The capacitance is calculated by relating two equations for the energy stored in a capacitor.
 
-% \begin{equation}\label{capacitance_eq}
-% C= \frac{\epsilon}{V^2} \int_{}^{} E^2 dA
-% \end{equation}
+\begin{equation}\label{capacitance_eq}
+C= \frac{\epsilon}{V^2} \int_{}^{} E^2 dA
+\end{equation}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.8\linewidth]{ch3/figs/ehdrift_flowchart.png}
+\includegraphics[width=0.99\linewidth]{ch3/figs/EH Drift Flowchart.png}
 \caption{A flow chat illustration the pseudo code for {\tdsim}.}
 \label{fig:ehd_flowchart}
 \end{figure}
 
 After the initial setup, the program steps through a small time step. The charges are allowed to diffuse using Einstein's diffusion equation and then drift in the electric field. The net impurity distribution is updated based on the movement of these charges. The electric potential is recalculated based on the new net impurity distribution to account for the fact that the movement of a large charge cloud can change the field inside the detector. Charges that end up on the surface drift slowly based on an input speed. The charge density at each location is saved to a file at regular intervals. These files are read later to generate a signal.
 
-Fig. \ref{fig:ehd_path_pd} shows a snapshot at time=$80$ns of the electron and hole clouds drift in the {\tdsim}. The projected density shows the distribution of the charge in the cloud. The head of each signal has a peak which is where charges would have normally traveled in point charge simulations. The tail of the projected density has a peak that is due to the slow drift of the charges on the surface. The drift on the surface, in this case, is set to be $100$ slower than drift in bulk. This matches the range of possible effects found in \cite{MULLOWNEY201233}. Fig. \ref{fig:siggen_waveform_comp} shows how a waveform generated by {\tdsim} compares to the one generated by Siggen. The waveform from {\tdsim} has a slow rising tail that models the DCR effect observed in data better.
+Fig. \ref{fig:ehd_path_pd} shows a snapshot at time=$80$ns of the electron and hole clouds drift in the {\tdsim}. The projected density shows the distribution of the charge in the cloud. The head of each signal has a peak which is where charges would have normally traveled in point charge simulations. The tail of the projected density has a peak that is due to the slow drift of the charges on the surface. The drift on the surface, in this case, is set to be $100$ slower than drift in bulk. This matches the range of possible effects found in \cite{MULLOWNEY201233}. 
+
+{\tdsim} also provides several custom tunable parameters such surface charge, surface to bulk drift ration, initial energy, etc. that can be used to match the data. Fig. \ref{fig:wf_comp} shows how the output changed with surface to bulk drift and surface charge. High surface charge means that more charges will be pulled onto the surface and thus less sharp rising part will have lower magnitude. A faster surface to bulk ration means that the charges on the surface will be collected fast and so the tail shape will be different.
+
 
 \begin{figure}
-\centering
-\includegraphics[width=0.7\linewidth]{ch3/figs/ehd_path.png}
-\caption{Drift of electron and hole charge clouds in {\tdsim}, along with their projected densities. The spikes in middle of projected densities are due to discrete bin size and the surface drift speed.}
-\label{fig:ehd_path_pd}
+    %[trim={left bottom right top},clip]
+    \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/drift_path.png}
+    \caption{Drift of electron and hole charge clouds in {\tdsim}. The negative surface charge pulls the holes onto the surface which move at a slower speed. The projected densities show how the charges are distribution along the radius. Holes' density have two peak, one due to fast moving component in bulk and another due to slow moving component on the surface.}
+    \label{fig:ehd_path_pd}
 \end{figure}
 
 \begin{figure}
-\centering
-\includegraphics[width=0.49\linewidth]{ch3/figs/sims_comp.png}
-\includegraphics[width=0.49\linewidth]{ch3/figs/sims_comp_enlarged.png}
-\caption{Left: Comparison of waveforms generated by Siggen simulations and {\tdsim}. Right: Rising edge portion of the waveforms.}
-\label{fig:siggen_waveform_comp}
+    %[trim={left bottom right top},clip]
+    \includegraphics[trim={0.1cm 0.3cm 1.3cm 0.3cm},clip,width=0.99\linewidth]{ch3/figs/wf_comp.pdf}
+    \caption{A comparison of waveforms generated by {\tdsim} based of different tunable parameters surface charge ($\sigma$) and relative surface drift velocity (SD).}
+    \label{fig:wf_comp}
 \end{figure}
 
 The {\tdsim} approach better models surface alpha waveforms by incorporating diffusion, self-repulsion, and field recalculations. However, it is computationally expensive. A simulation of an $800$ns event for a surface alpha event with a $10$-micron grid can take up to $7$ hours to run on a supercomputer cluster. This is primarily because the electric potential has to be recalculated at each time step.

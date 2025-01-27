@@ -1,0 +1,19 @@
+\begin{table}[ht!]
+\centering
+\renewcommand{\arraystretch}{1.5} % Adjust row height for readability
+\setlength{\tabcolsep}{2.0pt} % Adjust column spacing
+\begin{tabular}{|p{0.20\linewidth}|p{0.39\linewidth}|p{0.22\linewidth}|p{0.15\linewidth}|}
+\hline
+Loss                & Calculation                             & Type of Loss                                  & Optimizer   \\ \hline
+Identity Losses    & Data - Gen B(Data)                                & \multirow{3}{=}{Custom L1 Loss} & \multirow{8}{=}{Optimizer 1} \\
+                             & Sim - Gen A(Data)                                 &                                                       &                       \\ \cline{1-3}
+Cycle Losses        & Data – Gen B(Gen A(Data))                         & \multirow{3}{=}{Custom L1 Loss} &                       \\
+                             & Sim – Gen A(Gen B(Sim))                          &                                                       &                       \\ \cline{1-3}
+Generator Losses    & Disc B (Gen A(Data))                              & \multirow{2}{=}{Binary Cross Entropy}                &                       \\
+                             & Disc A (Gen B(Sim))                              &                                                       &                       \\ \hline
+Discriminator A     & {[Disc A(Data) - 1]} + {[Disc A(Sim) - 0]}        &  Binary Cross Entropy                                & Optimizers 2 \\ \hline
+ Discriminator B    & {[Disc B(Sim) - 1]} + {[Disc B(Data) - 0]}        &   Binary Cross Entropy                                &   Optimizers 3             \\ \hline
+\end{tabular}
+\caption{Overview of Loss Calculations, Loss Types, and Optimizers.}
+\label{tab:loss_table}
+\end{table}
