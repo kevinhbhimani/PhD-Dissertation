@@ -45,17 +45,12 @@ The weighting potential $\phi_0(t)$ is the solution of the Laplace equation with
 
   \begin{figure}%[h]
   \centering
-  \includegraphics[width=0.55\linewidth]{ch2/figs/ppc_wp.png}
-  \includegraphics[width=0.44\linewidth]{ch2/figs/sample_data_wfrm.png}
-  \caption{Left: Simulated weighting potential inside a point contact detector. Black lines indicate locations with the same drift time for holes to reach the point contact. Right: Collected signal from a detector showing sharp step shaped waveform.}
+  \includegraphics[width=0.99\linewidth]{ch2/figs/wp_det.pdf}
+  \caption{Left: Simulated weighting potential inside a LEGEND ICPC style point contact detector. Right: Collected signal from a detector showing sharp step shaped waveform.}
     \label{fig:wp_signal}
   \end{figure}
 
-The pulse shape, along with long drift time and short collection time, provides an opportunity to veto multi-site events from gamma rays using analysis cuts. As the drift time varies with the path taken, multiple steps can often be identified in waveforms associated with multi-site events.
-
-The MAJORANA and GERDA collaborations are experiments with extensive experience in the research and development of Germanium detectors for {\onbb} searches.
-
-%Having discussed the operation and signal formation of high purity Ge detectors, we now focus on the background inside those detectors.
+The pulse shape, along with long drift time and short collection time, provides an opportunity to veto multi-site events from gamma rays using analysis cuts. As the drift time varies with the path taken, multiple steps can often be identified in waveforms associated with multi-site events. The MAJORANA and GERDA collaborations are experiments with extensive experience in the research and development of Germanium detectors for {\onbb} searches.
 
 
 \section{The MAJORANA DEMONSTRATOR}
@@ -66,9 +61,9 @@ MJD pioneered the development of underground electroformed Copper (EFCu), where 
 
 \begin{figure}
   \centering
-  \includegraphics[height=0.342\columnwidth]{ch2/figs/mjd_setup.png}
+  \includegraphics[height=0.34\columnwidth]{ch2/figs/mjd_setup.pdf}
   \qquad
-  \includegraphics[height=0.345\columnwidth]{ch2/figs/mjd_ppc_array.png}
+  \includegraphics[height=0.34\columnwidth]{ch2/figs/mjd_ppc_array.pdf}
   \caption{The MAJORANA Demonstrator setup (left) and its Ge detector arrays (right).}
     \label{fig:mjd}
   \end{figure}
@@ -81,9 +76,9 @@ GERDA took a unique approach to reduce background: operating the detectors in li
 
 \begin{figure}
 \centering
-\includegraphics[height=0.35\columnwidth]{ch2/figs/gerda_setup.png}
+\includegraphics[height=0.38\columnwidth]{ch2/figs/gerda_setup.pdf}
 \qquad
-\includegraphics[height=0.35\columnwidth]{ch2/figs/gerdastrings.jpeg}
+\includegraphics[height=0.38\columnwidth]{ch2/figs/gerdastrings.pdf}
 \caption{GERDA setup (left) with Ge detectors (right) arranged in vertical strings.}
 \label{fig:gerda}
 \end{figure}
@@ -100,19 +95,18 @@ MJD achieved excellent energy resolution, primarily due to its low noise and low
 {\Ltwo} inherits the best of both experiments. It uses MJD's low background materials and electronics to counter the background GERDA faced close to the detector and uses a LAr veto with improved scintillation light readout to reduce the distance-component backgrounds faced by MJD. The introduction of ICPC detectors also results in a lower surface-to-volume ratio, allowing for a reduction of the net radioactive $\alpha$ and $\beta$ decays near the surface. Higher mass detectors also decrease the need for detector support materials and electronics that can be a source of background. Combining these techniques and innovations, {\Ltwo} will become a leading experiment in the field with a background index of $2 \times 10^{-4}$ cts/(keV kg yr), and reach a half-life sensitivity of $10^{27}$ yrs after five years of data taking \cite{l1000_pcdr}.
 \begin{figure}[t]
  \centering
-%   \textbf{{\Ltwo}} \\
-%   \vspace{0.1in}
-  \includegraphics[height=0.45\linewidth]{ch2/figs/LEGENDCAd_lowres.png}
+ %[trim={left bottom right top},clip]
+
+  \includegraphics[trim=0 1cm 0 0,clip,height=0.4\linewidth]{ch2/figs/l200_strings.pdf}
 \qquad
-  \includegraphics[height=0.45\linewidth]{ch2/figs/megea79crop_lowres.png}
+  \includegraphics[height=0.4\linewidth]{ch2/figs/l200_fig.pdf}
  \caption{\label{fig:L200} Left: {\Ltwo} Ge detectors strings
- surrounded by wavelength-shifting fibers for LAr veto. Right: The L-200 design. The detector array is mounted in the center of the LAr cryostat. Muon veto is achieved by placing the cryostat in a water tank and detecting Cerenkov radiation with photo-multipliers. %\cite{l1000_pcdr}.
-%(Picture courtesy P. Krause).
+ surrounded by wavelength-shifting fibers for LAr veto. Right: The L-200 design. The detector array is mounted in the center of the LAr cryostat. Muon veto is achieved by placing the cryostat in a water tank and detecting Cerenkov radiation with photo-multipliers. %\cite{l1000_pcdr} (Picture courtesy P. Krause).
 }
 \end{figure}
 
 \begin{figure}
-  \includegraphics[trim=10 30 10 20,clip,width=\linewidth]{ch2/figs/Det-geo-2.pdf}
+  \includegraphics[trim=15 30 15 20,clip,width=\linewidth]{ch2/figs/Det-geo-2.pdf}
 \caption{The three detector geometries used in LEGEND. MJD PPC detectors (left), GERDA BEGe detectors (middle), and newly developed ICPC detectors (right).The plots depict the weighting field ($E_\omega$) within each detector's cross section.The thick black and gray lines are the p$^+$ and n$^+$ electrode, respectively. The yellow points are locations of simulated energy depositions. The holes travel along the white lines to the p$^+$ electrode, while electrons travel along the while line to the n$^+$ electrode. Figure from \cite{Comellato:2020ljj}.}
 \label{fig:det-compare}
   \end{figure}
@@ -120,7 +114,7 @@ MJD achieved excellent energy resolution, primarily due to its low noise and low
 The three kinds of detector geometries that LEGEND uses are illustrated in Fig. \ref{fig:det-compare}. The p$^+$ contact is created using Boron implantation at the crystal end with the highest impurity. The n$^+$ region is created using the diffusion of Lithium atoms onto the detector surface. To isolate the two electrodes from each other, the surface region in between is passivated, usually with amorphous germanium. The electric field is carefully designed by controlling the impurity gradient in the bulk of the crystal. 
 
 \subsection{LEGEND-1000}
-The subsequent phase of LEGEND is a proposed ton-scale experiment. A ton-scale experiment will probe the entire inverted ordering mass hierarchy, with the capability to make an unambiguous discovery of {\onbb} with $3\sigma$ certainty. It would also cover half of the normal ordering parameter space, under certain assumptions \cite{l1000_pcdr}. LEGEND-1000 builds upon the innovation and research done in {\Ltwo}. It will use ICPC detectors that have demonstrated lower surface backgrounds, excellent energy resolution, and precise pulse shape discrimination. The experiment also plans to use underground-sourced liquid Ar which would greatly reduce the $^{42}$Ar background. LEGEND-1000 would probe a half-life of $10^{28}$ years which corresponds to $m_{\beta\beta}$ range of $9$-$21$ meV after 10 yr of data taking. The Pre-Conceptual Design Report for LEGEND-1000 with a detailed design description and information about the discovery potential can be found at \cite{l1000_pcdr}. {\Ltwo} will be the main scope of this paper, with the goal of developing techniques towards {\Lthou}.
+The subsequent phase of LEGEND is a proposed ton-scale experiment. A ton-scale experiment will probe the entire inverted ordering mass hierarchy, with the capability to make an unambiguous discovery of {\onbb} with $3\sigma$ certainty. It would also cover half of the normal ordering parameter space, under certain assumptions \cite{l1000_pcdr}. LEGEND-1000 builds upon the innovation and research done in {\Ltwo}. It will use ICPC detectors that have demonstrated lower surface backgrounds, excellent energy resolution, and precise pulse shape discrimination. The experiment also plans to use underground-sourced liquid Ar which would greatly reduce the $^{42}$Ar background. LEGEND-1000 would probe a half-life of $10^{28}$ years which corresponds to $m_{\beta\beta}$ range of $9$-$21$ meV after 10 yr of data taking. The Pre-Conceptual Design Report for LEGEND-1000 with a detailed design description and information about the discovery potential can be found at \cite{l1000_pcdr}. {\Ltwo} will be the main scope of this thesis, with the goal of developing techniques towards {\Lthou}.
 
 
 %\subsection{Pulse Shape Discrimination}
@@ -132,7 +126,7 @@ The subsequent phase of LEGEND is a proposed ton-scale experiment. A ton-scale e
 
 \begin{figure}
 \centering
-  \includegraphics[scale=0.6]{ch2/figs/L200_background.pdf}
+  \includegraphics[width=0.99\linewidth]{ch2/figs/L200_background.pdf}
   \caption{{\Ltwo} background contributions near Q$_{\beta\beta}$ after all analysis cuts. Grey bands indicate uncertainties in assays and background rejection.}
 \label{fig:L200_background}
   \end{figure}

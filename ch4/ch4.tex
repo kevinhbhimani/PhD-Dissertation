@@ -1,18 +1,14 @@
-\chapter{GPU Powered Waveform Simulations}
+\chapter{GPU Acceleration}
 \label{chap4:gpu}
 \section{Introduction}
  
 
 
-The {\tdsim} approach better models surface alpha waveforms by incorporating diffusion, self-repulsion, and field recalculations. However, it is computationally expensive. A simulation of an $800$ns event for a surface alpha event with a $10$-micron grid can take up to $7$ hours to run on a supercomputer cluster. The detector is divided into grid points, and each grid point has values such as potentials, charge density, point type, etc. While performing these calculations, the program needs to go through all the grid points one by one to update them. This is especially expensive in the case of solving Poisson's equation for electric potential, where the program has to update every grid point hundreds of times until convergence is achieved. Fig. \ref{fig:CPU_time} shows the run time for the entire program for different grid sizes. In general, smaller the grid, more points needed to update, and the longer the program takes. To correctly model alpha backgrounds, a multitude of simulations involving different detectors, alpha incident positions, radii, heights, surface drift speed, and detector surface charges will need to be run. This would result in simulations running for over 500,000 CPU hours to generate a pulse shape library assuming a 10 micron grid.
-
-
-
-
+The {\tdsim} approach better models surface alpha waveforms by incorporating diffusion, self-repulsion, and field recalculations. However, it is computationally expensive. A simulation of an $800$ns event for a surface alpha event with a $10$-micron grid can take up to $7$ hours to run on a supercomputer cluster. This is primarily because the electric potential is recalculated at every time step. This involves solving the Poisson's equations numerically The detector is divided into grid points, and each grid point has values such as potentials, charge density, point type, etc. While performing these calculations, the program needs to go through all the grid points one by one to update them. This is especially expensive in the case of solving Poisson's equation for electric potential, where the program has to update every grid point hundreds of times until convergence is achieved. Fig. \ref{fig:CPU_time} shows the run time for the entire program for different grid sizes. In general, smaller the grid, more points needed to update, and the longer the program takes. To correctly model alpha backgrounds, a multitude of simulations involving different detectors, alpha incident positions, radii, heights, surface drift speed, and detector surface charges will need to be run. This would result in simulations running for over 500,000 CPU hours to generate a pulse shape library assuming a 10 micron grid.
 
 \begin{figure}
 \centering
- \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_run_time.png}
+ \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_run_time.pdf}
 \caption{Run time for events on CPU}
 \label{fig:CPU_time}
 \end{figure}
@@ -21,7 +17,7 @@ One way to speed up the {\tdsim} is using parallel calculations using Graphics P
 
 \section{Iterative relaxation algorithms for solving 2D Poisson equation}
 
-A direct solution to most of the Poisson equations does not exist for most geometries, and we rely on numerical techniques to estimate a solution. To solve for the potential in the {\tdsim}, the detector is divided into grid points and assigned the following classification: Point Contact (PC), High Voltage Contact (HVC), Inside the detector, On the Passivated Surface (Passive), Pinchoff points, Ditch, Ditch Edge, and Contact Edge. We treat each point type separately in solving for the potential. The boundary conditions are determined by the geometry of the detector and the impurity concentration. For the passivated surface, the boundary condition is a reflection symmetry about that surface. In absence of surface charge, this means that the electric field lines at the passivated surface are parallel to the surface. Points on the high voltage (HV) or point contact (PC) surfaces have Dirichlet boundary conditions fixed at the contact voltages 
+A direct solution to most of the Poisson equations does not exist for most geometries, and we rely on numerical techniques to estimate a solution. To solve for the potential in the {\tdsim}, the detector is divided into grid points and assigned the following classification: Point Contact (PC), High Voltage Contact (HVC), Inside the detector, On the Passivated Surface (Passive), Pinchoff points, Ditch, Ditch Edge, and Contact Edge. We treat each point type separately in solving for the potential. The boundary conditions are determined by the geometry of the detector and the impurity concentration. For the passivated surface, the boundary condition is a reflection symmetry about that surface. In absence of surface charge, this means that the electric field lines at the passivated surface are parallel to the surface. Points on the high voltage (HV) and point contact (PC) surfaces have Dirichlet boundary conditions fixed at the contact voltages.
 
 \subsection{Jacobi method}
 A simple way to solve for the potential is to set the boundary condition, run through all the grid points, and estimate the solution at a grid point by the average of four points around it. The code continue iterating through the detector, updating all of the points until the difference $\phi_{i,j}^{n}$ - $\phi_{i,j}^{n-1}$ at n$^{\text{th}}$ iteration at all points is less than the convergence threshold. This method is called the Jacobi method, and the points are updated using Eq. \ref{jacobi}.
@@ -46,7 +42,7 @@ By incorporating updated values as soon as they are available, Gauss--Seidel con
 
 \subsection{Successive over-relaxation}
 
-A way to achieve faster convergence in the Gauss-Seidel method is to use a relaxation factor, $\omega$ to extrapolate the solution and accelerate the rate of convergence. The Successive over-relaxation (SOR) method, represented by Eq. \ref{sor_eq}, helps reach convergence quickly and is the method used in Siggen simulations to calculate the electric potential. The value of $\omega$ can be between $1$ and $2$, and there is one optimal value that gives the fastest convergence. We estimated the value to be given by Eq.\ref{omg}, where L is over length and R is the overall radius of the detector in grid units (real value divided by grid size). The CPU version of the {\tdsim} was written using the SOR algorithm which proved to be quite effective at reaching fast converge; however, this cannot be parallelized on GPU. This is because when a grid point is updated, a combination of new ($\phi^{n}$) and old ($\phi^{n-1}$) values is used, as shown in Fig. \ref{fig: sor_methods}. This cannot be implemented in parallel as the order of update is significant for the SOR method and thus cannot be parallelized.
+A way to achieve faster convergence in the Gauss-Seidel method is to use a relaxation factor, $\omega$ to extrapolate the solution and accelerate the rate of convergence. The Successive over-relaxation (SOR) method, represented by Eq. \ref{sor_eq}, helps reach convergence quickly and is the method used in Siggen simulations to calculate the electric potential. The value of $\omega$ can be between $1$ and $2$, and there is one optimal value that gives the fastest convergence. We estimated the value to be given by Eq.\ref{omg}, where L is over length and R is the overall radius of the detector in grid units (real value divided by grid size). 
 
 \begin{equation}{\label{sor_eq}}
  \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n-1}_{i+1,j} + \phi^n_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^n_{i,j-1} \right)
@@ -56,18 +52,26 @@ A way to achieve faster convergence in the Gauss-Seidel method is to use a relax
 \omega = \frac{1.991 - 1500.0}{L*R}
 \end{equation}
 
-\begin{figure}
+The CPU version of the {\tdsim} was written using the SOR algorithm which proved to be quite effective at reaching fast converge; however, this cannot be parallelized on GPU. This is because when a grid point is updated, a combination of new ($\phi^{n}$) and old ($\phi^{n-1}$) values is used, as shown in Fig. \ref{fig:sor_methods}. This cannot be implemented in parallel as the order of update is significant for the SOR method and thus cannot be parallelized.
+
+
+\begin{figure}[!htb]
 \centering
-\includegraphics[width=0.25\textwidth]{ch4/figs/SOR.png}
-\hspace{1 cm}
- \includegraphics[width=0.25\textwidth]{ch4/figs/RB-SOR.png}
-\caption{\label{fig: sor_methods} Left: Updating grid points in the SOR method. Red grid points represent all the points that have already been updated. A given grid point is updated using a mixture of old and new values. Right: Updating grid points in Red-Black SOR. All the red grid points are updated in parallel using old values, and the black grid points are updated using the new red grid points.}
+\includegraphics[width=0.4\linewidth]{ch4/figs/SOR.png}
+\caption{\label{fig:sor_methods} Updating grid points in the SOR method. Red grid points represent all the points that have already been updated. A given grid point is updated using a mixture of old and new values.}
 \end{figure}
 
-
-
 \subsection{Red-Black Successive Over-Relaxation}
-To achieve parallelism, we can use a modified SOR algorithm termed Red-Black Successive Over-Relaxation (RB-SOR)\cite{RB_SOR_paper}. In RB-SOR, we assign a point as red if (i + j) is even and black if (i + j) is odd. We update all the red points using old values and then use the newly updated values to update the black nodes. The process is represented by Eq. \ref{rb_e} and Eq. \ref{rb_o}. Fig. \ref{fig: sor_methods} depicts how RB-SOR differs from traditional SOR. This method reaches convergence in about the same number of iterations as SOR, but the update at each iteration can now be done in parallel using GPUs. Parallel reduction techniques can be used to check for convergence by finding the maximum difference per point between the $\text{n}$ and $\text{n}-1$ iterations. With the framework set for implementing the relaxation algorithm on the GPU, we are now ready to discuss the programming model used and parallel computing techniques.
+To achieve parallelism, we can use a modified SOR algorithm termed Red-Black Successive Over-Relaxation (RB-SOR)\cite{RB_SOR_paper}. In RB-SOR, we assign a point as red if (i + j) is even and black if (i + j) is odd. We update all the red points using old values and then use the newly updated values to update the black nodes. The process is represented by Eq. \ref{rb_e} and Eq. \ref{rb_o}.
+
+
+\begin{figure}[!htb]
+\centering
+ \includegraphics[width=0.4\linewidth]{ch4/figs/RB-SOR.png}
+\caption{\label{fig:rb_sor_methods} Updating grid points in Red-Black SOR. All the red grid points are updated in parallel using old values, and the black grid points are updated using the new red grid points.}
+\end{figure}
+
+Fig. \ref{fig:rb_sor_methods} depicts how RB-SOR differs from traditional SOR. This method reaches convergence in about the same number of iterations as SOR, but the update at each iteration can now be done in parallel using GPUs. Parallel reduction techniques can be used to check for convergence by finding the maximum difference per point between the $\text{n}$ and $\text{n}-1$ iterations. 
 
 \begin{equation}{\label{rb_e}}
  \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n-1}_{i+1,j} + \phi^{n-1}_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^{n-1}_{i,j-1} \right) \qquad \text{ i+j is even}
@@ -76,6 +80,16 @@ To achieve parallelism, we can use a modified SOR algorithm termed Red-Black Suc
 \begin{equation}{\label{rb_o}}
  \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n}_{i+1,j} + \phi^n_{i-1,j} + \phi^{n}_{i,j+1} + \phi^n_{i,j-1} \right) \qquad \text{ i+j is odd}
 \end{equation}
+
+\begin{figure}[!htb]
+\centering
+ \includegraphics[width=\linewidth]{ch4/figs/elect_pot_P00698A.pdf}
+\caption{\label{fig:sor_pot_sol} A solution to the Electric Potential using Red-Black SOR in {\tdsim}. The white light show electric field lines.}
+\label{ch4:fig:elect_pot_soln}
+\end{figure}
+
+Fig.\ref{ch4:fig:elect_pot_soln} shows a solution of the Poisson's equations in the code. With the framework set for implementing the relaxation algorithm on the GPU, we are now ready to discuss the programming model used and parallel computing techniques.
+
 
 \section{GPU programming with CUDA {\cpp} }%\section{CUDA {\cpp} Programming Model}
 
@@ -137,14 +151,14 @@ The GPU program accurately reproduced CPU results with less than 0.69 $\%$ diffe
 
 \begin{figure}[!ht]
 \centering
- \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_gpu_wf.png}
+ \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_gpu_wf.pdf}
 \caption{ Left: Comparison of waveform generated by CPU program verses GPU program in {\tdsim}}
 \label{fig:waveform_comp}
 \end{figure}
 
 \begin{figure}[!ht]
 \centering
- \includegraphics[width=0.99\linewidth]{ch4/figs/converge_threshold_dif.png}
+ \includegraphics[width=0.99\linewidth]{ch4/figs/converge_threshold_dif.pdf}
 \caption{Difference between the waveforms. The convergence threshold used is $8\times10^{-4}$ which was selected by studying the maximum error and run time for different convergence thresholds.}
 \label{fig:cov_thres_diff} 
 \end{figure}
@@ -152,14 +166,14 @@ The GPU program accurately reproduced CPU results with less than 0.69 $\%$ diffe
 
 \begin{figure}[!ht]
 \centering
- \includegraphics[width=0.99\linewidth]{ch4/figs/sor_cpu_gpu_comp.png}
+ \includegraphics[width=0.99\linewidth]{ch4/figs/sor_cpu_gpu_comp.pdf}
 \caption{\label{fig:sor_run_time} Left: Time taken to run entire {\tdsim}. Right: Time taken by the field calculation algorithm to converge on an initial setup. Run times are based on a single CPU node on the Longleaf cluster at UNC-Chapel Hill and an Nvidia A100 GPU on the Perlmutter cluster at NERSC.}
 \end{figure}
 
 
 \begin{figure}[!ht]
 \centering
- \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_gpu_comp.png}
+ \includegraphics[width=0.99\linewidth]{ch4/figs/cpu_gpu_comp.pdf}
 \caption{\label{fig:GPU_time} Left: Time taken to run entire {\tdsim}. Right: Time taken by the field calculation algorithm to converge on an initial setup. Run times are based on a single CPU node on the Longleaf cluster at UNC-Chapel Hill and an Nvidia A100 GPU on the Perlmutter cluster at NERSC.}
 \end{figure}
 
@@ -167,9 +181,9 @@ The GPU program accurately reproduced CPU results with less than 0.69 $\%$ diffe
 The GPU program, however, was extremely fast with grid-size independent execution time. Fig. \ref{fig:GPU_time} shows the time taken by each program. For a $10$ micron grid size, the CPU program took $24642$ seconds ($\sim$ 7 hours) to run while the GPU program took $394$ seconds ($\sim$ 7 mins) to run, representing a 62.5x speed up. The biggest contribution to the speed up was the implementation of the electric potential calculation on the GPU, which was also grid-size independent. Other contributions were the fact that the densities did not have to be written to file to generate the signal and that there was no need for a transfer of data from GPU memory to CPU memory at each time step. This speed-up will allow running thousands of simulations, and building a waveform library with different configurations.
 
 
- \begin{figure}
+ \begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.99\linewidth]{ch4/figs/gpu_comp.png}
+    \includegraphics[width=0.99\linewidth]{ch4/figs/gpu_comp.pdf}
 \caption{\label{ch4:fig:GPU_comp} Program run time on various GPU models.}
 \end{figure}
 
@@ -178,3 +192,4 @@ Fig. \ref{ch4:fig:GPU_comp} shows how the run time varies for different NVIDIA G
 \input{ch4/gpu_kernels}
 Table \ref{ch4:tab:gpu_kernels} shows the profiling results of GPU kernels that did not use standard library. The kernel's name is listed alongside its contribution to the total execution time as a percentage Time (\%), its cumulative execution time in nanoseconds Total Time (ns), and the number of times it was executed during profiling (Instances). The table also includes the average execution time per invocation (Avg (ns)), which indicates the computational efficiency of each kernel. Additionally, the thread block dimensions (Blocks (x, y, z)) and grid configuration (Grid (x, y, z)) are reported. The most computationally intensive kernel was the one where self repulsion was performed. This is where we determine where the charges drift to which can contain lots of conditional statements and for loop that can slow down GPU performance. The kernel that was called the most was the relax step of the B-SOR algorithm. This makes sense since for a given time step the program needs to iterate over several times to reach convergence. The block and grid configuration suggest that we are using x composed of the block and grid. This can be improved in the future to use entire gird, although that would be a computational challenge require significant change in the program. In the next section, we describe how we intend to use these simulations can be used model the passivated surface and create a background model component for surface events.
 
+\section{High Performance Computing pipeline}

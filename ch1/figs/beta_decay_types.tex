@@ -1,0 +1,62 @@
+\begin{figure}[!htbp]
+    \centering
+    % Beta-minus decay diagram (left side)
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \begin{fmffile}{beta_decay}
+            \begin{fmfgraph*}(150,150)
+                % Define external vertices for Beta-minus decay
+                \fmfleft{n}
+                \fmfright{p,e,nu}
+
+                % Internal interaction vertex
+                \fmf{fermion}{n,v1}
+                \fmf{fermion}{v1,p}
+                \fmf{boson,label=$W^-$}{v1,v2}
+                \fmf{fermion,tension=1.5}{nu,v2}  % Antineutrino arrow (points inward)
+                \fmf{fermion,tension=1.5}{v2,e}   % Lengthened electron arrow
+
+                % Labels
+                \fmflabel{$n$}{n}
+                \fmflabel{$p$}{p}
+                \fmflabel{$e^-$}{e}
+                \fmflabel{$\bar{\nu}_e$}{nu}
+
+                % Dots on interaction vertices
+                \fmfdot{v1,v2}
+            \end{fmfgraph*}
+        \end{fmffile}
+    \end{minipage}
+    \hfill
+    % Beta-plus decay diagram (right side)
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \begin{fmffile}{beta_plus_decay}
+            \begin{fmfgraph*}(150,150)
+                % Define external vertices for Beta-plus decay
+                \fmfleft{p}
+                \fmfright{n,e,nu}
+
+                % Internal interaction vertex
+                \fmf{fermion}{p,v1}
+                \fmf{fermion}{v1,n}
+                \fmf{boson,label=$W^+$}{v1,v2}
+                \fmf{fermion,tension=1.5}{v2,nu}  % Neutrino arrow
+                \fmf{fermion,tension=1.5}{e,v2} 
+
+                % Labels
+                \fmflabel{$p$}{p}
+                \fmflabel{$n$}{n}
+                \fmflabel{$e^+$}{e}
+                \fmflabel{$\nu_e$}{nu}
+
+                % Dots on interaction vertices
+                \fmfdot{v1,v2}
+            \end{fmfgraph*}
+        \end{fmffile}
+    \end{minipage}
+    \vspace{0.5cm}
+    \caption{Two kinds of beta decay demonstrating difference mechanism of interaction leading to different types of beta decay.}
+ \label{beta_decay_types}
+
+\end{figure}

@@ -1,0 +1,43 @@
+\begin{figure}[htbp]
+  \centering
+  \begin{fmffile}{0nu2beta}
+    \begin{fmfgraph*}(200,200)
+      % External vertices:
+      \fmfleft{i1,i4}        % Left: incoming quarks (from neutrons)
+      \fmfright{o1,o2,o3,o4}   % Right: outgoing particles (protons & electrons)
+      
+      % Left-hand side fermion lines (d -> u conversion)
+      \fmf{fermion,tension=0.8}{i1,v1}
+      \fmf{fermion,tension=0.5}{v1,o1}   % u (proton) emerging top right
+      \fmf{fermion,tension=0.8}{i4,v4}
+      \fmf{fermion,tension=0.5}{v4,o4}   % u (proton) emerging bottom right
+      
+      % Leptonic lines (electrons) attached to intermediate vertices:
+      \fmf{fermion,tension=0.4}{v2,o2}   % top electron
+      \fmf{fermion,tension=0.4}{v3,o3}   % bottom electron
+      
+      % Dummy vertex for the Majorana mass insertion (no extra label)
+      \fmf{fermion,tension=1}{v5,v2}
+      \fmf{fermion,tension=1}{v5,v3}
+      \fmfv{decor.shape=cross,decor.size=.1w}{v5}
+      
+      % W-boson propagators (labeled as W^-)
+      \fmf{photon,tension=0.65,label=$W^-$}{v1,v2}
+      \fmf{photon,tension=0.65,label=$W^-$}{v4,v3}
+      
+      % Mark the interaction vertices with dots
+      \fmfdot{v1,v2,v3,v4}
+      
+      % External labels:
+      \fmflabel{$d$}{i1}         % Incoming down quark (from a neutron)
+      \fmflabel{$d$}{i4}         % Second incoming down quark
+      \fmflabel{$u$}{o1}         % Outgoing up quark (proton)
+      \fmflabel{$u$}{o4}         % Second outgoing up quark
+      \fmflabel{$e$}{o2}         % Emitted electron (top)
+      \fmflabel{$e$}{o3}         % Emitted electron (bottom)
+    \end{fmfgraph*}
+  \end{fmffile}
+  \vspace{0.5cm}
+  \caption{Feynman Diagram for light neutrino exchange Neutrinoless Double Beta Decay process.}
+  \label{ch1:fig:0nu2beta}
+\end{figure}

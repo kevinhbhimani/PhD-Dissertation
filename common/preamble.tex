@@ -54,10 +54,15 @@
 \usetikzlibrary{calc} % calculating TikZ coordinates
 \usetikzlibrary{arrows.meta} % arrows for theory diagrams
 \usetikzlibrary{trees}
-
+\usepackage{feynmp}  % for drawing Feynman diagram
 % Additional Macros
+\usepackage{ifpdf}
+
+\ifpdf
+  \DeclareGraphicsRule{*}{mps}{*}{}
+\fi
 \newcommand{\khb}       {Kevin Hargovindbhai Bhimani}
-\newcommand{\thesistitle}       {Next-Generation Pulse Shape Simulations: GPU-Accelerated Surface-Event Modeling and Neural Network–Based Pulse Shape Translation}
+\newcommand{\thesistitle}       {Next-Generation Pulse Shape Modelling: GPU-Accelerated Surface-Event Simulations and Neural Network–Based Pulse Shape Translation}
 
 
 

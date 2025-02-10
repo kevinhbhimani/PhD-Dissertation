@@ -1,0 +1,50 @@
+\begin{figure}[htbp]
+  \centering
+  \begin{fmffile}{2nu2beta_adjusted}
+    \begin{fmfgraph*}(200,200)
+      % Define left-side (incoming) and right-side (outgoing) vertices.
+      \fmfleft{i1,i4}
+      % Order the right vertices from top to bottom:
+      % o1: top proton, o3: top electron, o5: top antineutrino,
+      % o6: bottom antineutrino, o4: bottom electron, o2: bottom proton.
+      \fmfright{o1,o3,o5,o6,o4,o2}
+      
+      % Hadronic lines: d -> u conversion.
+      \fmf{fermion,tension=0.8}{i1,v1}
+      \fmf{fermion,tension=0.5}{v1,o1}  % Top proton (u)
+      \fmf{fermion,tension=0.8}{i4,v4}
+      \fmf{fermion,tension=0.5}{v4,o2}  % Bottom proton (u)
+      
+      % W-boson propagators connecting quark vertices to lepton vertices.
+      \fmf{photon,tension=0.65,label=$W^-$}{v1,v2}
+      \fmf{photon,tension=0.65,label=$W^-$}{v4,v3}
+      
+      % Add a phantom edge to bring the leptonic vertices closer together.
+      \fmf{phantom,tension=2}{v2,v3}
+      
+      % Leptonic lines:
+      % From the top vertex (v2): electron and antineutrino.
+      \fmf{fermion,tension=0.4}{v2,o3}  % Top electron (e)
+      \fmf{fermion,tension=0.4}{v2,o5}  % Top antineutrino (\(\bar{\nu}\))
+      % From the bottom vertex (v3): electron and antineutrino.
+      \fmf{fermion,tension=0.4}{v3,o4}  % Bottom electron (e)
+      \fmf{fermion,tension=0.4}{v3,o6}  % Bottom antineutrino (\(\bar{\nu}\))
+      
+      % Mark the internal vertices with dots.
+      \fmfdot{v1,v2,v3,v4}
+      
+      % External labels:
+      \fmflabel{$d$}{i1}          % Incoming down quark (from neutron)
+      \fmflabel{$d$}{i4}          % Second incoming down quark
+      \fmflabel{$u$}{o1}          % Top outgoing up quark (proton)
+      \fmflabel{$u$}{o2}          % Bottom outgoing up quark (proton)
+      \fmflabel{$e$}{o3}          % Top emitted electron
+      \fmflabel{$e$}{o4}          % Bottom emitted electron
+      \fmflabel{$\bar{\nu}$}{o5}   % Top antineutrino
+      \fmflabel{$\bar{\nu}$}{o6}   % Bottom antineutrino
+    \end{fmfgraph*}
+  \end{fmffile}
+  \vspace{0.5cm}
+  \caption{Feynman Diagram for Two-Neutrino Double Beta Decay (2$\nu\beta\beta$) process.}
+  \label{ch1:fig:2nu2beta}
+\end{figure}

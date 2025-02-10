@@ -1,0 +1,28 @@
+\begin{table}[ht!]
+\centering
+\renewcommand{\arraystretch}{1.5} % Adjust row height for readability
+\setlength{\tabcolsep}{2pt} % Adjust column spacing
+\begin{tabular}{|p{0.18\linewidth}|p{0.12\linewidth}|p{0.65\linewidth}|}
+\hline
+\textbf{Hyperparameter}       & \textbf{Value} & \textbf{Description} \\ \hline
+batch\_size          & 32             & Number of pulses used in one training iteration. \\ \hline
+baseline\_len        & 200            & Number of samples assigned to baseline portion of the waveform. \\ \hline
+rising\_edge\_len    & 250            & Number of samples assigned to the rising edge of the waveform. \\ \hline
+tail\_len            & 350            & Number of samples assigned to the RC decay tail of the waveform. \\ \hline
+baseline\_weight     & 3.0            & Weight given to baseline portion of the waveform in the loss. \\ \hline
+ris\_edge\_weight    & 10.0           & Weight given to rising edge portion of the waveform in the loss. \\ \hline
+tail\_weight         & 7.0            & Weight given to RC decay tail portion of the waveform in the loss. \\ \hline
+iters                & 7000           & Maximum number of iterations for training. \\ \hline
+decay                & 1000           & Iteration at which learning rate starts to decay. \\ \hline
+lrate\_gen           & $1 \times 10^{-3}$ & Learning rate for the generator networks. \\ \hline
+lrate\_disc          & $1 \times 10^{-3}$ & Learning rate for the discriminator networks. \\ \hline
+cyc\_loss\_weight    & 20             & Weight of the cycle consistency losses.  \\ \hline
+iden\_loss\_weight   & 5              & Weight of the identity loss. \\ \hline
+gan\_loss\_weight    & 9              & Weight of the generator loss. \\ \hline
+max\_grad\_norm      & 100            & Maximum gradient norm for gradient clipping. \\ \hline
+w\_decay             & $1 \times 10^{-4}$ & Weight decay in the optimizers. \\ \hline
+n\_disc\_iters       & 30             & Number of iterations after which the discriminators are updated. \\ \hline
+\end{tabular}
+\caption{Hyperparameters used for CPU-Net training.}
+\label{tab:hyperparameters}
+\end{table}
