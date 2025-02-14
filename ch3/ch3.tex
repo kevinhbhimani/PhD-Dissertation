@@ -1,31 +1,31 @@
 \chapter{Surface Event Pulse Shape Simulations}
 
-%\section{Surface Alphas}
+\section{Surface Alphas}
 
-% \subsection{Properties of Alpha Interactions}
-% Alpha particles are composed of two protons and two neutrons tightly bound together. They are identical to ionized Helium ions and carry a charge of $+2$ e. The energy of alpha particles is correlated with the half-life of the parent isotope, such that the ones with the highest energies are from parent atoms with the shortest half-lives. Thus, the energies of alpha particles are normally between about $4$ and $6$ MeV. For a given material, the linear stopping power S is defined as $-\frac{dE}{dx}$. The energy loss of charged particles in a material is then given by the Bethe formula:
+\subsection{Properties of Alpha Interactions}
+Alpha particles are composed of two protons and two neutrons tightly bound together. They are identical to ionized Helium ions and carry a charge of $+2$ e. The energy of alpha particles is correlated with the half-life of the parent isotope, such that the ones with the highest energies are from parent atoms with the shortest half-lives. Thus, the energies of alpha particles are normally between about $4$ and $6$ MeV. For a given material, the linear stopping power S is defined as $-\frac{dE}{dx}$. The energy loss of charged particles in a material is then given by the Bethe formula:
 
-% \begin{equation}\label{bethe_formula}
-%     -\frac{dE}{dx} = \frac{4\pi e^4z^2}{m_0\nu^2}NB
-% \end{equation}
+\begin{equation}\label{bethe_formula}
+    -\frac{dE}{dx} = \frac{4\pi e^4z^2}{m_0\nu^2}NB
+\end{equation}
 
-% such that
+such that
 
-% \begin{equation}\label{bethe_B}
-%     \text{B}=Z\left[ \text{ln}\frac{2m_0\nu^2}{I}-\text{ln}\right(1-\frac{\nu^2}{c^2}\left)-\frac{\nu^2}{c^2}\right]
-% \end{equation}
+\begin{equation}\label{bethe_B}
+    \text{B}=Z\left[ \text{ln}\frac{2m_0\nu^2}{I}-\text{ln}\right(1-\frac{\nu^2}{c^2}\left)-\frac{\nu^2}{c^2}\right]
+\end{equation}
 
-% Here $\nu$ and $ze$ are the charges of the given particle, N and Z are
-% the number density and the atomic number of the absorber atoms, and  m$_0$ and e are the rest mass and charge of electron respectively. Parameter I represents the average excitation and ionization potential of the absorber and is normally determined experimentally. Eq. \ref{bethe_formula} suggests that the energy loss for non-relativistic particles is proportional to $1/\nu^2$, or the kinetic energy. This can be understood by noting that the smaller the velocity, the longer the particles spend in the vicinity of electrons of the material's atoms, and the higher the energy loss. Eq. \ref{bethe_formula} is proportional to z$^2$ for constant velocity. Thus heaver particles will have more energy loss for a given velocity. This results in alphas having a very low penetration depth, usually around $10$ micrometers.
+Here $\nu$ and $ze$ are the charges of the given particle, N and Z are
+the number density and the atomic number of the absorber atoms, and  m$_0$ and e are the rest mass and charge of electron respectively. Parameter I represents the average excitation and ionization potential of the absorber and is normally determined experimentally. Eq. \ref{bethe_formula} suggests that the energy loss for non-relativistic particles is proportional to $1/\nu^2$, or the kinetic energy. This can be understood by noting that the smaller the velocity, the longer the particles spend in the vicinity of electrons of the material's atoms, and the higher the energy loss. Eq. \ref{bethe_formula} is proportional to z$^2$ for constant velocity. Thus heaver particles will have more energy loss for a given velocity. This results in alphas having a very low penetration depth, usually around $10$ micrometers.
 
-% Energy loss of alpha particles can be best understood by plotting specific energy loss along the track. The plot known as the Bragg curve is shown in Fig. \ref{bragg_curve_fig}. During most of the track, the energy loss increases roughly as 1/E as predicted by Eq.\ref{bethe_formula}. As the particles slow down, electron pickup reduces the charge and the curve falls off. A result of these curves is that alpha deposits a large amount of energy in a very localized area. For Germanium, the penetration depth of alpha particles is about $17.6$ - $20.0$ microns. The n+ electrode and p+ electrode in LEGEND detectors are too thick for alphas to penetrate and deposit much energy. However, the passivated surface experiences complex surface effects which are described next.
+Energy loss of alpha particles can be best understood by plotting specific energy loss along the track. The plot known as the Bragg curve is shown in Fig. \ref{bragg_curve_fig}. During most of the track, the energy loss increases roughly as 1/E as predicted by Eq.\ref{bethe_formula}. As the particles slow down, electron pickup reduces the charge and the curve falls off. A result of these curves is that alpha deposits a large amount of energy in a very localized area. For Germanium, the penetration depth of alpha particles is about $17.6$ - $20.0$ microns. The n+ electrode and p+ electrode in LEGEND detectors are too thick for alphas to penetrate and deposit much energy. However, the passivated surface experiences complex surface effects which are described next.
 
-% \begin{figure}
-% \centering
-% \includegraphics[width=0.5\linewidth]{ch3/figs/bragg_curve.png}
-% \caption{The specific energy loss in a material for an alpha particle with several MeV initial energy. Plots are shown for a single alpha particle track and for the average behavior of a parallel beam of alpha particles \cite{knoll_2010}}. 
-% \label{bragg_curve_fig}
-% \end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=0.5\linewidth]{ch3/figs/bragg_curve.png}
+\caption{The specific energy loss in a material for an alpha particle with several MeV initial energy. Plots are shown for a single alpha particle track and for the average behavior of a parallel beam of alpha particles \cite{knoll_2010}}. 
+\label{bragg_curve_fig}
+\end{figure}
 
 % \subsection{The DCR effects}
 
@@ -51,14 +51,30 @@
 \section{Challenges in modelling surface events}
 An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration depth of about $17.6$ - $20.0$ micron \cite{knoll_2010}. This excites a lot of charge carriers and produces a dense charge cloud. In such cases, effects such as diffusion of the charges and self-repulsion among charges become significant. Self-repulsion could also push the charge onto the passivated surface, leading to a slower drift and longer collection time for these charges. This slow drift is thought to be due to a combination of charge trapping and re-release near the passivated surface, and slower drift speeds due to surface properties \cite{MULLOWNEY201233}. The passivated surface could also carry a static charge, which could affect the charge collection. In experimental data, these effects manifest as an energy-degraded alpha waveform with a slow rising tail, as shown in Fig. \ref{fig:dcr_waveform}. This Delayed Charge Recovery (DCR) effect degrades the alpha energy spectrum, potentially contributing to the ROI. This underscores the importance of modeling alpha background as alpha events in ROI need to be rejected to have a low background. 
 
+\clearpage
 \begin{figure}[!htb]
+\centering
+%[trim={left bottom right top},clip]
+\includegraphics[trim={1cm 3.5cm 0.5cm 4.0cm},clip,width=0.99\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.pdf}
+\includegraphics[trim={1cm 3.5cm 0.5cm 4.0cm},clip,width=0.99\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_-0.5.pdf}
+\includegraphics[trim={1cm 3.5cm 0.5cm 4.0cm},clip,width=0.99\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.5.pdf}
+
+ \caption{0 sc}
+\label{ch3:fig:surface_field_sc0}
+  \end{figure}
+
+  
+Pulse shape simulations provide a way to perform alpha background modeling since signal formation in Germanium is well understood. A simulation to model alphas should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion. This warrants a dedicated simulation for surface alphas.
+
+
+
+
+  \begin{figure}[!htb]
 \centering
   \includegraphics[width=0.95\linewidth]{ch3/figs/dcr_waveform.pdf}
  \caption{An alpha waveform (red) compared to a bulk waveform (blue) in the MJD PPC detector. The DCR effect results in a distinct tail with a smaller slope, as shown by the highlight area in the box.\cite{tube_paper}}
 \label{fig:dcr_waveform}
   \end{figure}
-
-Pulse shape simulations provide a way to perform alpha background modeling since signal formation in Germanium is well understood. A simulation to model alphas should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion. This warrants a dedicated simulation for surface alphas.
 
 
 \begin{figure}[!htb]
@@ -103,13 +119,21 @@ In bulk, a spherical charge cloud model works very well, but the charge cloud pr
 {\tdsim} are new methods to simulate surface alpha events while directly simulating diffusion and self-repulsion effects. They were initially programmed in C by David Radford and build upon Siggen simulations developed for MJD \cite{siggen_paper}. As charges drift through the detectors, they keeps track of charge densities at a pixel-by-pixel level, which allows for nonspherical charge clouds. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges. The simulation is performed in r and z-direction while assuming $\phi$ symmetry— thus the charge cloud is simulated by a ring. Diffusion is performed in 2D, but the diffusion speed was checked against the diffusion speed of 3D charge clouds. The simulations need a fine grid size to account for the low penetration depth of surface alphas. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges.
 
 
-Fig. \ref{fig:ehd_flowchart} shows how the {\tdsim} program works. The detector is divided into a grid, and charge densities are distributed at a given location based on the impact energy, usually over two adjacent grid points. The boundary conditions are set according to the detector geometry, impurity concentration, surface charge, and bias voltage. Then electric potential and weighting potential are calculated using an over-relaxation algorithm. The capacitance and depletion are estimated. Undepleted regions of a semiconductor detector have no net space charge and no electric field and are indicated by a local minimum in the electrical potential. The capacitance is calculated by relating two equations for the energy stored in a capacitor.
+Fig. \ref{fig:ehd_flowchart} shows how the {\tdsim} program works. The detector is divided into a grid, and charge densities are distributed at a given location based on the impact energy, usually over two adjacent grid points. The number of density is determined using:
+
+\begin{equation}
+    \rho_H = \rho_E= \frac{\text{ E}\times 10^7 }{1000 \times 0.003 \times \text{grid}^3}
+\end{equation}
+
+where $\rho$ represents the charge pair density in units of \(10^{10}/\text{cm}^3\). The deposited energy E is the deposited energy in keV, which is first converted to MeV by dividing by 1000.0. The factor of \(10^7\) is to get final unit correct. The denominator includes \(0.003\), which represents the approximate energy required to generate an electron-hole pair in Germanium. Finally, dividing by \(\text{grid}^3\) normalizes the number of generated charge pairs to the grid volume. The density for both holes and electrons are deposited equally in points (z,r) and (z+1,r).
+
+The boundary conditions are set according to the detector geometry, impurity concentration, surface charge, and bias voltage. Then electric potential and weighting potential are calculated using an over-relaxation algorithm. The capacitance and depletion are estimated. Undepleted regions of a semiconductor detector have no net space charge and no electric field and are indicated by a local minimum in the electrical potential. The capacitance is calculated by relating two equations for the energy stored in a capacitor.
 
 \begin{equation}\label{capacitance_eq}
 C= \frac{\epsilon}{V^2} \int_{}^{} E^2 dA
 \end{equation}
 
-\begin{figure}
+\begin{figure}[!htb]
 \centering
 %[trim={left bottom right top},clip]
 \includegraphics[width=0.99\linewidth,trim={2pc 10pc 1.5pc 9pc},clip]{ch3/figs/ehd_flowchart.pdf}
@@ -117,21 +141,232 @@ C= \frac{\epsilon}{V^2} \int_{}^{} E^2 dA
 \label{fig:ehd_flowchart}
 \end{figure}
 
-After the initial setup, the program steps through a small time step. The charges are allowed to diffuse using Einstein's diffusion equation and then drift in the electric field. The net impurity distribution is updated based on the movement of these charges. The electric potential is recalculated based on the new net impurity distribution to account for the fact that the movement of a large charge cloud can change the field inside the detector. Charges that end up on the surface drift slowly based on an input speed. The charge density at each location is saved to a file at regular intervals. These files are read later to generate a signal.
+
+After the initial setup, the program steps through a small time step. The charges are allowed to diffuse and then drift in the electric field. The net impurity distribution is updated based on the movement of these charges using:
+
 
 \section{Diffusion}
+Diffusion arises from random thermal motion of electrons and holes, causing them to spread out from regions of high concentration into regions of lower concentration. In thermal equilibrium, the diffusion coefficient $D$ and the mobility $\mu$
+are related by the Einstein relation:
 \begin{equation}
-    D = \frac{\mu k_B T}{q} ,
+D = \mu \frac{k_B T}{q},
 \end{equation}
+where $k_B$ is Boltzmann's constant, $T$ is the absolute temperature, and $q$ is
+the elementary charge. Thus, if the mobility $\mu$ is known or has been fit to
+experimental data, $D$ may be determined for a specified temperature. In
+germanium at cryogenic temperatures (e.g., $\sim 77$\,K), the mobilities are
+sufficiently large that diffusion can still have a noticeable effect on the
+final spread of a charge cloud, although it is smaller compared to room
+temperature conditions.
 
-Fig. \ref{ch3:fig:ehd_path_pd_sc0} shows a snapshot at time=$80$ns of the electron and hole clouds drift in the {\tdsim} for a 5 MeV energy deposition close to the surface with no charge. The projected density shows the distribution of the charge in the cloud. The head of each signal has a peak which is where charges would have normally traveled in point charge simulations. The tail of the projected density has a peak that is due to the slow drift of the charges on the surface. The drift on the surface, in this case, is set to be $1000$ slower than drift in bulk. This matches the range of possible effects found in \cite{MULLOWNEY201233}. 
 
--equation for initial cloud size
--how surface driftr works
+Carrier diffusion in the simulation is handled by redistributing charge among
+neighboring grid cells in both the radial $(r)$ and axial $(z)$ directions.
+During each time step $\Delta t$, a fraction of the carriers in cell $(z,r)$
+diffuse to the adjacent cells $(z\pm1,\,r\pm1)$ according to two quantities: $\delta_z$ and $\delta_r$
 
-{\tdsim} also provides several custom tunable parameters such surface charge, surface to bulk drift ration, initial energy, etc. that can be used to match the data. Fig. \ref{fig:wf_comp} shows how the output changed with surface to bulk drift and surface charge. High surface charge means that more charges will be pulled onto the surface and thus less sharp rising part will have lower magnitude. A faster surface to bulk ration means that the charges on the surface will be collected fast and so the tail shape will be different.
+These fractions are computed from an approximate diffusion parameter 
+$f$ and the local drift velocity magnitudes $\lvert \mathbf{v_z} \rvert$, 
+$\lvert \mathbf{v_r} \rvert$ as follows:
+\begin{align}
+   \delta_z &\;=\; \frac{\Delta x \;\,v_z \;f}{E_z}\label{eq:deltaez}\\
+   \delta_r &\;=\; \frac{\Delta x \;\,v_r \;f}{E_r} \label{eq:deltaer}
+\end{align}
+where $\Delta x$ is the grid size, 
+$v_{z}$ and $v_{r}$ are the drift velocities, 
+$E_{z}$ and $E_{r}$ are the local field components, 
+and $f$ incorporates the diffusion coefficient $D$ and corrections for grid sizes.
+If $E_z$ or $E_r$ is below $1\,\mathrm{V/cm}$, the code sets 
+$\delta_z = 0$ or $\delta_r=0$ under the assumption that low-field regions produce negligible drift velocity.
+
+
+\section{Volume Correction}
+
+In cylindrical $(r,z)$ coordinates, each radial ring has a different 
+physical area. The simulation tracks these scaling factors with arrays 
+\(\texttt{s1}[r]\) and \(\texttt{s2}[r]\). In essence,
+\[
+\texttt{s1}[r] \;\approx\; 1 + \frac{0.5}{r-1}, 
+\qquad
+\texttt{s2}[r] \;\approx\; 1 - \frac{0.5}{r-1},
+\]
+(plus special handling at $r=1$). These scalars adjust how much 
+charge diffuses into or out of the neighboring ring to ensure 
+\emph{charge conservation} in cylindrical geometry. Specifically, 
+if $\delta_r$ is the fraction of carriers leaving cell $(r)$ in 
+the $+r$ direction, the actual increment in the neighbor cell 
+$(r+1)$ is multiplied by $\texttt{s1}[r]$, while the old cell is 
+reduced by the same fraction multiplied by $\texttt{s1}[r]$ to 
+balance volume differences. Similarly, diffusion to cell $(r-1)$ 
+uses $\texttt{s2}[r]$.
+
+\paragraph{Charge Update}
+
+This approach enforces that if $r$ changes by one grid index, 
+the annular circumference changes from $2\pi (r-1)$ to $2\pi r$, 
+or $2\pi (r-2)$ in the negative direction. Hence, we apply factors
+\(\texttt{s1}\) and \(\texttt{s2}\) to rescale the transferred 
+charge, ensuring the total density remains physically consistent.
+
+After computing the diffusion fractions $\delta_z$ and $\delta_r$, 
+the code subtracts those amounts from the central cell's carrier density 
+and adds them to the four neighbors:
+\begin{align}
+  \rho^{\mathrm{new}}(z,\,r+1) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_r \times s_1(r) \times \frac{r-1}{r} \\
+  \rho^{\mathrm{new}}(z-1,\,r) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_z \\
+  \rho^{\mathrm{new}}(z+1,\,r) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_z \\
+  \rho^{\mathrm{new}}(z,\,r-1) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r) \times \delta_r \times s_2(r) \times\frac{r-1}{r-2}.
+\end{align}
+ 
+Because the radially adjacent cells differ in annular circumference, 
+multiplying by \(\texttt{s1}[r]\) or \(\texttt{s2}[r]\) 
+helps maintain overall normalization.
+
+\section{Drift in Electric Field}
+
+During the charge drift we calculate the electric field in r and z direction at each gird point. We then use a piecewise linear interpolation to compute the drift velocity $v(E)$ from the local electric field $E$. We define an array of electric field breakpoints, $\texttt{drift\_E}[]$, which partition the field
+range into intervals. For each interval $[E_i, E_{i+1}]$, we store two quantities: a drift offset, corresponding to the drift velocity at $E = E_i$, and a drift slope which is the rate of change of drift velocity with respect to the electric field in that interval. The drift velocity is then
+computed by:
+\[
+v(E) \;=\; \text{drift offset}[i]
+\;+\; \text{drift slope}[i] \,\bigl( E - E_i \bigr),
+\]
+with $E_i \le E < E_{i+1}$. The fig. \ref{ch3:fig:dv_vs_e} shows the relation for the Drift Velocity verses Electric field. The dirft velocity is then multiplied by the time step to find where the charges will drift and then the charges are moved to new location.
 
 \begin{figure}
+    %[trim={left bottom right top},clip]
+    \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/ehd_dv_e.pdf}
+    \caption{Relation of drift velocity verses electric field in {\tdsim}. Only 100 direction velocities are used in the current model.}
+    \label{ch3:fig:dv_vs_e}
+\end{figure}
+
+\subsection{Fraction Splitting}
+
+To conserve charge when drifting carriers from one grid cell to another,
+we use a splitting approach. Suppose
+that after a time step $\Delta t$, the carrier density in grid cell $(z,r)$
+moves to a new position with integer indices $(k,i)$ plus fractional parts
+$f_z$ and $f_r$:
+%
+\[
+k \;=\; z + \lfloor \Delta z \rfloor,\quad
+f_z \;=\; \Delta z - \lfloor \Delta z \rfloor,
+\]
+(and similarly for the radial indices). Thus,
+\begin{align}
+&\text{fraction in }(k, i)   \;=\; f_{r} \times f_{z}, \nonumber\\
+&\text{fraction in }(k, i+1) \;=\; (1 - f_{r}) \times f_{z}, \nonumber\\
+&\text{fraction in }(k+1, i) \;=\; f_{r} \times (1 - f_{z}), \nonumber\\
+&\text{fraction in }(k+1, i+1)\;=\; (1 - f_{r}) \times (1 - f_{z}).
+\label{eq:bilinear-fractions}
+\end{align}
+
+Hence, if $\rho^{\mathrm{old}}(z,r)$ is the charge density in the old cell,
+the new distribution is updated by
+\begin{align*}
+\rho^{\mathrm{new}}(k,i)   &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[f_{r}\,f_{z}\bigr] \times \Gamma_{r,z},\\
+\rho^{\mathrm{new}}(k,i+1) &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[(1 - f_{r})\,f_{z}\bigr] \times \Gamma_{r,z},\\
+\rho^{\mathrm{new}}(k+1,i) &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[f_{r}\,(1 - f_{z})\bigr] \times \Gamma_{r,z},\\
+\rho^{\mathrm{new}}(k+1,i+1)&\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[(1 - f_{r})\,(1 - f_{z})\bigr] \times \Gamma_{r,z}.
+\end{align*}
+
+\subsection{Geometric Factor \texorpdfstring{\boldmath$\Gamma_{r,z}$}{}}
+\label{sec:geom-factor}
+
+In cylindrical coordinates, each cell at index $r$ corresponds to an annular
+region of approximate circumference $2\pi (r \,\Delta r)$ and thickness
+$\Delta z$. When charge moves from cell $(z,r)$ to cell $(k,i)$, we
+often apply the factor
+\[
+\Gamma_{r,z} \;\equiv\; \frac{(r-1)}{(i-1)},
+\]
+reflecting the difference in annular volumes at radii $r$ and $i$.
+The offsets $(r-1)$ and $(i-1)$ arise from one-based indexing in the code. By multiplying the bilinear fractions by $\Gamma_{r,z}$, the simulation conserves total charge when rings expand or contract in radius.In practice, near $r=0$ or $i=0$, the geometric factor $\Gamma_{r,z} \;=\; (r-1)/(i-1)$ would be undefined or negative. Hence, the actual code checks whether $r$ or $i$ is zero or one, and uses a modified factor that preserves volume scaling. 
+
+% The factors \verb|8*r - 8| or \verb|8*i - 8| are specialized scalings to approximate the annular volume near the central axis or near $i=0$. They ensure that even when $r$ or $i$ equals 0 or 1, the total charge remains consistent with the expected geometry. For example, at the very center ($r=0$), a full ring circumference does not exist, so a smaller effective volume must be used. Although such \verb|8*-8| scalings can appear ad~hoc, they are designed to smoothly transition from the central axis to the first few radial rings, thereby avoiding division by zero while preserving charge.
+
+\section{Surface Drift}
+\paragraph{Surface Adjustments.}
+If a cell lies near a passivated boundary, the diffusion can be 
+further suppressed by multiplying $\delta_z$ or $\delta_r$ by a 
+\emph{surface-drift-velocity factor}. This accounts for reduced mobility 
+or enhanced recombination near the surface. Similarly, if the new cell 
+is a \texttt{CONTACT\_EDGE} or \texttt{DITCH}, the carriers may be removed 
+from the active region entirely and recorded in a variable \(\texttt{gone}\) 
+to track how much charge has disappeared or been collected.
+
+
+\section{Impurity Correction}
+Surface events create large amount of charge carries that could impact local impurity and must be corrected to accurately calculate the electric potential. At a given time impurity corrections is given by:
+
+\begin{equation}
+  {\text{Impurity}_{t}}(z, r) = \text{Impurity}_{0}(z, r) +
+  \bigl( \rho_h(z, r) - \rho_e(z, r) \bigr) \times \frac{e}{\epsilon} \times \frac{(\Delta x)^2}{2}.
+\end{equation}
+The $\text{Impurity}_{0}$ is the impurity of the crystal from production. $\rho_h(z,r)$ and $\rho_e(z,r)$ are the hole and electron densities respectively. $\frac{e}{\epsilon}$ is the conversion factor that relates charge density to the resulting electric field, derived from Gauss’s law in Germanium with $\epsilon = 16\epsilon_0$. $\frac{e}{\epsilon} = 11.310$ in 
+charge units $10^{10}\frac{e}{cm^3}$. $(\Delta x)^2$ is the area of the grid which converts density into charge and then the conversion factor converts it into $10^{10}\frac{e}{cm^3}$ units to match the units of impurity used.
+
+\section{Signal Calculation}
+In cylindrical coordinates, each grid cell at radius $r$ and height $z$ has an approximate area proportional to $(r - 1)$. Once we read the electron 
+density $\rho_e(r,z)$ and hole density $\rho_h(r,z)$ at time $t$, the weighted sums are defined as:
+\begin{align}
+S_e(t) \;=\; \sum_{z=1}^{L-1} \sum_{r=1}^{R-1}
+   \rho_e(r,z)\,\bigl(r-1\bigr)\,\text{wpot}[r-1][z-1],\\
+S_h(t) \;=\; \sum_{z=1}^{L-1} \sum_{r=1}^{R-1}
+   \rho_h(r,z)\,\bigl(r-1\bigr)\,\text{wpot}[r-1][z-1],
+\end{align}
+where \(\texttt{wpot}[\,r-1\,][\,z-1\,]\) is the weighting potential at that grid 
+point. These $S_e(t)$ and $S_h(t)$ represent the induced signal contributions 
+from electrons and holes respectively via Shockley Ramo’s theorem.
+
+The initial unweighted sums are defined as:
+\begin{align}
+R_{e}(0) \;=\; \sum_{z=1}^{L-1} \sum_{r=1}^{R-1}
+   \rho_e(r,z)\,\bigl(r-1\bigr), \quad \\
+R_{h}(0) \;=\; \sum_{z=1}^{L-1} \sum_{r=1}^{R-1}
+   \rho_h(r,z)\,\bigl(r-1\bigr), \quad
+\end{align}
+% They keep track of how many electrons or holes remain in the crystal at time $t$ 
+% (as opposed to how much they contribute to the signal).  For instance, if 
+% $R_{h}(t)$ drops below $R_{h}(0)$, that implies some fraction of holes 
+% has reached the collecting electrode or left the active region.
+
+Combining these quantities, the net induced signal can be computed as
+\begin{equation}
+\text{signal}[\,t\,] 
+\;=\;
+  \frac{\,S_h(t)\;-\;S_h(0)\,}{\,R_{h}(0)\,}
+  \;-\;
+  \frac{\,S_e(t)\;-\;S_e(0)\,}{\,R_{e}(0)\,}
+\label{eq:net-signal}
+\end{equation}
+By subtracting the electrons’ contribution 
+(negative) from the holes’ (positive), this formula matches the typical polarity 
+where holes drift toward the readout electrode and electrons may drift in the 
+opposite direction. Normalizing by $R_{e}(0)$ and $R_{h}(0)$ ensures that the 
+signal is expressed as a fraction of the original total electron/hole count, 
+so it starts near zero at $t=0$ and approaches some final value as all charges 
+arrive at the contacts.
+
+
+
+\section{Density Snapshots}
+\begin{figure}[!htb]
+    %[trim={left bottom right top},clip]
+    \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/drift_path_sc=-0.3.png}
+    \caption{Drift of electron and hole charge clouds in {\tdsim}. The negative surface charge pulls the holes onto the surface which move at a slower speed.}
+    \label{ch3:fig:ehd_path_pd_sc-0.3}
+\end{figure}
+
+\begin{figure}[!htb]
+    %[trim={left bottom right top},clip]
+    \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/drift_path_sc=0.3.png}
+    \caption{Drift of electron and hole charge clouds in {\tdsim}. The positive surface charge pulls the electrons onto the surface which move at a slower speed.}
+    \label{ch3:fig:ehd_path_pd_sc0.3}
+\end{figure}
+
+\input{ch3/ehd_tun_par}
+\begin{figure}[!htb]
     %[trim={left bottom right top},clip]
     \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/drift_path_sc=0.0.png}
     \caption{Drift of electron and hole charge clouds in {\tdsim}. The projected densities show how the charges are distribution along the radius. The density have two peak, one due to fast moving component in bulk and another due to slow moving component on the surface.}
@@ -139,44 +374,21 @@ Fig. \ref{ch3:fig:ehd_path_pd_sc0} shows a snapshot at time=$80$ns of the electr
 \end{figure}
 
 
-\begin{figure}
-    %[trim={left bottom right top},clip]
-    \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/drift_path_sc=-0.3.png}
-    \caption{Drift of electron and hole charge clouds in {\tdsim}. The negative surface charge pulls the holes onto the surface which move at a slower speed.}
-    \label{ch3:fig:ehd_path_pd_sc-0.3}
-\end{figure}
 
+Fig. \ref{ch3:fig:ehd_path_pd_sc0} shows a snapshot at time=$80$ns of the electron and hole clouds drift in the {\tdsim} for a 5 MeV energy deposition close to the surface with no charge. The projected density shows the distribution of the charge in the cloud. The head of each signal has a peak which is where charges would have normally traveled in point charge simulations. The tail of the projected density has a peak that is due to the slow drift of the charges on the surface. The drift on the surface, in this case, is set to be $1000$ slower than drift in bulk. This matches the range of possible effects found in \cite{MULLOWNEY201233}. 
 
+{\tdsim} also provides several custom tunable parameters such surface charge, surface to bulk drift ration, initial energy, etc. that can be used to match the data. Fig. \ref{fig:wf_comp} shows how the output changed with surface to bulk drift and surface charge. High surface charge means that more charges will be pulled onto the surface and thus less sharp rising part will have lower magnitude. A faster surface to bulk ration means that the charges on the surface will be collected fast and so the tail shape will be different.
 
-\begin{figure}
-    %[trim={left bottom right top},clip]
-    \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/drift_path_sc=0.3.png}
-    \caption{Drift of electron and hole charge clouds in {\tdsim}. The positive surface charge pulls the electrons onto the surface which move at a slower speed.}
-    \label{ch3:fig:ehd_path_pd_sc0.3}
-\end{figure}
-
-\begin{figure}
+\begin{figure}[!htb]
     %[trim={left bottom right top},clip]
     \includegraphics[trim={0.1cm 0.3cm 1.3cm 0.3cm},clip,width=0.99\linewidth]{ch3/figs/wf_comp.pdf}
     \caption{A comparison of waveforms generated by {\tdsim} for a {\Ltwo} PPC detector based of different tunable parameters surface charge ($\sigma$) and relative surface drift velocity (SD).}
     \label{fig:wf_comp}
 \end{figure}
 
-The {\tdsim} approach better models surface alpha waveforms by incorporating diffusion, self-repulsion, and field recalculations. However, it is computationally expensive. A simulation of an $800$ns event for a surface alpha event with a $10$-micron grid can take up to $7$ hours to run on a supercomputer cluster. This is primarily because the electric potential has to be recalculated at each time step.
 
 
-Fig. \ref{fig:GPU_time} shows the run time for the entire program and an initial electric potential calculation. In general, the smaller the grid, the more points to update and the longer the time to run the program. To correctly model alphas backgrounds, a multitude of simulations involving different detectors, alpha incident positions radii, heights, surface drift speed, and detector surface charges will need to be run. This would result in simulations running for over $500000$ of CPU hours to generate a pulse shape library assuming a $10$-micron grid. In the next section, we will discuss a method to speed up these simulations.
+\section{Input and Output}
 
-% The detector is divided into grid points, and each grid point has values such as potentials, charge density, point type, etc. While performing any calculation, the program needs to go through all the grid points one by one to update them. This is especially expensive in the case of solving Poisson's equation for electric potential, where the program has to update every grid point hundreds of times until convergence is achieved. 
-
-% \begin{figure}
-%  \centering
-% %   \textbf{{\Ltwo}} \\
-% %   \vspace{0.1in}
-%   \includegraphics[width=0.49\linewidth]{GPU_sims/figs/CPU_run_time.png}
-%   \includegraphics[width=0.49\linewidth]{GPU_sims/figs/SOR_run_time.png}
-%  \caption{\label{fig:CPU_time} Left: Time taken to run entire {\tdsim}. Right: Time taken by the field calculation algorithm to converge on an initial setup. Run time based on a single CPU node on Longleaf cluster at UNC- Chapel Hill.}
-%  \end{figure}
- 
- 
+The simulation output is stored in an HDF5 file, a hierarchical data format optimized for handling large structured datasets. Each simulated event is recorded in the "event data" dataset as a compound data type containing energy, radius and height positions, surface charge, and surface drift velocity factor and the signal for the event. The dataset is dynamically extendable, allowing new events to be appended without rewriting existing data. The file includes grid size, passivated surface thickness, self-repulsion flag, and detector name as attributes. Attributes are stored as scalars at the file root level for efficient retrieval without redundancy. This storage is critical for High Performance Computing (HPC) when we simulate thousands of waveforms for multiple detectors.
  

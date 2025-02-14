@@ -1,35 +1,97 @@
-\begin{table}[!ht]
+\begin{table}[!htb]
 \centering
 \renewcommand{\arraystretch}{1.2} % Adjust row height for readability
 \setlength{\tabcolsep}{4pt} % Adjust column spacing
-\begin{tabular}{|p{0.20\linewidth}|p{0.08\linewidth}|p{0.15\linewidth}|p{0.08\linewidth}|p{0.10\linewidth}|p{0.12\linewidth}|p{0.12\linewidth}|}
+\rotatebox{90}{ % Rotates the table by 90 degrees to fit vertically
+\begin{minipage}{0.99\textheight} % Ensures the table fits within text height
+\centering
+\begin{longtable}
+{|p{0.14\linewidth}|p{0.33\linewidth}|p{0.04\linewidth}|p{0.08\linewidth}|p{0.05\linewidth}|p{0.08\linewidth}|p{0.07\linewidth}|p{0.07\linewidth}|}
 \hline
-Kernel & Time & Total Time & Insta & Avg & Blocks & Grids \\
- (name) &  (\%) & (ns) & -nce &  (ns) & (x,y,z) & (x,y,z) \\
+Kernel & Function & Time & Total Time & Insta & Avg & Blocks & Grids \\
+ Name & &  (\%) & (ns) & -nce &  (ns) & (x,y,z) & (x,y,z) \\
+
 \hline
-gpu\_self\_repulsion & 22 & 34341037092& 18594& 1846888 & (1024, 1, 1) & (5211, 1, 1) \\
-diff\_update & 16 & 24220569521& 18594& 1302601 & (1024, 1, 1) & (5211, 1, 1) \\
-gpu\_sr\_update & 15 & 23512003680& 18594& 1264494 & (1024, 1, 1) & (5211, 1, 1) \\
-gpu\_diffusion & 11 & 17148963486& 18594& 922284 & (1024, 1, 1) & (5211, 1, 1) \\
-relax\_step & 9 & 14273537269& 51138& 279118& (1024, 1, 1) & (5211, 1, 1) \\
-reset\_rho & 5& 7485611884& 18594& 402582 & (1024, 1, 1) & (5211, 1, 1) \\
-set\_rho\_zero & 3& 4558563525& 9297& 490326 & (1024, 1, 1) & (5211, 1, 1) \\
-update\_impurities & 3& 4455301561& 9297& 479219 & (1024, 1, 1) & (5211, 1, 1) \\
-cal\_esum1 & 2& 2996352557& 10898& 274945 & (1024, 1, 1) & (5211, 1, 1) \\
-surface\_drift & 1 & 2610854165& 18594& 140413 & (1024, 1, 1) & (5211, 1, 1) \\
-cal\_hsum1 & 1 & 2579773466& 10898& 236719 & (1024, 1, 1) & (5211, 1, 1) \\
-hvc\_modicication & 1 & 2143933270& 18594& 115302 & (1024, 1, 1) & (5211, 1, 1) \\
-cal\_hsum2 & 1 & 1982242036& 10898& 181890 & (1024, 1, 1) & (5211, 1, 1) \\
-cal\_esum2 & 1 & 1965082087& 10898& 180315 & (1024, 1, 1) & (5211, 1, 1) \\
-surface\_drift\_calc & 1 & 1737101732& 18594& 93422 & (1024, 1, 1) & (5211, 1, 1) \\
-z\_relection\_set & 0 & 156035808& 25569& 6102 & (1, 1, 1) & (1736, 1, 1) \\
-reflection\_symmetry & 0 & 146862463& 25569& 5743 & (1, 1, 1) & (2543, 1, 1) \\
-relax\_step & 0& 62591212& 1332& 46990 & (1024, 1, 1) & (580, 1, 1) \\
-set\_passivated\_imp & 0& 11662613& 2295& 5081 & (1, 1, 1) & (1737, 1, 1) \\
-z\_relection\_set & 0& 4343140& 666& 6521 & (1, 1, 1) & (579, 1, 1) \\
-reflection\_symmetry & 0& 3912788& 666& 5875 & (1, 1, 1) & (848, 1, 1) \\
+gpu\_self\_repulsion & Finds location where the charges will drift & 22 & $3.43 \times 10^{10}$ & 18594 & $1.85 \times 10^6$ & (1024,1,1) & (5211,1,1) \\
 \hline
-\end{tabular}
-\caption{Profiling results of custom GPU kernels during simulation. Time values are expressed as percentages and in nanoseconds.}
+diff\_update & Diffuse charges to the new location & 16 & $2.42 \times 10^{10}$ & 18594 & $1.30 \times 10^6$ & (1024,1,1) & (5211,1,1) \\
+\hline
+gpu\_sr\_update & Drift the charges to new location & 15 & $2.35 \times 10^{10}$ & 18594 & $1.26 \times 10^6$ & (1024,1,1) & (5211,1,1) \\
+\hline
+gpu\_diffusion & Calculates the diffusion rate to neighbors & 11 & $1.71 \times 10^{10}$ & 18594 & $9.22 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+relax\_step & Performs relaxation step in R-B SOR & 9 & $1.43 \times 10^{10}$ & 51138 & $2.79 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+reset\_rho & Resets charge density values & 5 & $7.49 \times 10^9$ & 18594 & $4.03 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+set\_rho\_zero & Sets charge density to zero & 3 & $4.56 \times 10^9$ & 9297 & $4.90 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+update\_impurities & Updates impurity concentrations & 3 & $4.46 \times 10^9$ & 9297 & $4.79 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+cal\_esum1 & Calculates $S_e$(t) & 2 & $3.00 \times 10^9$ & 10898 & $2.75 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+surface\_drift & Drifts charges on the surface & 1 & $2.61 \times 10^9$ & 18594 & $1.40 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+cal\_hsum1 & Calculates $S_h$(t) & 1 & $2.58 \times 10^9$ & 10898 & $2.37 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+hvc\_modification & Modifies high voltage points & 1 & $2.14 \times 10^9$ & 18594 & $1.15 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+cal\_hsum2 & Calculates $R_{h}$(0) & 1 & $1.98 \times 10^9$ & 10898 & $1.82 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+cal\_esum2 & Calculates $R_{e}$(0) & 1 & $1.97 \times 10^9$ & 10898 & $1.80 \times 10^5$ & (1024,1,1) & (5211,1,1) \\
+\hline
+surface\_drift\_calc & Calculates where the density on surface will drift & 1 & $1.74 \times 10^9$ & 18594 & $9.34 \times 10^4$ & (1024,1,1) & (5211,1,1) \\
+\hline
+z\_reflection\_set & Sets initial reflection symmetry in z-direction & 0 & $1.56 \times 10^8$ & 25569 & $6.10 \times 10^3$ & (1,1,1) & (1736,1,1) \\
+\hline
+reflection\_symmetry &  Sets reflection symmetry during simulation & 0 & $1.47 \times 10^8$ & 25569 & $5.74 \times 10^3$ & (1,1,1) & (2543,1,1) \\
+\hline
+relax\_step\_init & Relax step for initial R-B SOR & 0 & $6.26 \times 10^7$ & 1332 & $4.70 \times 10^4$ & (1024,1,1) & (580,1,1) \\
+\hline
+set\_passivated\_imp & Sets impurity for passivated surface & 0 & $1.17 \times 10^7$ & 2295 & $5.08 \times 10^3$ & (1,1,1) & (1737,1,1) \\
+\hline
+\hline
+\end{longtable}
+\vspace{2mm}
+\caption{Profiling results of custom GPU kernels during simulation.}
 \label{ch4:tab:gpu_kernels}
+\end{minipage}
+}
 \end{table}
+
+
+% \begin{table}[!ht]
+% \centering
+% \renewcommand{\arraystretch}{1.2} % Adjust row height for readability
+% \setlength{\tabcolsep}{4pt} % Adjust column spacing
+% \begin{tabular}{|p{0.20\linewidth}|p{0.08\linewidth}|p{0.15\linewidth}|p{0.08\linewidth}|p{0.10\linewidth}|p{0.12\linewidth}|p{0.12\linewidth}|}
+% \hline
+% Kernel & Time & Total Time & Insta & Avg & Blocks & Grids \\
+%  (name) &  (\%) & (ns) & -nce &  (ns) & (x,y,z) & (x,y,z) \\
+% \hline
+% gpu\_self\_repulsion & 22 & 34341037092& 18594& 1846888 & (1024, 1, 1) & (5211, 1, 1) \\
+% diff\_update & 16 & 24220569521& 18594& 1302601 & (1024, 1, 1) & (5211, 1, 1) \\
+% gpu\_sr\_update & 15 & 23512003680& 18594& 1264494 & (1024, 1, 1) & (5211, 1, 1) \\
+% gpu\_diffusion & 11 & 17148963486& 18594& 922284 & (1024, 1, 1) & (5211, 1, 1) \\
+% relax\_step & 9 & 14273537269& 51138& 279118& (1024, 1, 1) & (5211, 1, 1) \\
+% reset\_rho & 5& 7485611884& 18594& 402582 & (1024, 1, 1) & (5211, 1, 1) \\
+% set\_rho\_zero & 3& 4558563525& 9297& 490326 & (1024, 1, 1) & (5211, 1, 1) \\
+% update\_impurities & 3& 4455301561& 9297& 479219 & (1024, 1, 1) & (5211, 1, 1) \\
+% cal\_esum1 & 2& 2996352557& 10898& 274945 & (1024, 1, 1) & (5211, 1, 1) \\
+% surface\_drift & 1 & 2610854165& 18594& 140413 & (1024, 1, 1) & (5211, 1, 1) \\
+% cal\_hsum1 & 1 & 2579773466& 10898& 236719 & (1024, 1, 1) & (5211, 1, 1) \\
+% hvc\_modicication & 1 & 2143933270& 18594& 115302 & (1024, 1, 1) & (5211, 1, 1) \\
+% cal\_hsum2 & 1 & 1982242036& 10898& 181890 & (1024, 1, 1) & (5211, 1, 1) \\
+% cal\_esum2 & 1 & 1965082087& 10898& 180315 & (1024, 1, 1) & (5211, 1, 1) \\
+% surface\_drift\_calc & 1 & 1737101732& 18594& 93422 & (1024, 1, 1) & (5211, 1, 1) \\
+% z\_relection\_set & 0 & 156035808& 25569& 6102 & (1, 1, 1) & (1736, 1, 1) \\
+% reflection\_symmetry & 0 & 146862463& 25569& 5743 & (1, 1, 1) & (2543, 1, 1) \\
+% relax\_step & 0& 62591212& 1332& 46990 & (1024, 1, 1) & (580, 1, 1) \\
+% set\_passivated\_imp & 0& 11662613& 2295& 5081 & (1, 1, 1) & (1737, 1, 1) \\
+% z\_relection\_set & 0& 4343140& 666& 6521 & (1, 1, 1) & (579, 1, 1) \\
+% reflection\_symmetry & 0& 3912788& 666& 5875 & (1, 1, 1) & (848, 1, 1) \\
+% \hline
+% \end{tabular}
+% \caption{Profiling results of custom GPU kernels during simulation. Time values are expressed as percentages and in nanoseconds.}
+% \label{ch4:tab:gpu_kernels}
+% \end{table}

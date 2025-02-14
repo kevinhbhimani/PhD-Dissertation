@@ -56,8 +56,9 @@
 \usetikzlibrary{trees}
 \usepackage{feynmp}  % for drawing Feynman diagram
 % Additional Macros
-\usepackage{ifpdf}
+\usepackage{adjustbox} % Helps center large rotated tables
 
+\usepackage{ifpdf}
 \ifpdf
   \DeclareGraphicsRule{*}{mps}{*}{}
 \fi

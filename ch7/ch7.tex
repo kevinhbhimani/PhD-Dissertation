@@ -1,30 +1,19 @@
 \chapter{Data Preparation and Model Training}\label{chap:training}
 
 \section{Introduction}
-Ideally, the Sim Translator should be trained with paired waveforms ($X, X'$) where $Y=Y'$ for each pair. In reality, collecting such a paired dataset is highly challenging. While we can simulate $\mathcal{T}_{Source}$ from an arbitrary $\mathcal{D}_{Source}$, obtaining a corresponding $\mathcal{T}_{Target}$ such that $\mathcal{D}_{Source} = \mathcal{D}_{Target}$ is difficult without precise knowledge of $P(X'|Y')$. Consequently, training must be conducted on unpaired datasets, where $\mathcal{D}_{Source} \neq \mathcal{D}_{Target}$. The CycleGAN framework~\cite{CycleGAN} allows us to train Sim Translator on such an unpaired dataset using adversarial losses.
+Ideally, the Sim Translator should be trained with paired waveforms ($X, X'$) where $Y=Y'$ for each pair. In reality, collecting such a paired dataset is highly challenging. While we can simulate $\mathcal{T}_{Source}$ from an arbitrary $\mathcal{D}_{Source}$, obtaining a corresponding $\mathcal{T}_{Target}$ such that $\mathcal{D}_{Source} = \mathcal{D}_{Target}$ is difficult without precise knowledge of $P(X'|Y')$. Consequently, training must be conducted on unpaired datasets, where $\mathcal{D}_{Source} \neq \mathcal{D}_{Target}$. The CycleGAN framework~\cite{CycleGAN} provides a way to train the Sim Translator using adversarial losses even when paired data are unavailable
 
-In this chapter we first outline the detector data collection process, then discuss simulation, and finally detail the adversarial training of the network suing CycleGAN.
+In this chapter, we first outline the detector data collection process, then describe the simulation approach, and finally detail the adversarial training of the network using CycleGAN.
 
-
-
-
-% \section{Training and Hyperparameter Search}\label{subapp:hyperparam}
-% Two major waveform categories that low-background HPGe experiments seek to distinguish are single-site~(SS) and multi-site~(MS) events. When a physical event deposits all its energy in a single location in a detector, a SS waveform with a single sharply-rising step is produced. Conversely, a MS waveform with multiple steps is produced if energy is deposited at multiple locations within the crystal. SS and MS waveforms of the same total energy can be efficiently distinguished by the maximal current amplitude reconstruction parameter $I_{max}$.
 \section{Data selection}
 
+The LEGEND collaboration characterizes newly produced HPGe detectors at Oak Ridge National Laboratory (ORNL). We use characterization data from a LEGEND Inverted-Coaxial Point-Contact (ICPC) detector, V06643A, manufactured by ORTEC. The detector was mounted in a “PopTop” configuration, surrounded by lead shielding, and placed in a concrete alcove to reduce external background. The data contained a flood Thorium-232 source on top of the detector. Signals from the detector were digitized using a FlashCam digitizer, and the \texttt{pygama} package~\cite{pygama} was used to convert FlashCam output to LEGEND LH5-format HDF5 files, and to calibrate the event energies from ADC units to keV. The energies were then corrected for charge trapping. The left panel of Fig.~\ref{fig:eng_spec} shows the final energy spectrum obtained from the detector.
 
-
-% Rare events neutrinoless double-beta decay are typically single sited events. Low-background HPGe experiments thus seeks to distinguish between single site from multi site events. SS and MS waveforms of the same total energy can be efficiently distinguished by the maximal current amplitude parameter $I_{max}$ \cite{mjd_psd}. For a given event energy, SS waveforms have faster $I_{max}$ than MS waveforms. This difference arises because SS events generate a localized energy deposition that leads to a sharp current peak as the charge is collected. MS events involve interactions occurring at multiple points within the detector, result in a more spread-out energy deposition and thus lead to multiple current peaks, contributing to a slower current compared to single site (SS) events.
-
-The LEGEND collaboration characterizes newly produced HPGe detectors at Oak Ridge National Laboratory (ORNL). We used data from a LEGEND Inverted-Coaxial Point-Contact (ICPC) detector, V06643A, manufactured by ORTEC and measured at ORNL. The detector was enclosed in a “PopTop” configuration, surrounded by lead shielding, and placed in a concrete alcove to reduce external backgrounds. We used the data from a run with a Thorium-232 source placed on top of the detector. The data was digitized using a FlashCam digitizer. The pygama package was used to convert FlashCam output to LEGEND LH5-format HDF5 files and to calibrate event energy from ADC units into keV\cite{pygama}. The energy was then corrected for charge trapping corrections. Fig. \ref{fig:eng_spec} left panel shows the final energy spectrum from the detector. 
-
-% A germanium gamma-ray spectrum is characterized by three main interaction processes: photoelectric absorption, Compton scattering, and pair production. At higher energies (~5–10 MeV), pair production dominates. 
 
 The escape peaks in spectrum are created from pair production events from a high energy photon. In this process, the incident photon generates an electron-positron pair. The electron is collected by the detector, while the positron quickly annihilates, producing two additional gamma-ray photons. If all secondary gamma rays are fully absorbed within the detector, their combined energy yields a characterized peak in the energy spectrum, the Full Energy Peak (FEP).
 
-If one of the annihilation gamma rays leaves the detector without depositing its energy, the spectrum shows a Single Escape Peak (SEP). This scenario results in a multisite (MS) event because the signal comprises of two distinct interactions within the detector: the collection of the pair-produced electron and the absorption of one of the two gamma rays. If both gamma rays escape the detector without interaction, a double escape peak (DEP) is observed. This situation corresponds to a single site (SS) event since the only interaction that contributes to the signal is the collection of the pair-produced electron. Neutrinoless double-beta decay is primarily a single sited events. Low-background HPGe experiments such as LEGEND thus seeks to distinguish between single site from multi site events. Tl-208 is part of the decay chain of $^{228}$Th, and produces an FEP at $2614.53$ keV. Given the mass of the electron is $511$ keV, the SEP peak occurs at $2103.53$ keV and the DEP peak at $1592.53$ keV. 
 
-
+If one of the annihilation gamma rays leaves the detector without depositing its energy, the spectrum shows a Single Escape Peak (SEP). This scenario results in a multisite (MS) event because the signal comprises of two distinct interactions within the detector: the collection of the pair-produced electron and the absorption of one of the two gamma rays. If both gamma rays escape the detector without interaction, a double escape peak (DEP) is observed. This situation corresponds to a single site (SS) event since the only interaction that contributes to the signal is the collection of the pair-produced electron. Tl-208 is part of the decay chain of $^{228}$Th, and produces an FEP at $2614.53$ keV. Given the mass of the electron is $511$ keV, the SEP peak occurs at $2103.53$ keV and the DEP peak at $1592.53$ keV. 
 
 
 \begin{figure}%[htb!]
@@ -44,11 +33,6 @@ If one of the annihilation gamma rays leaves the detector without depositing its
    \label{fig:eng_spec}
 \end{figure}
 
-
-
-- Normalization
-- Alignment
-
 \section{Simulations}
 
 
@@ -63,7 +47,7 @@ If one of the annihilation gamma rays leaves the detector without depositing its
 Geant4 is a Monte Carlo-based toolkit that can simulate the passage of particles through matter. We designed a simple Geant4 setup geometry to simulate events in the setup of ORNL characterization. The setup in  Geant4 shown in Fig. \ref{fig:eng_spec} This includes a Germanium detector, a radioactive source, Aluminum PopTop cryostat holder, surrounded by lead shielding. We simulated 100 million $^{228}$Th decay events originating from the source and recorded their energy depositions within the germanium detector. Given the location of energy deposition inside the detector, we used Siggen simulations to generate waveforms for hits in DEP, SEP and FEP energies.
 
 
-waveforms for multi-site events are produced energy weighted summing of individual hits. Fig. ~\ref{fig:eng_dep_sim} shows the simulation process for few events. The left panel depicts the hits locations of particles for the events. Event 3 and Event 4 are effectively single-sited, as the energy depositions occur very close to each other and thus produces a single sited events. In Event 1, the energy depositions result in two primary sites, giving rise to a two-sited waveform. Event 2 features a trace of energy deposition localized to three regions, classifying it as a three-sited event. Event 3 and 4 have different drift times due being deposited at different distance from the point contact.
+Waveforms for multi-site events are creating by energy weighted summing of individual hits waveforms. Fig. ~\ref{fig:eng_dep_sim} shows the simulation process for few events. The left panel depicts the hits locations of particles for the events. Event 3 and Event 4 are effectively single-sited, as the energy depositions occur very close to each other and thus produces a single sited events. In Event 1, the energy depositions result in two primary sites, giving rise to a two-sited waveform. Event 2 features a trace of energy deposition localized to three regions, classifying it as a three-sited event. Event 3 and 4 have different drift times due being deposited at different distance from the point contact.
 
 \section{Post Processing}
 
@@ -72,8 +56,8 @@ Normalizing and align are crucial for training the network. The sim waveforms ar
 \begin{figure}[!htb]
     % \hspace{0.05\linewidth}
     %[trim={left bottom right top},clip]
-    \includegraphics[width=0.99\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch7/figs/all_data_pulses.png}
-    \includegraphics[width=0.99\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch7/figs/all_simulated_pulses.png}
+    \includegraphics[width=0.95\linewidth,trim={0pc 0cm 0pc 1cm},clip]{ch7/figs/all_data_pulses.png}
+    \includegraphics[width=0.95\linewidth,trim={0pc 0cm 0pc 1cm},clip]{ch7/figs/all_simulated_pulses.png}
     \caption{Input data and simulated waveforms. The waveforms are aligned by $99.9\%$ rise time. Data pulses are normalized by aligning the tail and baselines.}
    \label{ch7:figs:in_out}
 \end{figure}
@@ -81,21 +65,20 @@ Normalizing and align are crucial for training the network. The sim waveforms ar
 
 \section{Network Training}
 
-We first construct two networks an Sim Translator~ $\Lambda$ and an Inverse Sim Translator $\bar{\Lambda}$, both with PU-Net structure. We then construct two RNN discriminator networks $\delta_{S}$ and $\delta_{T}$ for the source and target waveforms, respectively. 
+The training and validation of CPU-Net are conducted in PyTorch~\cite{pytorch}. We construct two networks an Sim Translator~ $\Lambda$ and an Inverse Sim Translator $\bar{\Lambda}$, both with PU-Net structure. We then construct two RNN discriminator networks sim discriminator $\delta_{S}$ and data discriminator $\delta_{T}$ for the source and target waveforms, respectively. Figure~\ref{fig:network_training} shows the overall training process.
 \clearpage
 \begin{figure}[htb!]
     % \hspace{0.05\linewidth}
     %[trim={left bottom right top},clip]
     \includegraphics[width=0.99\linewidth,trim={5pc 20pc 6.5pc 19pc},clip]{ch7/figs/cycle_gan_training.pdf}
-    \caption{Cycle-consistent adversarial training with PU-Net as the Ad-hoc Translation Network~(Sim Translator) and Inverse Ad-hoc Translation Network~(Data Translator Translator). The red oval region represents simulated waveforms in $\mathcal{T}_{Source}$, and the blue oval region represents detector waveforms in $\mathcal{T}_{Target}$.}
+    \caption{Training in CPU net. Generator A transfers sim to data while Generator B transfers sim to data. Discriminator A differentiates data like waveform from Generator A from data. Discriminator B differentiates sim like waveform from Generator B from simulations.}
    \label{fig:network_training}
 \end{figure}
 
-\input{ch7/loss_tab}
 
+When training the network, a simulated waveform $X$ is first fed to $\Lambda$ to produce a translated waveform $\Lambda(X)$. The discriminator $\delta_{T}$ attempts to distinguish $\Lambda(X)$ from real data waveforms while $\Lambda(X)$ tries to “fool” $\delta_{T}$. Then $\Lambda(X)$ is fed to $\bar{\Lambda}$ to translate back to $\mathcal{X}$ space by $\bar{\Lambda}(\Lambda(\mathcal{X}))$. A second discriminator $\delta_{S}$ attempts to distinguish $\bar{\Lambda}(\Lambda(\mathcal{X}))$ from $\mathcal{X}$ while $\bar{\Lambda}$ attempts to ``fool'' $\delta_{S}$. The $\mathcal{X}\rightarrow{}\Lambda(\mathcal{X})\rightarrow{}\bar{\Lambda}(\Lambda(\mathcal{X}))$ translation path is termed the forward cycle. The same process is performed in the other direction, starting with the detector waveform, $\mathcal{X}'\rightarrow{}\bar{\Lambda}(\mathcal{X}')\rightarrow{}\Lambda(\bar{\Lambda}(\mathcal{X}'))$ and called backward cycle.
 
-The training and validation of CPU-Net are conducted in PyTorch~\cite{pytorch}. When training the network, a simulated waveform $X$ is first fed to $\Lambda$ to produce a translated waveform $\Lambda(X)$, then an adversarial training with $\delta_{T}$ is performed: $\delta_{T}$ attempts to distinguish $\Lambda(X)$ from $\mathcal{X}'$ while $\Lambda$ attempts to ``fool'' $\delta_{T}$. Then $\Lambda(X)$ is fed to $\bar{\Lambda}$ to translate back to $\mathcal{X}$ space by $\bar{\Lambda}(\Lambda(\mathcal{X}))$. A second discriminator $\delta_{S}$ attempts to distinguish $\bar{\Lambda}(\Lambda(\mathcal{X}))$ from $\mathcal{X}$ while $\bar{\Lambda}$ attempts to ``fool'' $\delta_{S}$. The $\mathcal{X}\rightarrow{}\Lambda(\mathcal{X})\rightarrow{}\bar{\Lambda}(\Lambda(\mathcal{X}))$ translation path is denoted by the red arrows in the right-side panel of Figure~\ref{fig:network_training}. The same process is performed in the other direction, starting with the detector waveform, $\mathcal{X}'\rightarrow{}\bar{\Lambda}(\mathcal{X}')\rightarrow{}\Lambda(\bar{\Lambda}(\mathcal{X}'))$ is denoted by blue arrows in the same figure.  
-
+\section{Loss Functions}
 $L_{\mathrm{Identity}}$ ensures that the Sim Translator preserves its shape when an actual detector waveform $X'$ is fed into $\Lambda$, shown in Eq. \ref{eq:loss_ided}. The cycle-consistent loss in Eq. \ref{eq:loss_cyc} ensures the circular translation path preserves the original waveform shape, and the GAN loss Eq. \ref{eq:loss_gan} calculates the loss associated with ``fooling'' the discriminator. A specialized L1 loss is used for $L_{\mathrm{Identity}}$, $L_{\mathrm{Cycle}}$, $L_{\mathrm{Advesarial}}$ that emphasizes different parts of the waveform by assigning them varying weights. It's particularly designed to give more importance to the rising and falling edges of the waveform, which are critical for accurate waveform shape analysis. Binary Cross-Entropy Loss is used for the discriminator $\delta_{T}$.
 
 \begin{equation}\label{eq:loss_ided}
@@ -108,7 +91,10 @@ $L_{\mathrm{Identity}}$ ensures that the Sim Translator preserves its shape when
     L_{\mathrm{Adversarial}} = E_{\mathcal{X'}}\log(\delta(X')) - E_{\Lambda(\mathcal{X})}\log(1 - \delta(\Lambda(X)))
 \end{equation}
 
-An additional three complementary losses are defined for the detector waveform translation path. Therefore, a total of six losses are optimized simultaneously for the generators and two for the discriminators. AdamW~\cite{adam_w_paper} optimizers are used for all losses. We trained the CPU-Net on 110,000 FEP waveforms. A linear learning rate decay begins at iteration 1000 and reaches zero at the final iteration.
+An additional three complementary losses are defined for the detector waveform translation path. Therefore, a total of six losses are optimized simultaneously for the generators and two for the discriminators. AdamW~\cite{adam_w_paper} optimizers are used for all losses. We trained the CPU-Net on 110,000 FEP waveforms. A linear learning rate decay begins at iteration 1000 and reaches zero at the final iteration. Table \ref{ch8:tab:loss_summary}
+
+\input{ch7/loss_tab}
+
 
 To prevent overfitting during training, weight decay is applied to the optimizers so that it penalizes the large weights and encourages generalization. Gradient clipping is applied, limiting the norm of gradients during training and preventing exploding gradients, particularly in layers of the U-Net.
 

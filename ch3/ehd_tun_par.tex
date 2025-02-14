@@ -1,0 +1,45 @@
+\begin{table}[!htb]
+    \centering
+    \renewcommand{\arraystretch}{1.3} % Adjust row spacing
+    \begin{tabular}{|l|p{10cm}|c|}
+        \hline
+        \textbf{Flag} & \textbf{Description} & \textbf{Example} \\ 
+        \hline
+        -r & Set the radial position of the event in mm. & 15.00 \\
+        \hline
+        -z & Set the axial position of the event in mm. & 0.50 \\
+        \hline
+        -g & Specify the detector name. & P42575A \\
+        \hline
+        -s & Set the surface charge density in $10^{10} e/\text{cm}^2$. & -0.50 \\
+        \hline
+        -e & Input the interaction energy in keV. & 5000 \\
+        \hline
+        -v & Choose whether to write density files (0 = no, 1 = yes). & 1 \\
+        \hline
+        -f & Choose whether to recalculate the electric field (0 = no, 1 = yes). & 1 \\
+        \hline
+        -w & Choose whether to save the electric field (0 = no, 1 = yes). & 1 \\
+        \hline
+        -d & Choose whether to save the depletion surface (0 = no, 1 = yes). & 1 \\
+        \hline
+        -p & Choose whether to write the weighting potential (0 = no, 1 = yes). & 1 \\
+        \hline
+        -b & Set the bias voltage in volts. & 3500 \\
+        \hline
+        -h & Specify the grid size in mm. & 0.0200 \\
+        \hline
+        -m & Define the passivated surface depth in mm. & 0.10 \\
+        \hline
+        -c & Set the velocity of surface charges compared to bulk. & 0.75 \\
+        \hline
+        -a & Input a custom impurity density profile file. & filename.dat \\
+        \hline
+        -t & Define the total simulation run time in ns. & 16000 \\
+        \hline
+        -u & Set the frequency of output signal saving in ns. & 16 \\
+        \hline
+    \end{tabular}
+    \caption{Input parameters to EH-Drift}
+    \label{tab:ehdrift_parameters}
+\end{table}
