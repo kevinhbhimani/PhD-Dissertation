@@ -1,20 +1,21 @@
-\chapter{Germanium and Neutrinoless Double Beta Decay Experiments}
+\chapter{High Purity Germanium Detectors}
 \label{chap:detectors}
 
-${}^{76}Ge$ double-beta decays into ${}^{76}Se$ and has several advantages as a source for $0\nu\beta\beta$ decay experiments. As a semi-conductor, it can be made into detectors with an excellent energy resolution, which is critical as energy is the only observable that is both necessary and sufficient for a discovery. Its Q value is $2.039$ MeV, which is above the energies of most gamma events. The crystal-growing process for Germanium has purification stages that highly reduce internal backgrounds such as $^{238}$U and $^{232}$Th chain contaminants. Germanium is abundant in nature and can be easily enriched, allowing for large-scale experiments. Signal formation inside Germanium is well understood and enables precise topology-based discrimination between background and signal events through pulse shape discrimination (PSD) techniques. Germanium detectors thus have an extensive history in nuclear physics and rare-event searches.
+${}^{76}Ge$ double-beta decays into ${}^{76}Se$, represented by equation \ref{germanium_0nbb_eq}. It has several advantages as a source for $0\nu\beta\beta$ decay experiments. As a semi-conductor, it can be made into detectors with an excellent energy resolution, which is critical as energy is the only observable that is both necessary and sufficient for a discovery. Its Q value is $2.039$ MeV, which is above the energies of most gamma events. The crystal-growing process for Germanium has purification stages that highly reduce internal backgrounds such as $^{238}$U and $^{232}$Th chain contaminants. Germanium is abundant in nature and can be easily enriched, allowing for large-scale experiments. Signal formation inside Germanium is well understood and enables precise topology-based discrimination between background and signal events through pulse shape discrimination (PSD) techniques. Germanium detectors thus have an extensive history in nuclear physics and rare-event searches.
 
-% Fig. ~\ref{past_ge_exp} shows a past timeline of Ge-based experiments. Over the years, research and development have resulted in experiments that continuously provide a larger bound to the half-life of the reaction. The MAJORANA and GERDA collaborations are two such experiments with extensive experience in the research and development of Germanium detectors.
 
-% \begin{equation}\label{germanium_0nbb_eq}
-% {}_{32}^{76}Ge \rightarrow {}_{34}^{76}Se + e^- + e^-
-% \end{equation}
+\begin{equation}\label{germanium_0nbb_eq}
+{}_{32}^{76}Ge \rightarrow {}_{34}^{76}Se + 2e^- + 2\bar{\nu}_e
+\end{equation}
 
-% \begin{figure}[htb]
-% \centering
-% \includegraphics[scale=0.25]{HPGD/figs/past_ge_exp.png}
-% \caption{A plot showing a timeline of past Germanium-based $o\nu\beta\beta$ decay experiments along with the half-lives probed by them.}.
-% \label{past_ge_exp}
-% \end{figure}
+Fig. ~\ref{past_ge_exp} shows a past timeline of Ge-based experiments. Over the years, research and development have resulted in experiments that continuously provide a larger bound to the half-life of the reaction. The MAJORANA and GERDA collaborations are two such experiments with extensive experience in the research and development of Germanium detectors.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[trim=0.1cm 0 0.1cm 0,clip, width=0.99\linewidth]{ch2/figs/0nbb-ge76-history-future.pdf}
+\caption{A plot showing a timeline of past and future Germanium-based $o\nu\beta\beta$ decay experiments. The the half-lives probed by them is shown along with their background index. Next generation experiments aim to continue improve half life limit while having the lowest background index. Plot from Luigi Pertoldi}
+\label{past_ge_exp}
+\end{figure}
 
 
 \section{Signal formation in Germanium}
@@ -124,12 +125,21 @@ The subsequent phase of LEGEND is a proposed ton-scale experiment. A ton-scale e
 
 {\Ltwo} will have a very low background, a factor of $2.5$ better than GERDA, with a background index of $2 \times 10^{-4}$ cts/(keV kg yr). Fig. \ref{fig:L200_background} shows the expected background contribution in {\Ltwo}. These components are calculated using radio purity assays of selected materials and Monte Carlo simulations. 
 
+% \begin{figure}
+% \centering
+%   \includegraphics[width=0.99\linewidth]{ch2/figs/L200_background.pdf}
+%   \caption{{\Ltwo} Projected background contributions near Q$_{\beta\beta}$ after all analysis cuts. Grey bands indicate uncertainties in assays and background rejection.}
+% \label{fig:L200_background}
+%   \end{figure}
+
+
 \begin{figure}
 \centering
-  \includegraphics[width=0.99\linewidth]{ch2/figs/L200_background.pdf}
-  \caption{{\Ltwo} background contributions near Q$_{\beta\beta}$ after all analysis cuts. Grey bands indicate uncertainties in assays and background rejection.}
+  \includegraphics[width=0.99\linewidth]{ch2/figs/l200-phy-spectrum-psd.pdf}
+  \caption{{\Ltwo} physics spectrum. The events above 3000 kev after the muon and multiplicity cut are primarily alphas. These events can be effectively remove using PSD cuts as show in green. Credit: Luigi Pertoldi}
 \label{fig:L200_background}
   \end{figure}
+
   
 Decays of long-lived $^{238}$U and $^{232}$Th isotopes, as well as their short-lived progeny, are major backgrounds from component materials. They are primarily reduced by using higher purity materials and reducing materials close to the detectors. Cosmogenic backgrounds $^{68}$Ge and $^{60}$Co isotopes are produced when Ge is exposed to neutrons produced by cosmic rays. This background can be reduced by controlling the cosmic-ray exposure during the production and increasing the underground cool-down period for the experiment. 
 
@@ -137,4 +147,23 @@ Surface events such as alphas and $^{42}$K betas are one of the biggest contribu
 
 Alpha backgrounds come primarily from surface contaminants such as $^{210}$Po and $^{210}$Pb, introduced as dust during fabrication, storage, and assembly processes, or through depositions of the ionized progeny of $^{222}$Rn decays. Alpha backgrounds can be reduced by handling the detectors and surrounding materials with care in ultra-clean, inert environments. In LEGEND, support materials are etched using acids or leached in Nitric acid to reduce radon implantation, and then the detectors are assembled and installed into cryostats using a glove box with a radon-reduced dry Nitrogen environment. The use of liquid Argon reduces the alpha background due to gaseous $^{222}$Rn previously observed in MJD.
 
- It can be noted in Fig. \ref{fig:L200_background} that the alpha background contribution has especially high uncertainty. These uncertainties are driven by uncertainty in the pulse shape rejection for background components. Pulse shape analysis can be used to reject background events coming from the passivated surface very efficiently; however, the rejection has not been studied using simulations. This is because alpha background events generate a large charge cloud on the passivated surface. This cloud is more susceptible to effects such as diffusion and self-repulsion, which cause difficulties in modeling them. Despite the complexity, it is vital to understand the nature of the surface background, develop techniques to cut them in analysis, and understand their background rejection efficiency. In the next section, we focus on understanding the alpha background, pulse shape simulations for surface alphas, and introduce an approach to reduce uncertainty in its background.
+
+ but the effectiveness of those cuts is hard to mode, This is becuase we don't have a good background component for alphas. Here's what we have so far:
+
+\begin{figure}
+\centering
+  \includegraphics[width=0.99\linewidth]{ch2/figs/l200-bkgmodel-2_compressed.pdf}
+  \caption{{\Ltwo} background contributions near Q$_{\beta\beta}$ after all analysis cuts. Grey bands indicate uncertainties in assays and background rejection. Credit: Toby Dixon, Luigi Pertoldi}
+\label{ch2:fig:L200_background_model_fit}
+  \end{figure}
+
+  
+
+ It can be noted in Fig. \ref{fig:L200_background} that the alpha background contribution has especially high uncertainty. These uncertainties are driven by uncertainty in the pulse shape rejection for background components. Pulse shape analysis can be used to reject background events coming from the passivated surface very efficiently; however, the rejection has not been studied using simulations. This is because alpha background events generate a large charge cloud on the passivated surface. This cloud is more susceptible to effects such as diffusion and self-repulsion, which cause difficulties in modeling them. Despite the complexity, it is vital to understand the nature of the surface background, develop techniques to cut them in analysis, and understand their background rejection efficiency. 
+ 
+ 
+ 
+Fig. \ref{ch2:fig:L200_background_model_fit} shows the background model in LEGEND-200. It is constructed using a global binned likelihood fit using measured spectra, radio assay data, Monte Carlo simulations, and special background runs. While the model accurately describes gamma-induced backgrounds, alpha backgrounds remain poorly constrained due to their short interaction range, surface contamination effects, and charge recombination uncertainties, making their spectral modeling more challenging.
+
+
+ In the next section, we focus on understanding the alpha background, pulse shape simulations for surface alphas, and introduce an approach to reduce uncertainty in its background.

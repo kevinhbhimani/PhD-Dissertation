@@ -1,5 +1,5 @@
-\chapter{Data Preparation and Model Training}\label{chap:training}
-
+\chapter{Data Preparation and Model Training}
+\label{chap:training}
 \section{Introduction}
 Ideally, the Sim Translator should be trained with paired waveforms ($X, X'$) where $Y=Y'$ for each pair. In reality, collecting such a paired dataset is highly challenging. While we can simulate $\mathcal{T}_{Source}$ from an arbitrary $\mathcal{D}_{Source}$, obtaining a corresponding $\mathcal{T}_{Target}$ such that $\mathcal{D}_{Source} = \mathcal{D}_{Target}$ is difficult without precise knowledge of $P(X'|Y')$. Consequently, training must be conducted on unpaired datasets, where $\mathcal{D}_{Source} \neq \mathcal{D}_{Target}$. The CycleGAN framework~\cite{CycleGAN} provides a way to train the Sim Translator using adversarial losses even when paired data are unavailable
 

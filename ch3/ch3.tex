@@ -180,7 +180,7 @@ If $E_z$ or $E_r$ is below $1\,\mathrm{V/cm}$, the code sets
 $\delta_z = 0$ or $\delta_r=0$ under the assumption that low-field regions produce negligible drift velocity.
 
 
-\section{Volume Correction}
+\subsection{Volume Correction}
 
 In cylindrical $(r,z)$ coordinates, each radial ring has a different 
 physical area. The simulation tracks these scaling factors with arrays 
@@ -189,10 +189,9 @@ physical area. The simulation tracks these scaling factors with arrays
 \texttt{s1}[r] \;\approx\; 1 + \frac{0.5}{r-1}, 
 \qquad
 \texttt{s2}[r] \;\approx\; 1 - \frac{0.5}{r-1},
-\]
+\] 
 (plus special handling at $r=1$). These scalars adjust how much 
-charge diffuses into or out of the neighboring ring to ensure 
-\emph{charge conservation} in cylindrical geometry. Specifically, 
+charge diffuses into or out of the neighboring ring to ensure charge conservation in cylindrical geometry. Specifically, 
 if $\delta_r$ is the fraction of carriers leaving cell $(r)$ in 
 the $+r$ direction, the actual increment in the neighbor cell 
 $(r+1)$ is multiplied by $\texttt{s1}[r]$, while the old cell is 
@@ -200,7 +199,7 @@ reduced by the same fraction multiplied by $\texttt{s1}[r]$ to
 balance volume differences. Similarly, diffusion to cell $(r-1)$ 
 uses $\texttt{s2}[r]$.
 
-\paragraph{Charge Update}
+\section{Charge Update}
 
 This approach enforces that if $r$ changes by one grid index, 
 the annular circumference changes from $2\pi (r-1)$ to $2\pi r$, 
@@ -212,10 +211,10 @@ After computing the diffusion fractions $\delta_z$ and $\delta_r$,
 the code subtracts those amounts from the central cell's carrier density 
 and adds them to the four neighbors:
 \begin{align}
-  \rho^{\mathrm{new}}(z,\,r+1) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_r \times s_1(r) \times \frac{r-1}{r} \\
-  \rho^{\mathrm{new}}(z-1,\,r) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_z \\
-  \rho^{\mathrm{new}}(z+1,\,r) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_z \\
-  \rho^{\mathrm{new}}(z,\,r-1) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r) \times \delta_r \times s_2(r) \times\frac{r-1}{r-2}.
+  \rho^{\mathrm{new}}(z,\,r+1) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_r \times s_1(r) \times \frac{r-1}{r} \label{ch3:eq:diffusion_update_1} \\
+  \rho^{\mathrm{new}}(z-1,\,r) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_z \label{ch3:eq:diffusion_update_2} \\
+  \rho^{\mathrm{new}}(z+1,\,r) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r)\times\delta_z \label{ch3:eq:diffusion_update_3} \\
+  \rho^{\mathrm{new}}(z,\,r-1) &\;\mathrel{+}= \;\rho^{\mathrm{old}}(z,\,r) \times \delta_r \times s_2(r) \times\frac{r-1}{r-2} \label{ch3:eq:diffusion_update_4}.
 \end{align}
  
 Because the radially adjacent cells differ in annular circumference, 
@@ -240,7 +239,7 @@ with $E_i \le E < E_{i+1}$. The fig. \ref{ch3:fig:dv_vs_e} shows the relation fo
     \label{ch3:fig:dv_vs_e}
 \end{figure}
 
-\subsection{Fraction Splitting}
+\subsection{Fraction Splitting}\label{ch3:sec:frac_split}
 
 To conserve charge when drifting carriers from one grid cell to another,
 we use a splitting approach. Suppose
@@ -254,46 +253,46 @@ f_z \;=\; \Delta z - \lfloor \Delta z \rfloor,
 \]
 (and similarly for the radial indices). Thus,
 \begin{align}
-&\text{fraction in }(k, i)   \;=\; f_{r} \times f_{z}, \nonumber\\
-&\text{fraction in }(k, i+1) \;=\; (1 - f_{r}) \times f_{z}, \nonumber\\
-&\text{fraction in }(k+1, i) \;=\; f_{r} \times (1 - f_{z}), \nonumber\\
+&\text{fraction in }(k, i)   \;=\; f_{r} \times f_{z} \\
+&\text{fraction in }(k, i+1) \;=\; (1 - f_{r}) \times f_{z}\\
+&\text{fraction in }(k+1, i) \;=\; f_{r} \times (1 - f_{z})\\
 &\text{fraction in }(k+1, i+1)\;=\; (1 - f_{r}) \times (1 - f_{z}).
 \label{eq:bilinear-fractions}
 \end{align}
 
 Hence, if $\rho^{\mathrm{old}}(z,r)$ is the charge density in the old cell,
 the new distribution is updated by
-\begin{align*}
-\rho^{\mathrm{new}}(k,i)   &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[f_{r}\,f_{z}\bigr] \times \Gamma_{r,z},\\
-\rho^{\mathrm{new}}(k,i+1) &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[(1 - f_{r})\,f_{z}\bigr] \times \Gamma_{r,z},\\
-\rho^{\mathrm{new}}(k+1,i) &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[f_{r}\,(1 - f_{z})\bigr] \times \Gamma_{r,z},\\
-\rho^{\mathrm{new}}(k+1,i+1)&\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[(1 - f_{r})\,(1 - f_{z})\bigr] \times \Gamma_{r,z}.
-\end{align*}
-
-\subsection{Geometric Factor \texorpdfstring{\boldmath$\Gamma_{r,z}$}{}}
+\begin{align}
+\rho^{\mathrm{new}}(k,i)   &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[f_{r}\,f_{z}\bigr] \times \text{G}_{r,z} \label{ch3:eq:den_update_1} \\
+\rho^{\mathrm{new}}(k,i+1) &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[(1 - f_{r})\,f_{z}\bigr] \times \text{H}_{r,z} \label{ch3:eq:den_update_2} \\
+\rho^{\mathrm{new}}(k+1,i) &\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[f_{r}\,(1 - f_{z})\bigr] \times \text{G}_{r,z} \label{ch3:eq:den_update_3} \\
+\rho^{\mathrm{new}}(k+1,i+1)&\,\mathrel{+}=\, \rho^{\mathrm{old}}(z,r)\times \bigl[(1 - f_{r})\,(1 - f_{z})\bigr] \times \text{H}_{r,z}. \label{ch3:eq:den_update_4}
+\end{align}
+\subsection{Geometric Factors}
 \label{sec:geom-factor}
 
 In cylindrical coordinates, each cell at index $r$ corresponds to an annular
 region of approximate circumference $2\pi (r \,\Delta r)$ and thickness
 $\Delta z$. When charge moves from cell $(z,r)$ to cell $(k,i)$, we
-often apply the factor
+often apply the factors:
+
 \[
-\Gamma_{r,z} \;\equiv\; \frac{(r-1)}{(i-1)},
-\]
+\text{G}_{r,z} \;\equiv\; \frac{(r-1)}{(i-1)}
+\qquad
+\text{H}_{r,z} \;\equiv\; \frac{(r-1)}{(i)}
+\] 
+
+
 reflecting the difference in annular volumes at radii $r$ and $i$.
 The offsets $(r-1)$ and $(i-1)$ arise from one-based indexing in the code. By multiplying the bilinear fractions by $\Gamma_{r,z}$, the simulation conserves total charge when rings expand or contract in radius.In practice, near $r=0$ or $i=0$, the geometric factor $\Gamma_{r,z} \;=\; (r-1)/(i-1)$ would be undefined or negative. Hence, the actual code checks whether $r$ or $i$ is zero or one, and uses a modified factor that preserves volume scaling. 
 
 % The factors \verb|8*r - 8| or \verb|8*i - 8| are specialized scalings to approximate the annular volume near the central axis or near $i=0$. They ensure that even when $r$ or $i$ equals 0 or 1, the total charge remains consistent with the expected geometry. For example, at the very center ($r=0$), a full ring circumference does not exist, so a smaller effective volume must be used. Although such \verb|8*-8| scalings can appear ad~hoc, they are designed to smoothly transition from the central axis to the first few radial rings, thereby avoiding division by zero while preserving charge.
 
 \section{Surface Drift}
-\paragraph{Surface Adjustments.}
-If a cell lies near a passivated boundary, the diffusion can be 
-further suppressed by multiplying $\delta_z$ or $\delta_r$ by a 
-\emph{surface-drift-velocity factor}. This accounts for reduced mobility 
-or enhanced recombination near the surface. Similarly, if the new cell 
-is a \texttt{CONTACT\_EDGE} or \texttt{DITCH}, the carriers may be removed 
-from the active region entirely and recorded in a variable \(\texttt{gone}\) 
-to track how much charge has disappeared or been collected.
+
+When charge carriers drift within the detector, they may encounter passivated surfaces, which require special handling due to their impact on charge collection. If this new position falls within a passivated surface region, the charge interaction with the surface must be accounted for. To model the surface, the lowest grid point is divided into length of surface and grid-surface. We store the charges on surface in a special row. 
+
+If the charge drifts completely into the surface, it is fully added to the surface row. If the charge enters the passivated layer, we split it up using the fraction splitting described in \ref{ch3:sec:frac_split}. Similarly charges from the surface can drift to the bulk and other surface points. While performing the diffusion on the last grid point in \ref{ch3:eq:diffusion_update_2}, the bottom z point is considered the surface. Similarly any point on the surface can diffuse up or to other points on the surface. The drift and rate of diffusion on the surface is suppressed by the surface-drift-velocity factor. This factor is typical about 0.001 is the ratio of the speed on the surface to the bulk. This helps model the slow rising tail of the surface backgrounds.
 
 
 \section{Impurity Correction}
