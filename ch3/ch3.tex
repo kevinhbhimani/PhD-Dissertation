@@ -38,7 +38,6 @@ Energy loss of alpha particles can be best understood by plotting specific energ
 % \label{fig:dcr_waveform}
 %   \end{figure}
   
-%  This Delayed Charge Recovery (DCR) effect results in energy degradation in the alpha signal. Even though alphas are normally deposited with $5$ MeV energy, the DCR effect leads alphas to potentially contribute to the ROI. For PPC detectors, this could be understood by looking at MJD's energy spectrum, as shown at the top of Fig. \ref{fig:mjd_alpha}. The bottom plot is the difference that highlights alpha contribution in the energy spectrum. The alpha energy spectrum peaks very close to the ROI, which makes it vital to understand how to effectively model and cut alpha events. Creating a background model component for alphas needs accurate modeling of charge collection. Pulse-shaped simulations can help accurately model charge collection and build a background model for alphas.
 
 %  \begin{figure}[htb]
 % \centering
@@ -48,78 +47,85 @@ Energy loss of alpha particles can be best understood by plotting specific energ
 % \label{fig:mjd_alpha}
 %   \end{figure}
 
-\section{Challenges in modelling surface events}
-An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration depth of about $17.6$ - $20.0$ micron \cite{knoll_2010}. This excites a lot of charge carriers and produces a dense charge cloud. In such cases, effects such as diffusion of the charges and self-repulsion among charges become significant. Self-repulsion could also push the charge onto the passivated surface, leading to a slower drift and longer collection time for these charges. This slow drift is thought to be due to a combination of charge trapping and re-release near the passivated surface, and slower drift speeds due to surface properties \cite{MULLOWNEY201233}. The passivated surface could also carry a static charge, which could affect the charge collection. In experimental data, these effects manifest as an energy-degraded alpha waveform with a slow rising tail, as shown in Fig. \ref{fig:dcr_waveform}. This Delayed Charge Recovery (DCR) effect degrades the alpha energy spectrum, potentially contributing to the ROI. This underscores the importance of modeling alpha background as alpha events in ROI need to be rejected to have a low background. 
+\section{Challenges in modeling surface events}
+An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration depth of about $17.6$ - $20.0$ micron \cite{knoll_2010}. This excites a lot of charge carriers and produces a dense charge cloud. In such cases, effects such as diffusion of the charges and self-repulsion among charges become significant. Self-repulsion could also push the charge onto the passivated surface, leading to a slower drift and longer collection time for these charges. This slow drift is thought to be due to a combination of charge trapping and re-release near the passivated surface, and slower drift speeds due to surface properties \cite{MULLOWNEY201233}. The passivated surface could also carry a static charge, which could affect the charge collection. In experimental data, these effects manifest as an energy-degraded alpha waveform with a slow rising tail, as shown in Fig. \ref{fig:dcr_waveform}.
 
-\clearpage
-\begin{figure}[!htb]
+  \begin{figure}[!htb]
+\centering
+  \includegraphics[width=0.8\linewidth]{ch3/figs/dcr_waveform.pdf}
+ \caption{An alpha waveform (red) compared to a bulk waveform (blue) in the MJD PPC detector. The DCR effect results in a distinct tail with a smaller slope, as shown by the highlight area in the box.\cite{tube_paper}}
+\label{fig:dcr_waveform}
+  \end{figure}
+
+ This DCR effect results in energy degradation in the alpha signal. Even though alphas are normally deposited with $5$ MeV energy, the degraded energy could lead alpha events potentially appearing in the ROI. Fig. \ref{ch3_fig_L200_surface_background} shows the LEGEND physics spectrum. Muon and multiplicity remove background such as muons and gamma rays, and the events left are primarily surface events shown in grey. This spread-out spectrum is due to the DCR effect. As shown in green, PSD cuts are highly effective in removing them, but the unknown efficiency of those cuts introduces uncertainty in the background model. 
+
+  \begin{figure}[!htb]
+\centering
+  \includegraphics[width=0.99\linewidth]{ch2/figs/l200-phy-spectrum-psd.pdf}
+  \caption{{\Ltwo} physics spectrum. The events above 3000 kev after the muon and multiplicity cut are primarily alphas. These events can be effectively remove using PSD cuts as show in green. Credit: Luigi Pertoldi}
+\label{ch3_fig_L200_surface_background}
+  \end{figure}
+
+\section{Surface Charge Effect}
+Due to various factors such as manufacturing, experimental conditions, and transportation, the HPGe detectors can develop charge on the passivated surface. This could impact charge collection for surface events. Fig. \ref{ch3_fig_surface_field_sc0} shows how the presence of surface charge influences the electric field close to the passivated surface. When there is no surface charge (top), the field lines are parallel to the surface. Presence of negative surface charge (middle) attract the field lines towards the surface. Positive surface charge (bottom) repels the field lines from the surface. Negative surface charge can pull the holes to the surface where they can drift slowly. Similarly, positive surface charges can pull the electrons to the surface.
+
+% \clearpage
+\begin{figure} %[!htb]
 \centering
 %[trim={left bottom right top},clip]
 \includegraphics[trim={1cm 3.5cm 0.5cm 4.0cm},clip,width=0.99\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.pdf}
 \includegraphics[trim={1cm 3.5cm 0.5cm 4.0cm},clip,width=0.99\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_-0.5.pdf}
 \includegraphics[trim={1cm 3.5cm 0.5cm 4.0cm},clip,width=0.99\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.5.pdf}
-
- \caption{0 sc}
-\label{ch3:fig:surface_field_sc0}
-  \end{figure}
-
-  
-Pulse shape simulations provide a way to perform alpha background modeling since signal formation in Germanium is well understood. A simulation to model alphas should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion. This warrants a dedicated simulation for surface alphas.
+\caption{Electric field magnitude and lines for the passivated surface of a PPC detector with different surface charges.}
+\label{ch3_fig_surface_field_sc0}
+\end{figure}
 
 
-
-
-  \begin{figure}[!htb]
-\centering
-  \includegraphics[width=0.95\linewidth]{ch3/figs/dcr_waveform.pdf}
- \caption{An alpha waveform (red) compared to a bulk waveform (blue) in the MJD PPC detector. The DCR effect results in a distinct tail with a smaller slope, as shown by the highlight area in the box.\cite{tube_paper}}
-\label{fig:dcr_waveform}
-  \end{figure}
-
+Surface charges can also change the overall electric field of the detector and impact the depletion voltage for the detector. Fig. \ref{ch3_fig_deplection_sc} shows how the depletion voltage for a LEGEND PPC detector changes with surface charge. Typically detector's operational voltage is higher than the depletion voltage, but if the surface charges is not properly account for, a detector could be left undepleted in the experiment.
 
 \begin{figure}[!htb]
 \centering
   \includegraphics[width=0.99\linewidth]{ch3/figs/deplep_sc.pdf}
- \caption{Effect of surface charge on depletion voltage for LEGEND PPC detector.}
-\label{ch3:fig:deplection_sc}
+ \caption{Effect of surface charge on depletion voltage for LEGEND PPC detector. Depletion voltages calcuated using \texttt{siggen} software.}
+\label{ch3_fig_deplection_sc}
   \end{figure}
-Simulations within the LEGEND collaboration include Siggen \cite{siggen_paper} and SSD simulations \cite{Abt:2021SSD}.
+
+Pulse-shaped simulations can help accurately these effects and build a background model for surface events. A simulation to model surface events should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion. They should also properly account for surface charge effects. We look at the current pulse shape simulations framework used by LEGEND.
 
 \section{Pulse shape simulations till now}
 
-Signal formation in Germanium is well understood via the Shockley-Ramo theorem. This enables building accurate simulations that can model the waveforms. Simulations within the LEGEND collaboration include Siggen and SSD simulations. 
+Signal formation in Germanium is well understood via the Shockley-Ramo theorem. This enables building accurate simulations that can model the waveforms. Simulations within the LEGEND collaboration include \texttt{siggen} and \texttt{SSD} simulations. 
 
-Siggen is a C-based program initially developed by David Radford at Oak Ridge National Lab for MJD pulse shape simulations \cite{siggen_paper}. It consists of two components: fieldgen and siggen. Fieldgen is used to calculate the electric potential and weighting potential of point-contact detectors in two-dimensional cylindrical coordinates. The siggen part uses the weighing potential calculated from fieldgen to generate a signal. The simulations can calculate the depletion voltage, the volume of the depletion region, and the capacitance of the detector. Diffusion in siggen is approximated using a Gaussian convolution, and there is no mechanism to account for the self-repulsion of charges as Siggen uses point charges to represent the entire charge cloud.
+\texttt{siggen} is a C-based program initially developed by David Radford at Oak Ridge National Lab for MJD pulse shape simulations \cite{siggen_paper}. It consists of two components: \texttt{fieldgen} and \texttt{siggen}. \texttt{fieldgen} is used to calculate the electric potential and weighting potential of point-contact detectors in two-dimensional cylindrical coordinates. The \texttt{siggen} part uses the weighing potential calculated from \texttt{fieldgen} to generate a signal. The simulations can calculate the depletion voltage, the volume of the depletion region, and the capacitance of the detector. Diffusion in \texttt{siggen} is approximated using a Gaussian convolution, and there is no mechanism to account for the self-repulsion of charges as \texttt{siggen} uses point charges to represent the entire charge cloud.
 
-% A simulated event in Siggen is shown in Fig. \ref{fig:siggen_1d}.
+% A simulated event in \texttt{siggen} is shown in Fig. \ref{fig:\texttt{siggen}_1d}.
 
 % \begin{figure}
 % \centering
 % \includegraphics[width=0.49\linewidth]{ch3/figs/drift_path.png}
 % \includegraphics[width=0.49\linewidth]{ch3/figs/samp_wav_comp.png}
 % \caption{A simulated event showing the path of holes and electrons and the corresponding waveform}.
-% \label{fig:siggen_1d}
+% \label{fig:\texttt{siggen}_1d}
 % \end{figure}
 
-SolidStateDetectors.jl (SSD) is a software package developed by the group of Iris Abt at the Max Planck Institute Munich for the LEGEND experiment \cite{Abt:2021SSD}. It is written in Julia and can perform calculations in all 3 dimensions. SSD can calculate electric fields and potentials outside the detectors and has the ability for parallelization. The SSD enables full 3D diffusion and model self-repulsion in the signal. The charges are tracked individually using their position and velocity.
+SolidStateDetectors.jl (\texttt{SSD}) is a software package developed by the group of Iris Abt at the Max Planck Institute Munich for the LEGEND experiment \cite{Abt:2021SSD}. It is written in Julia and can perform calculations in all 3 dimensions. \texttt{SSD} can calculate electric fields and potentials outside the detectors and has the ability for parallelization. The \texttt{SSD} enables full 3D diffusion and model self-repulsion in the signal. The charges are tracked individually using their position and velocity. The electic field calculation is done on GPUs. SSD provide a complete 3D simulation of the charges in Germanium along with surface drift, but the computational run time quickly scale with number of particles used. Alpha particles typically create a large charge cloud that would be difficult to model with current \texttt{SSD} version.
 
-In bulk, a spherical charge cloud model works very well, but the charge cloud produced by alpha is not necessarily spherical due to the charge trapping and re-release effect on the passivated surface. A simulation to model alpha should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion.
+% In bulk, spherical charge cloud model works very well, but the charge cloud produced by alpha is not necessarily spherical due to the charge trapping and re-release effect on the passivated surface. A simulation to model alpha should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion.
 
 % \begin{figure}
 % \centering
-% \includegraphics[width=0.49\linewidth]{ch3/figs/ssd_e.png}
-% \includegraphics[width=0.49\linewidth]{ch3/figs/ssd_path.png}
-% \caption{Simulated Electric field and charge paths in SSD simulations. It allows for calculations outside the detectors and in full 3 dimensions. \cite{ssd_web}.}
-% \label{fig:ssd_plots}
+% \includegraphics[width=0.49\linewidth]{ch3/figs/\texttt{SSD}_e.png}
+% \includegraphics[width=0.49\linewidth]{ch3/figs/\texttt{SSD}_path.png}
+% \caption{Simulated Electric field and charge paths in \texttt{SSD} simulations. It allows for calculations outside the detectors and in full 3 dimensions. \cite{\texttt{SSD}_web}.}
+% \label{fig:\texttt{SSD}_plots}
 % \end{figure}
 
 
 \section{{\tdsim}}
+{\tdsim} are new methods to simulate surface alpha events while directly simulating diffusion and self-repulsion effects. These are a dedicated model for surface interactions using 2-D approximations to optimize run time. They were initially programmed in C by David Radford and build upon \texttt{siggen}. As charges drift through the detectors, they keep track of charge densities at a pixel-by-pixel level, which allows for nonspherical charge clouds. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges. The simulation is performed in r and z-direction while assuming $\phi$ symmetry—thus the charge cloud is simulated by a ring. Diffusion speed of 3D charge clouds. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges.
 
-{\tdsim} are new methods to simulate surface alpha events while directly simulating diffusion and self-repulsion effects. They were initially programmed in C by David Radford and build upon Siggen simulations developed for MJD \cite{siggen_paper}. As charges drift through the detectors, they keeps track of charge densities at a pixel-by-pixel level, which allows for nonspherical charge clouds. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges. The simulation is performed in r and z-direction while assuming $\phi$ symmetry— thus the charge cloud is simulated by a ring. Diffusion is performed in 2D, but the diffusion speed was checked against the diffusion speed of 3D charge clouds. The simulations need a fine grid size to account for the low penetration depth of surface alphas. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\tdsim} also enables simulation of the effects of surface charges.
 
-
-Fig. \ref{fig:ehd_flowchart} shows how the {\tdsim} program works. The detector is divided into a grid, and charge densities are distributed at a given location based on the impact energy, usually over two adjacent grid points. The number of density is determined using:
+Fig. \ref{fig:ehd_flowchart} shows how the {\tdsim} program works. The detector is divided into a grid, and charge densities are distributed at a given location based on the impact energy, usually over two adjacent grid points. The initial densities are determined using:
 
 \begin{equation}
     \rho_H = \rho_E= \frac{\text{ E}\times 10^7 }{1000 \times 0.003 \times \text{grid}^3}
@@ -332,7 +338,7 @@ R_{h}(0) \;=\; \sum_{z=1}^{L-1} \sum_{r=1}^{R-1}
 
 Combining these quantities, the net induced signal can be computed as
 \begin{equation}
-\text{signal}[\,t\,] 
+\text{Signal}[\,t\,] 
 \;=\;
   \frac{\,S_h(t)\;-\;S_h(0)\,}{\,R_{h}(0)\,}
   \;-\;
