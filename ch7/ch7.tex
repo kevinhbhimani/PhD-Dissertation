@@ -1,7 +1,7 @@
-\chapter{Data Preparation and Model Training}
-\label{chap:training}
+\chapter{Data Preparation \& Model Training} \label{chap:training}
+
 \section{Introduction}
-Ideally, the Sim Translator should be trained with paired waveforms ($X, X'$) where $Y=Y'$ for each pair. In reality, collecting such a paired dataset is highly challenging. While we can simulate $\mathcal{T}_{Source}$ from an arbitrary $\mathcal{D}_{Source}$, obtaining a corresponding $\mathcal{T}_{Target}$ such that $\mathcal{D}_{Source} = \mathcal{D}_{Target}$ is difficult without precise knowledge of $P(X'|Y')$. Consequently, training must be conducted on unpaired datasets, where $\mathcal{D}_{Source} \neq \mathcal{D}_{Target}$. The CycleGAN framework~\cite{CycleGAN} provides a way to train the Sim Translator using adversarial losses even when paired data are unavailable
+Ideally, the ATN should be trained with paired waveforms ($X, X'$) where $Y=Y'$ for each pair. In reality, collecting such a paired dataset is highly challenging. While we can simulate $\mathcal{T}_{Source}$ from an arbitrary $\mathcal{D}_{Source}$, obtaining a corresponding $\mathcal{T}_{Target}$ such that $\mathcal{D}_{Source} = \mathcal{D}_{Target}$ is difficult without precise knowledge of $P(X'|Y')$. Consequently, training must be conducted on unpaired datasets, where $\mathcal{D}_{Source} \neq \mathcal{D}_{Target}$. The CycleGAN framework~\cite{CycleGAN} provides a way to train the ATN using adversarial losses even when paired data are unavailable.
 
 In this chapter, we first outline the detector data collection process, then describe the simulation approach, and finally detail the adversarial training of the network using CycleGAN.
 
@@ -10,7 +10,7 @@ In this chapter, we first outline the detector data collection process, then des
 The LEGEND collaboration characterizes newly produced HPGe detectors at Oak Ridge National Laboratory (ORNL). We use characterization data from a LEGEND Inverted-Coaxial Point-Contact (ICPC) detector, V06643A, manufactured by ORTEC. The detector was mounted in a “PopTop” configuration, surrounded by lead shielding, and placed in a concrete alcove to reduce external background. The data contained a flood Thorium-232 source on top of the detector. Signals from the detector were digitized using a FlashCam digitizer, and the \texttt{pygama} package~\cite{pygama} was used to convert FlashCam output to LEGEND LH5-format HDF5 files, and to calibrate the event energies from ADC units to keV. The energies were then corrected for charge trapping. The left panel of Fig.~\ref{fig:eng_spec} shows the final energy spectrum obtained from the detector.
 
 
-The escape peaks in spectrum are created from pair production events from a high energy photon. In this process, the incident photon generates an electron-positron pair. The electron is collected by the detector, while the positron quickly annihilates, producing two additional gamma-ray photons. If all secondary gamma rays are fully absorbed within the detector, their combined energy yields a characterized peak in the energy spectrum, the Full Energy Peak (FEP).
+The escape peaks in the spectrum are created from pair production events from a high energy photon. In this process, the incident photon generates an electron-positron pair. The electron is collected by the detector, while the positron quickly annihilates, producing two additional gamma-ray photons. If all secondary gamma rays are fully absorbed within the detector, their combined energy yields a characterized peak in the energy spectrum, the Full Energy Peak (FEP).
 
 
 If one of the annihilation gamma rays leaves the detector without depositing its energy, the spectrum shows a Single Escape Peak (SEP). This scenario results in a multisite (MS) event because the signal comprises of two distinct interactions within the detector: the collection of the pair-produced electron and the absorption of one of the two gamma rays. If both gamma rays escape the detector without interaction, a double escape peak (DEP) is observed. This situation corresponds to a single site (SS) event since the only interaction that contributes to the signal is the collection of the pair-produced electron. Tl-208 is part of the decay chain of $^{228}$Th, and produces an FEP at $2614.53$ keV. Given the mass of the electron is $511$ keV, the SEP peak occurs at $2103.53$ keV and the DEP peak at $1592.53$ keV. 
@@ -39,47 +39,46 @@ If one of the annihilation gamma rays leaves the detector without depositing its
 \begin{figure}[htb!]
   %[trim={left bottom right top},clip]
     \includegraphics[width=0.99\linewidth,trim={1pc 0pc 1pc 0pc},clip]{ch7/figs/hit_sims.pdf}
-    \caption{(Left) Hit locations for each event. (Right) Energy-weighted waveforms for the corresponding events. Hits produced using \texttt{Geant4} simulations and waveforms generated using \texttt{siggen} software.}
+    \caption{(Left) Hit locations for each event. (Right) Energy-weighted waveforms for the corresponding events. Hits produced using \texttt{Geant4} simulations and waveforms generated using {\siggen} software.}
    \label{fig:eng_dep_sim}
 \end{figure}
 
 
-Geant4 is a Monte Carlo-based toolkit that can simulate the passage of particles through matter. We designed a simple Geant4 setup geometry to simulate events in the setup of ORNL characterization. The setup in  Geant4 shown in Fig. \ref{fig:eng_spec} This includes a Germanium detector, a radioactive source, Aluminum PopTop cryostat holder, surrounded by lead shielding. We simulated 100 million $^{228}$Th decay events originating from the source and recorded their energy depositions within the germanium detector. Given the location of energy deposition inside the detector, we used Siggen simulations to generate waveforms for hits in DEP, SEP and FEP energies.
+Geant4 is a Monte Carlo-based toolkit that can simulate the passage of particles through matter. We designed a simple Geant4 setup geometry to simulate events in the setup of ORNL characterization. The setup in Geant4 is shown in Fig. \ref{fig:eng_spec} This includes a Germanium detector, a radioactive source, an Aluminum PopTop cryostat holder, surrounded by lead shielding. We simulated 100 million $^{228}$Th decay events originating from the source and recorded their energy depositions within the germanium detector. Given the location of energy deposition inside the detector, we used {\siggen} simulations to generate waveforms for hits in DEP, SEP, and FEP energies.
 
 
-Waveforms for multi-site events are creating by energy weighted summing of individual hits waveforms. Fig. ~\ref{fig:eng_dep_sim} shows the simulation process for few events. The left panel depicts the hits locations of particles for the events. Event 3 and Event 4 are effectively single-sited, as the energy depositions occur very close to each other and thus produces a single sited events. In Event 1, the energy depositions result in two primary sites, giving rise to a two-sited waveform. Event 2 features a trace of energy deposition localized to three regions, classifying it as a three-sited event. Event 3 and 4 have different drift times due being deposited at different distance from the point contact.
+Waveforms for multi-site events are created by energy weighted summing of individual hits waveforms. Fig. ~\ref{fig:eng_dep_sim} shows the simulation process for a few events. The left panel depicts the hit locations of particles for the events. Event 3 and Event 4 are effectively single-sited, as the energy depositions occur very close to each other and thus produce single-sited events. In Event 1, the energy depositions result in two primary sites, giving rise to a two-sited waveform. Event 2 features a trace of energy deposition localized to three regions, classifying it as a three-sited event. Event 3 and 4 have different drift times due to being deposited at different distances from the point contact.
 
 \section{Post Processing}
 
-Normalizing and align are crucial for training the network. The sim waveforms are already normalized between 0 and 1.The raw data waveforms are normalized by dividing with the $80\%$ of the average of the last five samples. Then the waveform is shifted so that the average of the first 200 samples is zero. This ensure that the all the waveforms have their RC decay tails and baseline aligned. Then we used $99.9\%$ rise time to align the waveform. We found this method was more effective in training the network than aligning by zero time point. The waveforms are padded to ensure there are 400 samples on both sides of $99.9\%$ rise time. The tail slope $\tau$ is calculated by the slope of a linear fit of the logarithm of the last 300 waveform samples. Events with poor fit quality $\chi^2$ or anomalous $\tau$ are used to identify pile-up waveforms and remove them from the training. Fig. \ref{ch7:figs:in_out} shows the processed data and sim waveforms.
+Normalizing and aligning are crucial for training the network. The sim waveforms are already normalized between 0 and 1.The raw data waveforms are normalized by dividing by the $80\%$ of the average of the last five samples. Then the waveform is shifted so that the average of the first 200 samples is zero. This ensures that all the waveforms have their RC decay tails and baseline aligned. Then we used $99.9\%$ rise time to align the waveform. We found this method was more effective in training the network than aligning by the zero time point. The waveforms are padded to ensure there are 400 samples on both sides of $99.9\%$ rise time. The tail slope $\tau$ is calculated by the slope of a linear fit of the logarithm of the last 300 waveform samples. Events with poor fit quality $\chi^2$ or anomalous $\tau$ are used to identify pile-up waveforms and remove them from the training. Fig. \ref{ch7:figs:in_out} shows the processed data and sim waveforms.
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
     % \hspace{0.05\linewidth}
     %[trim={left bottom right top},clip]
-    \includegraphics[width=0.95\linewidth,trim={0pc 0cm 0pc 1cm},clip]{ch7/figs/all_data_pulses.png}
-    \includegraphics[width=0.95\linewidth,trim={0pc 0cm 0pc 1cm},clip]{ch7/figs/all_simulated_pulses.png}
+    \includegraphics[width=0.9\linewidth,trim={4pc 0cm 6pc 1cm},clip]{ch7/figs/all_data_pulses.png}
+    \includegraphics[width=0.9\linewidth,trim={4pc 0cm 6pc 1cm},clip]{ch7/figs/all_simulated_pulses.png}
     \caption{Input data and simulated waveforms. The waveforms are aligned by $99.9\%$ rise time. Data pulses are normalized by aligning the tail and baselines.}
    \label{ch7:figs:in_out}
 \end{figure}
 
-
 \section{Network Training}
 
-The training and validation of CPU-Net are conducted in PyTorch~\cite{pytorch}. We construct two networks an Sim Translator~ $\Lambda$ and an Inverse Sim Translator $\bar{\Lambda}$, both with PU-Net structure. We then construct two RNN discriminator networks sim discriminator $\delta_{S}$ and data discriminator $\delta_{T}$ for the source and target waveforms, respectively. Figure~\ref{fig:network_training} shows the overall training process.
+The training and validation of CPU-Net are conducted in PyTorch~\cite{pytorch}. We construct two networks, an ATN~ $\Lambda$ and an Inverse ATN $\bar{\Lambda}$, both with PU-Net structure. We then construct two RNN discriminator networks: sim discriminator $\delta_{S}$ and data discriminator $\delta_{T}$ for the source and target waveforms, respectively. Figure~\ref{fig:network_training} shows the overall training process.
 \clearpage
 \begin{figure}[htb!]
     % \hspace{0.05\linewidth}
     %[trim={left bottom right top},clip]
-    \includegraphics[width=0.99\linewidth,trim={5pc 20pc 6.5pc 19pc},clip]{ch7/figs/cycle_gan_training.pdf}
+    \includegraphics[width=0.99\linewidth,trim={5.5pc 20pc 6.3pc 19pc},clip]{ch7/figs/cycle_gan_training.pdf}
     \caption{Training in CPU net. Generator A transfers sim to data while Generator B transfers sim to data. Discriminator A differentiates data like waveform from Generator A from data. Discriminator B differentiates sim like waveform from Generator B from simulations.}
    \label{fig:network_training}
 \end{figure}
 
 
-When training the network, a simulated waveform $X$ is first fed to $\Lambda$ to produce a translated waveform $\Lambda(X)$. The discriminator $\delta_{T}$ attempts to distinguish $\Lambda(X)$ from real data waveforms while $\Lambda(X)$ tries to “fool” $\delta_{T}$. Then $\Lambda(X)$ is fed to $\bar{\Lambda}$ to translate back to $\mathcal{X}$ space by $\bar{\Lambda}(\Lambda(\mathcal{X}))$. A second discriminator $\delta_{S}$ attempts to distinguish $\bar{\Lambda}(\Lambda(\mathcal{X}))$ from $\mathcal{X}$ while $\bar{\Lambda}$ attempts to ``fool'' $\delta_{S}$. The $\mathcal{X}\rightarrow{}\Lambda(\mathcal{X})\rightarrow{}\bar{\Lambda}(\Lambda(\mathcal{X}))$ translation path is termed the forward cycle. The same process is performed in the other direction, starting with the detector waveform, $\mathcal{X}'\rightarrow{}\bar{\Lambda}(\mathcal{X}')\rightarrow{}\Lambda(\bar{\Lambda}(\mathcal{X}'))$ and called backward cycle.
+When training the network, a simulated waveform $X$ is first fed to $\Lambda$ to produce a translated waveform $\Lambda(X)$. The discriminator $\delta_{T}$ attempts to distinguish $\Lambda(X)$ from real data waveforms while $\Lambda(X)$ tries to “fool” $\delta_{T}$. Then $\Lambda(X)$ is fed to $\bar{\Lambda}$ to translate back to $\mathcal{X}$ space by $\bar{\Lambda}(\Lambda(\mathcal{X}))$. A second discriminator $\delta_{S}$ attempts to distinguish $\bar{\Lambda}(\Lambda(\mathcal{X}))$ from $\mathcal{X}$ while $\bar{\Lambda}$ attempts to ``fool'' $\delta_{S}$. The $\mathcal{X}\rightarrow{}\Lambda(\mathcal{X})\rightarrow{}\bar{\Lambda}(\Lambda(\mathcal{X}))$ translation path is termed the forward cycle. The same process is performed in the other direction, starting with the detector waveform, $\mathcal{X}'\rightarrow{}\bar{\Lambda}(\mathcal{X}')\rightarrow{}\Lambda(\bar{\Lambda}(\mathcal{X}'))$ and called the backward cycle.
 
 \section{Loss Functions}
-$L_{\mathrm{Identity}}$ ensures that the Sim Translator preserves its shape when an actual detector waveform $X'$ is fed into $\Lambda$, shown in Eq. \ref{eq:loss_ided}. The cycle-consistent loss in Eq. \ref{eq:loss_cyc} ensures the circular translation path preserves the original waveform shape, and the GAN loss Eq. \ref{eq:loss_gan} calculates the loss associated with ``fooling'' the discriminator. A specialized L1 loss is used for $L_{\mathrm{Identity}}$, $L_{\mathrm{Cycle}}$, $L_{\mathrm{Advesarial}}$ that emphasizes different parts of the waveform by assigning them varying weights. It's particularly designed to give more importance to the rising and falling edges of the waveform, which are critical for accurate waveform shape analysis. Binary Cross-Entropy Loss is used for the discriminator $\delta_{T}$.
+$L_{\mathrm{Identity}}$ ensures that the ATN preserves its shape when an actual detector waveform $X'$ is fed into $\Lambda$, shown in Eq. \ref{eq:loss_ided}. The cycle-consistent loss in Eq. \ref{eq:loss_cyc} ensures the circular translation path preserves the original waveform shape, and the GAN loss Eq. \ref{eq:loss_gan} calculates the loss associated with ``fooling'' the discriminator. A specialized L1 loss is used for $L_{\mathrm{Identity}}$, $L_{\mathrm{Cycle}}$, $L_{\mathrm{Advesarial}}$ that emphasizes different parts of the waveform by assigning them varying weights. It's particularly designed to give more importance to the rising and falling edges of the waveform, which are critical for accurate waveform shape analysis. Binary Cross-Entropy Loss is used for the discriminator $\delta_{T}$.
 
 \begin{equation}\label{eq:loss_ided}
     L_{\mathrm{Identity}} = |X' - \Lambda(X')|
@@ -100,7 +99,7 @@ To prevent overfitting during training, weight decay is applied to the optimizer
 
 It was found that the discriminator typically overpowers the generator since the generator has a more complex task of generating waveforms while maintaining the cycle and identity consistency, and also fooling the discriminator. To balance this, we introduce a hyperparameter for the number of intervals after which the discriminator is updated. This allowed the generator enough steps to adapt to changes in the discriminator without destabilizing the adversarial process.
 
-Combining all these, we obtain the Cyclic Positional U-Net~(CPU-Net) for Ad-hoc waveform shape simulation. The trained CPU-Net generates both a Sim Translator and an Inverse Sim Translator, which enables bidirectional translation between the simulation and data domains. The Sim Translator is the primary focus of this work, but the Inverse Sim Translator can also enhance analysis by refining waveform reconstruction. 
+Combining all these, we obtain the Cyclic Positional U-Net~(CPU-Net) for Ad-hoc waveform shape simulation. The trained CPU-Net generates both a ATN and an Inverse ATN, which enables bidirectional translation between the simulation and data domains. The ATN is the primary focus of this work, but the Inverse ATN can also enhance analysis by refining waveform reconstruction. 
 
 \section{Hyperparameter Tuning}
 

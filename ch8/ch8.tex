@@ -15,7 +15,7 @@ The progression of training losses is shown in Fig. \ref{fig:training_loss}. The
    \label{fig:training_loss}
 \end{figure}
 
- % The translation of simulated waveform is shown in Fig \ref{fig:current_amp}. The ATN translates the simulated waveform to the ATN output by smoothing the sharp turning edge in the grey region. This is a consequence of the non-zero integration time in detector waveforms, which is set to $0$ in \texttt{siggen}. The RC discharge effect of the electronic readout system is also set to 0 in \texttt{siggen}, leading to a tail slope of 0 in the simulated waveforms. The ATN learns to translate the flat tail in the cyan region into an exponential decay, and the strength of the decay can be measured by the tail slope reconstruction parameter $c_{tail}$.
+ % The translation of simulated waveform is shown in Fig \ref{fig:current_amp}. The ATN translates the simulated waveform to the ATN output by smoothing the sharp turning edge in the grey region. This is a consequence of the non-zero integration time in detector waveforms, which is set to $0$ in {\siggen}. The RC discharge effect of the electronic readout system is also set to 0 in {\siggen}, leading to a tail slope of 0 in the simulated waveforms. The ATN learns to translate the flat tail in the cyan region into an exponential decay, and the strength of the decay can be measured by the tail slope reconstruction parameter $c_{tail}$.
 
 % \begin{figure}[htb!]
 %     \includegraphics[width=0.99\linewidth]{ch8/figs/ATN.png}
@@ -24,7 +24,7 @@ The progression of training losses is shown in Fig. \ref{fig:training_loss}. The
 % \end{figure}
 
 \section{Waveform Translation}
-To validate the model’s performance, we applied CPU-Net to waveforms at the single-escape peak (SEP) and double-escape peak (DEP) energies, which test the model’s accuracy on multi-site (SEP) and single-site (DEP) events, respectively. Over $90\%$ of SEP events are multi-site, and over $90\%$ DEP events are single site. Fig. \ref{fig:cycle_bab} and \ref{fig:cycle_aba}  shows the cycle consistency in the CPU-Net on SEP waveforms. The network effectively translates the waveforms in forward and reverse translations. The data waveform tail has a downward slope that is a result of the long exponential resistor-capacitor (RC) decay of the preamplifier output waveform. In the \texttt{siggen} simulations, the RC discharge effect is not modeled, resulting in a flat tail slope of zero. ATN learns to transform this flat tail into an exponentially decaying one, matching the observed behavior in real detector data, and IATN learns to transform it back to zero slope matching the simulations.
+To validate the model’s performance, we applied CPU-Net to waveforms at the single-escape peak (SEP) and double-escape peak (DEP) energies, which test the model’s accuracy on multi-site (SEP) and single-site (DEP) events, respectively. Over $90\%$ of SEP events are multi-site, and over $90\%$ DEP events are single site. Fig. \ref{fig:cycle_bab} and \ref{fig:cycle_aba}  shows the cycle consistency in the CPU-Net on SEP waveforms. The network effectively translates the waveforms in forward and reverse translations. The data waveform tail has a downward slope that is a result of the long exponential resistor-capacitor (RC) decay of the preamplifier output waveform. In the {\siggen} simulations, the RC discharge effect is not modeled, resulting in a flat tail slope of zero. ATN learns to transform this flat tail into an exponentially decaying one, matching the observed behavior in real detector data, and IATN learns to transform it back to zero slope matching the simulations.
 
 % A simple way to understand the electronics response is to look at the signal waveform tail. . This is usually corrected in post signal processing stage where the `pole' cause by the RC decay is corrected by integrating a `zero' into the transfer functions, called pole-zero correction. While the pole-zero correction has proved reliable for HPGe experiments, it is a first order correction and often higher corrections are warranted. \cite{MJD_electronics}\cite{mjd_pole_zero}
 
@@ -111,27 +111,27 @@ The scatter plot between $I_{max}$ of simulated waveforms and ATN translated wav
 
 
 \subsection{Tail Slope}
-The strength of the RC decay can be measured by the mean tail slope parameter $c_{tail}$. Simulated waveforms do not have a RC decay and thus have mean tail slope of zero, the data waveform were found to have tail slope of $-2.946\times10^{-4}$. The mean tail slop of ATN reconstructed waveform was found to be $-2.963\times10^{-4}$ for data like waveform, within $0.58\%$ of the actual value.
+The strength of the RC decay can be measured by the mean tail slope parameter $c_{tail}$. The tail slope was calculated by a linear fit of the logarithm of 300 samples of the waveform. Simulated waveforms do not have an RC decay and thus have a mean tail slope of zero; the data waveform was found to have a tail slope of $-2.946\times10^{-4}$.  Fig. \ref{ch8_fig_tail_slope_comp} shows the relative magnitude of the tail slopes for simulations, data, and ATN translated waveforms. The ATN learns to match the data very well, within $0.58\%$ of the actual value.
 
-\begin{figure}[htb!]
+
+\begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
 \includegraphics[width=0.97\linewidth,trim={2pc 0pc 2pc 0pc},clip]{ch8/figs/SEP_sim_ts.pdf}
-\caption{ Distribution of Tail slope between data and ATN translated waveforms}
-\label{ch8:fig:tail_slope_comp}
+\caption{Distribution of tail slope for simulations, data, and ATN translated waveforms.}
+\label{ch8_fig_tail_slope_comp}
 \end{figure}
 
+Fig. \ref{ch8_fig_tail_slope_sim} shows the comparison of the tail slope between data and ATN translated waveforms. The distributions do not match. This could be due to numerical precision and adversarial training.
 
-\begin{figure}[htb!]
+\begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[width=0.99\linewidth,trim={2pc 0pc 2pc 0pc},clip]{ch8/figs/SEP_ts.pdf}
-\caption{ Distribution of Tail slope for all three}
-\label{ch8:fig:tail_slope_sim}
+\includegraphics[width=0.9\linewidth,trim={2pc 0pc 2pc 0pc},clip]{ch8/figs/SEP_ts.pdf}
+\caption{Distribution of tail slope between data and ATN translated waveforms}
+\label{ch8_fig_tail_slope_sim}
 \end{figure}
-
-
-Finally, the model reproduces the characteristic RC decay tail observed in real detector data. While the original simulations have zero tail slope, ATN outputs have a mean tail slope within $0.58\%$ of the measured data values, confirming that the network captures this important detector response component without explicit modeling. 
 
 While our primary focus in this paper is on translating simulations to resemble measured data, CPU-Net’s bidirectional nature also makes it a powerful tool for denoising real detector waveforms. By transforming noisy detector signals into cleaner, simulation-like waveforms, CPU-Net can help isolate and identify subtle features in the event topology. This capability could ultimately improve spatial reconstruction and enhance our understanding of particle interactions within the detector.
 
+To conclude, we developed the Cyclic Positional U-Net that can perform ad-hoc pulse shape translations without modeling any of those effects. This model trains on arbitrarily collected and unpaired datasets of simulated and detector pulses. CPU-Net successfully translates simulated pulses to outputs indistinguishable from actual detector pulses by applying corrections according to proper detector physics. Furthermore, we showed that the CPU-Net correctly reproduces the distribution of two critical pulse shape reconstruction parameters. 

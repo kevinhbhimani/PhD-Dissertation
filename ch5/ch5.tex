@@ -3,7 +3,7 @@
 
 \section{Post-processing}
 
-Fig. \ref{ch5:fig:activeness_map} show how {\tdsim} can be used to generate an activeness map for a detector. This map is produced by simulating about 100 points coarsely spaced through the detector and then interpolated using cubic interpolation. These maps can then be used with Monte Carlo background estimation methods to create energy spectrum for surface events for experiments such as LEGEND
+Fig. \ref{ch5:fig:activeness_map} show how {\ehd} can be used to generate an activeness map for a detector. This map is produced by simulating about 100 points coarsely spaced through the detector and then interpolated using cubic interpolation. These maps can then be used with Monte Carlo background estimation methods to create energy spectrum for surface events for experiments such as LEGEND
 
 
 -trap filter
@@ -20,7 +20,7 @@ Fig. \ref{ch5:fig:activeness_map} show how {\tdsim} can be used to generate an a
 %[trim={left bottom right top},clip]
 
 \includegraphics[trim={0cm 0.5cm 3.2cm 1.15cm},clip,width=\linewidth]{ch5/figs/activenss_map_ponama_1_-0.3.pdf}
-\caption{Activeness map for a PPC detector \tdsim with initial energy 5000 keV and s}
+\caption{Activeness map for a PPC detector \ehd with initial energy 5000 keV and s}
 \label{ch5:fig:activeness_map}
 \end{figure}
 
@@ -28,14 +28,14 @@ Fig. \ref{ch5:fig:activeness_map} show how {\tdsim} can be used to generate an a
 \begin{figure}
 %[trim={left bottom right top},clip]
 \includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_ponama_1_5000.png}
-\caption{Interpolated Activeness map for a PPC detector \tdsim}
+\caption{Interpolated Activeness map for a PPC detector \ehd}
 \label{ch5:fig:interpolated_activeness_map}
 \end{figure}
 
 \begin{figure}
 \includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0_ponama_1_5000.png}
 \includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000.png}
-\caption{Interpolated Activeness map for a PPC detector \tdsim for 0 and positive surface charge}
+\caption{Interpolated Activeness map for a PPC detector \ehd for 0 and positive surface charge}
 \label{ch5:fig:interpolated_activeness_map_0_pos}
 \end{figure}
 
@@ -45,14 +45,14 @@ Fig. \ref{ch5:fig:activeness_map} show how {\tdsim} can be used to generate an a
 
 To validate EH-Drift against existing measurements, we modeled alpha events studied by two separate scanning test stands known as TUBE\cite{tube_paper} and GALATEA\cite{galatea_paper}. These scanners yielded conflicting dependencies of collected energy on radial position. TUBE reported that energy increased with radius, whereas GALATEA reported the opposite trend. We simulated each scanner’s geometry and tested various values of surface charge and surface-to-bulk drift ratios. 
 
-We simulated events for detector used in those scanner using various surface charges. We generated 8$\mu$s pulse using {\tdsim} and applied a trap filter of 4$\mu$s rise time, 3$\mu$s flat top time and picked off energy at 7$\mu$s. We then fit the data using various surface charge to estimate the amount of surface charge present to show such behavior.
+We simulated events for detector used in those scanner using various surface charges. We generated 8$\mu$s pulse using {\ehd} and applied a trap filter of 4$\mu$s rise time, 3$\mu$s flat top time and picked off energy at 7$\mu$s. We then fit the data using various surface charge to estimate the amount of surface charge present to show such behavior.
 
 
 \begin{figure}
 %[trim={left bottom right top},clip]
 
 \includegraphics[trim={0.3cm 0.1cm 1.7cm 0.1cm},clip,width=\linewidth]{ch5/figs/tube_fit.pdf}
-\caption{Fitting the activeness in TUBE scanner with \tdsim{}.}
+\caption{Fitting the activeness in TUBE scanner with \ehd{}.}
 \label{fig:tube_fit}
 \end{figure}
 
@@ -61,7 +61,7 @@ We simulated events for detector used in those scanner using various surface cha
 %[trim={left bottom right top},clip]
 
 \includegraphics[trim={0.3cm 0.1cm 1.7cm 0.1cm},clip,width=\linewidth]{ch5/figs/gal_fit.pdf}
-\caption{Fitting the activeness in GALATEA scanner with \tdsim{}.}
+\caption{Fitting the activeness in GALATEA scanner with \ehd{}.}
 \label{fig:gal_fit}
 \end{figure}
 

@@ -2,15 +2,15 @@
 \centering
 \renewcommand{\arraystretch}{1.5} % Adjust row height for readability
 \setlength{\tabcolsep}{2.0pt} % Adjust column spacing
-\begin{tabular}{|p{0.20\linewidth}|p{0.39\linewidth}|p{0.22\linewidth}|p{0.15\linewidth}|}
+\begin{tabular}{|p{0.18\linewidth}|p{0.39\linewidth}|p{0.22\linewidth}|p{0.15\linewidth}|}
 \hline
 Loss                & Calculation                             & Type of Loss                                  & Optimizer   \\ \hline
-Identity Losses    & Data - Sim Translator(Data)                                & \multirow{3}{=}{Custom L1 Loss} & \multirow{8}{=}{Optimizer 1} \\
-                             & Sim - Data Translator(Data)                                 &                                                       &                       \\ \cline{1-3}
-Cycle Losses        & Data – Sim Translator(Data Translator(Data))                         & \multirow{3}{=}{Custom L1 Loss} &                       \\
-                             & Sim – Data Translator(Sim Translator(Sim))                          &                                                       &                       \\ \cline{1-3}
-Generator Losses    & Disc B (Data Translator(Data))                              & \multirow{2}{=}{Binary Cross Entropy}                &                       \\
-                             & Disc A (Sim Translator(Sim))                              &                                                       &                       \\ \hline
+Identity Losses    & Data - ATN(Data)                                & \multirow{3}{=}{Custom L1 Loss} & \multirow{8}{=}{Optimizer 1} \\
+                             & Sim - IATN(Data)                                 &                                                       &                       \\ \cline{1-3}
+Cycle Losses        & Data – ATN(IATN(Data))                         & \multirow{3}{=}{Custom L1 Loss} &                       \\
+                             & Sim – IATN(ATN(Sim))                          &                                                       &                       \\ \cline{1-3}
+Generator Losses    & Disc B (IATN(Data))                              & \multirow{2}{=}{Binary Cross Entropy}                &                       \\
+                             & Disc A (ATN(Sim))                              &                                                       &                       \\ \hline
 Discriminator A     & {[Disc A(Data) - 1]} + {[Disc A(Sim) - 0]}        &  Binary Cross Entropy                                & Optimizers 2 \\ \hline
  Discriminator B    & {[Disc B(Sim) - 1]} + {[Disc B(Data) - 0]}        &   Binary Cross Entropy                                &   Optimizers 3             \\ \hline
 \end{tabular}
