@@ -15,11 +15,11 @@ Fig. \ref{fig:CPU_time} shows the run time for a $5$MeV event in {\ehd} for diff
 
 One way to speed up the {\ehd} is by using parallel calculations with Graphics Processing Units (GPUs). We can transform the entire detector onto the GPU memory so that each GPU kernel represents a grid point. Then we can perform the calculations at each grid point in parallel, and instead of going through the program one grid point at a time, the points can be updated simultaneously. We explored this possibility using the NVIDIA CUDA {\cpp} framework. It is expected that performing the relaxation algorithm on the GPU would have the biggest improvement in run time. We thus begin with a discussion of 2-D Poisson-equation solvers based on iterative relaxation methods, then explain how we adapted them to GPU architectures.
 
-\section{Iterative relaxation algorithms for solving 2-D Poisson equation}
+\section{Iterative Relaxation Algorithms for Solving 2-D Poisson Equation}
 
 A direct solution to most of the Poisson equations does not exist for most geometries, and we rely on numerical techniques to estimate a solution. To solve for the potential in the {\ehd}, the detector is divided into grid points and assigned the following classification: Point Contact (PC), High Voltage Contact (HVC), Inside the detector, On the Passivated Surface (Passive), Pinchoff points, Ditch, Ditch Edge, and Contact Edge. We treat each point type separately in solving for the potential. The boundary conditions are determined by the geometry of the detector and the impurity concentration. For the passivated surface, the boundary condition is a reflection symmetry about that surface. In absence of surface charge, this means that the electric field lines at the passivated surface are parallel to the surface. Points on the high voltage (HV) and point contact (PC) surfaces have Dirichlet boundary conditions fixed at the contact voltages.
 
-\subsection{Jacobi method}
+\subsection*{Jacobi method}
 A simple way to solve for the potential is to set the boundary condition, run through all the grid points, and estimate the solution at a grid point by the average of four points around it. The code continues iterating through the detector, updating all of the points until the difference $\phi_{i,j}^{n}$ - $\phi_{i,j}^{n-1}$ at n$^{\text{th}}$ iteration at all points is less than the convergence threshold. This method is called the Jacobi method, and the points are updated using Eq. \ref{jacobi}.
 
 The direction of travel through the points is as follows. Start with the bottom leftmost point. Then go through the row left to right and keep repeating, moving up a row each time.
@@ -30,7 +30,7 @@ The direction of travel through the points is as follows. Start with the bottom 
 \end{equation}
 here the $n$ denotes the iteration number, $i$ and $j$ are the radii and height of the grid point under consideration. 
 
-\subsection{Gauss-Seidel Method}
+\subsection*{Gauss-Seidel Method}
 
 While the Jacobi method works well to get a numerical solution, it is slow. One way to speed up the method is to use the newly calculated grid points to update the current grid. This is represented by Eq. \ref{gs_eq} and is termed the Gauss-Seidel method.
 
@@ -40,9 +40,9 @@ While the Jacobi method works well to get a numerical solution, it is slow. One 
 \end{equation}
 By incorporating updated values as soon as they are available, Gauss--Seidel converges faster than Jacobi.
 
-\subsection{Successive over-relaxation}
+\subsection*{Successive over-relaxation}
 
-A way to achieve faster convergence in the Gauss-Seidel method is to use a relaxation factor, $\omega$ to extrapolate the solution and accelerate the rate of convergence. The Successive over-relaxation (SOR) method, represented by Eq. \ref{sor_eq}, helps reach convergence quickly and is the method used in {\siggen} simulations to calculate the electric potential. The value of $\omega$ can be between $1$ and $2$, and there is one optimal value that gives the fastest convergence. We estimated the value to be given by Eq. \ref{omg}, where L is over length and R is the overall radius of the detector in grid units (real value divided by grid size). 
+A way to achieve faster convergence in the Gauss-Seidel method is to use a relaxation factor, $\omega$ to extrapolate the solution and accelerate the rate of convergence. The Successive over-relaxation (SOR) method was developed by David Young \cite{Young1950}. It is  represented by Eq. \ref{sor_eq}, helps reach convergence quickly and is the method used in {\siggen} simulations to calculate the electric potential. The value of $\omega$ can be between $1$ and $2$, and there is one optimal value that gives the fastest convergence. We estimated the value to be given by Eq. \ref{omg}, where L is the over length and R is the overall radius of the detector in grid units (real value divided by grid size). 
 
 \begin{equation}{\label{sor_eq}}
  \phi_{i,j}^{n} = (1-\omega)\phi^{n-1}_{i,j} + \frac{\omega}{4} \left(\phi^{n-1}_{i+1,j} + \phi^n_{i-1,j} + \phi^{n-1}_{i,j+1} + \phi^n_{i,j-1} \right)
@@ -61,8 +61,8 @@ The CPU version of the {\ehd} was written using the SOR algorithm, which proved 
 \caption{\label{fig:sor_methods} Updating grid points in the SOR method. Red grid points represent all the points that have already been updated. A given grid point is updated using a mixture of old and new values.}
 \end{figure}
 
-\subsection{Red-Black Successive Over-Relaxation}
-To achieve parallelism, we can use a modified SOR algorithm termed Red-Black Successive Over-Relaxation (RB-SOR)\cite{RB_SOR_paper}. In RB-SOR, we assign a point as red if (i + j) is even and black if (i + j) is odd. We update all the red points using old values and then use the newly updated red values to update the black nodes. The process is represented by Eq. \ref{rb_e} and Eq. \ref{rb_o}.
+\subsection*{Red-Black Successive Over-Relaxation}
+To achieve parallelism, we can use a modified SOR algorithm termed Red-Black Successive Over-Relaxation (RB-SOR). In RB-SOR, we assign a point as red if (i + j) is even and black if (i + j) is odd. We update all the red points using old values and then use the newly updated red values to update the black nodes. The process is represented by Eq. \ref{rb_e} and Eq. \ref{rb_o}.
 
 
 \begin{figure}[!htb]
@@ -191,7 +191,7 @@ The GPU program, however, was extremely fast with grid-size independent executio
 \caption{\label{ch4:fig:GPU_comp} Program run time on various GPU models. The faster GPU results in lower run time.}
 \end{figure}
 
-Fig. \ref{ch4:fig:GPU_comp} shows how the run time varies for different NVIDIA GPUs. The faster the GPU, the faster the program runs, suggesting that we have reached parallelization using sufficient utilization of GPU resources. Table \ref{ch4:tab:gpu_kernels} shows the profiling results of GPU kernels that did not use the standard library. The kernel's name is listed alongside its contribution to the total execution time as a percentage Time (\%), its cumulative execution time in nanoseconds Total Time (ns), and the number of times it was executed during profiling (Instances). The table also includes the average execution time per invocation (Avg (ns)), which indicates the computational efficiency of each kernel. Additionally, the thread block dimensions (Blocks (x, y, z)) and grid configuration (Grid (x, y, z)) are reported. The most computationally intensive kernel was the one where self-repulsion was performed. This is where we determine where the charges drift to, which can contain lots of conditional statements and for loops that can slow down GPU performance. The kernel that was called the most was the relax step of the RB-SOR algorithm. This makes sense since, for a given time step, the program needs to iterate several times to reach convergence. The block and grid configuration suggest that we are using x components of the block and grid. This can be improved in the future to use an entire grid, although that would be a computational challenge requiring significant changes in the program. In the next section, we describe how we intend to use these simulations can be used to model the passivated surface and create a background model component for surface events.
+Fig. \ref{ch4:fig:GPU_comp} shows how the run time varies for different NVIDIA GPUs. The faster the GPU, the faster the program runs, suggesting that we have reached parallelization using sufficient utilization of GPU resources. Table \ref{ch4:tab:gpu_kernels} shows the profiling results of GPU kernels that did not use the standard library. The kernel's name is listed alongside its contribution to the total execution time as a percentage Time (\%), its cumulative execution time in nanoseconds Total Time (ns), and the number of times it was executed during profiling (Instances). The table also includes the average execution time per invocation (Avg (ns)), which indicates the computational efficiency of each kernel. Additionally, the thread block dimensions (Blocks (x, y, z)) and grid configuration (Grid (x, y, z)) are reported. The most computationally intensive kernel was the one where self-repulsion was performed. This is where we determine where the charges drift to, which can contain lots of conditional statements and for loops that can slow down GPU performance. The kernel that was called the most was the relax step of the RB-SOR algorithm. This makes sense since, for a given time step, the program needs to iterate several times to reach convergence. The block and grid configuration suggest that we are using x components of the block and grid. This can be improved in the future to use an entire grid, although that would be a computational challenge requiring significant changes in the program. In the next section, we describe some of the results from {\ehd} to show how it can be used to create a background model component for surface events.
 
 \input{ch4/gpu_kernels}
 

@@ -25,7 +25,7 @@ Here $\nu$ and $ze$ are the charges of the given particle, N and Z are the numbe
 
 Eq. \ref{bethe_formula} suggests that the energy loss for non-relativistic particles is proportional to $1/\nu^2$, or the kinetic energy. Hence, the slower the velocity, the longer the particles spend in the vicinity of electrons of the material's atoms, and the higher the energy loss. Eq. \ref{bethe_formula} is proportional to z$^2$ for constant velocity. Thus, the heavier particles will have more energy loss for a given velocity. This results in alphas having a very low penetration depth, usually around $10$ micrometers.
 
-Energy loss of alpha particles can be best understood by plotting specific energy loss along the track. The plot known as the Bragg curve is shown in Fig. \ref{bragg_curve_fig}. During most of the track, the energy loss increases roughly as 1/E as predicted by Eq.\ref{bethe_formula}. As the particles slow down, electron pickup reduces the charge and the curve falls off. As a result, alpha deposits a large amount of energy in a very localized area. For Germanium, this penetration depth of alpha particles is about $17.6$ - $20.0$ microns \cite{knoll_2010}. The n+ electrode and p+ electrode in LEGEND detectors are too thick for alphas to penetrate and deposit much energy. Therefore, alpha events mostly appear only on the passivated surface.
+Energy loss of alpha particles can be best understood by plotting specific energy loss along the track. The plot known as the Bragg curve is shown in Fig. \ref{bragg_curve_fig}. During most of the track, the energy loss increases roughly as 1/E as predicted by Eq.\ref{bethe_formula}. As the particles slow down, electron pickup reduces the charge and the curve falls off. As a result, alpha deposits a large amount of energy in a very localized area. For Germanium, this penetration depth of alpha particles is about $17.6$ - $20.0$ microns \cite{knoll_2010}. The n+ electrode and  are too thick for alphas to penetrate and deposit energy. The p+ electrode in LEGEND detectors does have alpha events, but the charge collection is well understood as the events are collected immediately and thus can be rejected easily using PSD techniques. 
 
 \begin{figure}
 \centering
@@ -34,30 +34,38 @@ Energy loss of alpha particles can be best understood by plotting specific energ
 \label{bragg_curve_fig}
 \end{figure}
 
-\section{Challenges in modeling surface events}
-An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration depth of about $17.6$ - $20.0$ microns on the passivated surface. This excites a lot of charge carriers and produces a dense charge cloud. In such cases, effects such as diffusion of the charges and self-repulsion among charges become significant. These effects could also push the charge onto the passivated surface. It is known from data that charges on the passivated surface move at slower speeds than in the bulk. This is possibly due to different material properties, weaker electric field, and higher charge trapping \cite{MULLOWNEY201233}. Fig. \ref{fig:dcr_waveform} shows a known alpha waveform in experimental data. The alpha waveform being close to the surface has a much sharper rise than the bulk waveform. However, the tail of the alpha waveform has an upward slope towards the end. This is possible due to late collections of charges on the passivated surface. We call this effect Delayed Charge Recovery Effect \cite{Gruszko:2017kfx}.
+\section{Alpha Background in Data}
 
-  \begin{figure}[!htb]
+Alpha background can vary across different detector environments and experiments. {\MJD} and the \Gerda experiment had different  spectral shapes for alpha backgrounds. In the {\MJD}, alpha events degraded more substantially into the ROI, whereas in \Gerda, prominent peaks from $^{210}Po$ and the $^{226}Ra$ chain were identified above $5$ MeV, along with lower-energy tails from partially collected surface alphas. Thus, various factors such as environment, detector geometry, and material purity can contribute to alpha background.
+
+
+Thin can further be seen in dedicated test stands that were developed to study alpha background. Two scanning systems were developed to study alpha interactions in alpha : TUBE \cite{TUBE_paper} and GALATEA \cite{galatea_paper}. These scanners yielded conflicting dependencies of collected energy on radial position. TUBE reported that energy degraded inversely with radius, whereas GALATEA reported the opposite trend. Fig. \ref{fig:dcr_waveform} shows a known alpha waveform in TUBE data. The alpha waveform, being close to the surface, has a much sharper rise than the bulk waveform. However, the tail of the alpha waveform has an upward slope towards the end. This is possible due to late collections of charges on the passivated surface. We call this effect Delayed Charge Recovery Effect \cite{Gruszko:2017kfx}. Thus it is crucial to study charge collection in alpha particles.
+
+\begin{figure}[!htb]
 \centering
-  \includegraphics[width=0.8\linewidth]{ch3/figs/dcr_waveform.pdf}
- \caption{An alpha waveform (red) compared to a bulk waveform (blue) in the MJD PPC detector. The DCR effect results in a distinct tail with a smaller slope, as shown by the highlight area in the box.\cite{tube_paper}}
+\includegraphics[width=0.8\linewidth]{ch3/figs/dcr_waveform.pdf}
+\caption{An alpha waveform (red) compared to a bulk waveform (blue) in the MJD PPC detector. The DCR effect results in a distinct tail with a smaller slope, as shown by the highlight area in the box.\cite{TUBE_paper}}
 \label{fig:dcr_waveform}
-  \end{figure}
+\end{figure}
 
-The energy of a waveform is measured by applying a filter such as a trap or CUSP filter. This DCR effect means that the filter pickoff will result in energy degradation in the alpha signal. Even though alphas are normally deposited with $5$ MeV energy, the degraded energy could lead alpha events potentially appearing in the ROI. Fig. \ref{ch3_fig_L200_surface_background} shows the {\Ltwo} physics spectrum. Muon and multiplicity cuts remove backgrounds such as muons and gamma rays, and the events left are primarily surface events background in grey. This spread-out spectrum is due to alphas from the DCR effect. As shown in green, Pulse Shape Discrimination (PSD) cuts are highly effective in removing them, but the unknown efficiency of those cuts introduces uncertainty in the background model. 
+\section{Challenges in Modeling Surface Events}
+An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration depth of about $17.6$ - $20.0$ microns on the passivated surface. This excites a lot of charge carriers and produces a dense charge cloud. In such cases, effects such as diffusion of the charges and self-repulsion among charges become significant. These effects could also push the charge onto the passivated surface. It is known from data that charges on the passivated surface move at slower speeds than in the bulk. This is possibly due to different material properties, weaker electric field, and higher charge trapping \cite{MULLOWNEY201233}.
 
-  \begin{figure}[!htb]
+To model the alpha background, {\Gerda} fit multiple probability density functions (PDFs) of different p+ contact thicknesses to model degraded energy of alphas. The PDFs were combined with a linear component to handle heavily degraded events and were also constrained the total alpha contribution using radioassay measurements. {\MJD} used pulse-shape discrimination (PSD) to tag surface alpha events and effectively removed them. Preliminary simulations to account for energy degradations of alphas were also developed.
+
+Fig. \ref{ch3_fig_L200_surface_background} shows the {\Ltwo} physics spectrum. Muon and multiplicity cuts remove backgrounds such as muons and gamma rays, and the events left are primarily surface events background in grey. This spread-out spectrum is due to alphas from the DCR effect. This was modeled using the {\Gerda} background model. As shown in green, Pulse Shape Discrimination (PSD) cuts are highly effective in removing them, but the unknown efficiency of those cuts introduces uncertainty in the background model. This is because the spectrum shape of alphas before the cuts is unknown.
+
+\begin{figure}[!htb]
 \centering
   \includegraphics[width=0.99\linewidth]{ch2/figs/l200-phy-spectrum-psd.pdf}
   \caption{{\Ltwo} physics spectrum. The events above 3000 keV after the muon and multiplicity cut are primarily alphas. These events can be effectively remove using PSD cuts as show in green. Credit: Luigi Pertoldi.}
 \label{ch3_fig_L200_surface_background}
-  \end{figure}
+\end{figure}
 
 \section{Surface Charge Effect}
 Due to various factors such as manufacturing, experimental conditions, and transportation, the HPGe detectors can develop a static charge on the passivated surface which impacts charge collection for surface events. Fig. \ref{ch3_fig_surface_field_sc0} shows how the presence of surface charge alters the electric field close to the passivated surface. When there is no surface charge (top), the field lines are parallel to the surface. The presence of negative surface charge (middle) attracts the field lines towards the surface. Positive surface charge (bottom) repels the field lines from the surface. Negative surface charge can pull the holes to the surface where they can drift slowly. Similarly, positive surface charges can pull the electrons to the surface.
 
-% \clearpage
-\begin{figure} %[!htb]
+\begin{figure}
 \centering
 %[trim={left bottom right top},clip]
 \includegraphics[trim={1cm 3.5cm 0.5cm 4.0cm},clip,width=0.99\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.pdf}
@@ -79,7 +87,7 @@ Since surface charge changes the overall electric field of the detector, it coul
 
 Pulse-shaped simulations can help accurately model these effects and build a background model for surface events. A simulation to model surface events should allow for a nonspherical charge cloud while incorporating surface drift, diffusion, and self-repulsion. They should also properly account for surface charge effects. Next, we look at the current pulse shape simulation frameworks being used by LEGEND.
 
-\section{Pulse shape simulations till now}
+\section{Current Status in Pulse Shape Simulations}
 
 Signal formation in Germanium is well understood via the Shockley-Ramo theorem. This enables building accurate simulations that can model the waveforms. Simulations within the LEGEND collaboration include {\siggen} and \texttt{SSD} simulations. 
 
@@ -137,7 +145,7 @@ C= \frac{\epsilon}{V^2} \int_{}^{} E^2 dA
 After the initial setup, the program steps through a small time step. The charges are allowed to diffuse and then drift in the electric field. The calculation of the electric field is discussed in the next chapter. Below we go over some critical components of the {\ehd}.
 
 
-\section{Diffusion}
+\subsection{Diffusion}
 Diffusion arises from random thermal motion of electrons and holes, causing them to spread out from regions of high concentration into regions of lower concentration. In thermal equilibrium, the diffusion coefficient $D$ and the mobility $\mu$
 are related by the Einstein relation:
 \begin{equation}
@@ -154,7 +162,7 @@ In {\ehd} the diffusion is simulated by redistributing charge among neighboring 
 \end{align}
 where $\Delta x$ is the grid size, $v_{z}$ and $v_{r}$ are the drift velocities, $E_{z}$ and $E_{r}$ are the local field components, and $f$ incorporates the diffusion coefficient $D$ and corrections for grid sizes. If $E_z$ or $E_r$ is below $1\,\mathrm{V/cm}$, the program sets $\delta_z = 0$ or $\delta_r=0$ assuming low-field regions produce negligible drift velocity.
 
-\subsection{Volume Correction}
+\subsubsection*{Volume Correction}
 
 In cylindrical $(r,z)$ coordinates, each radial ring has a different physical area. The simulation tracks these scaling factors with arrays:
 \[
@@ -170,7 +178,7 @@ reduced by the same fraction multiplied by $\texttt{s1}[r]$ to
 balance volume differences. Similarly, diffusion to cell $(r-1)$ 
 uses $\texttt{s2}[r]$. The same volume correction is used in field calculation.
 
-\section{Diffusion Density Update}
+\subsubsection*{Diffusion Density Update}
 
 After computing the diffusion fractions $\delta_z$ and $\delta_r$, the code subtracts those amounts from the point's density and adds them to the four neighbors:
 \begin{align}
@@ -181,7 +189,7 @@ After computing the diffusion fractions $\delta_z$ and $\delta_r$, the code subt
 \end{align}
  The offsets $r$ and $r-2$ are due to one-based indexing in the code.
  
-\section{Drift in Electric Field}
+\subsection{Drift in Electric Field}
 Germanium has a diamond cubic lattice structure. The crystallographic basis axes are in $<h100>$, $<h110>$, and $<h111>$ directions. Charges in the three basis axes travel at different velocities. Mobility relates the velocity of the charges to the electric field. At low field, the relationship is Ohmic:
 \begin{equation}
 \vec{v} = \mu_0 \vec{E}
@@ -207,7 +215,7 @@ with $E_i \le E < E_{i+1}$. The fig. \ref{ch3:fig:dv_vs_e} simulates the relatio
     \label{ch3:fig:dv_vs_e}
 \end{figure}
 
-\subsection{Fraction Splitting}\label{ch3:sec:frac_split}
+\subsubsection*{Fraction Splitting}\label{ch3:sec:frac_split}
 We use a splitting approach to move the charges to the new cell. Since we are using a grid, we want to account for the discretization by splitting the charges between two grid points. Suppose that after a time step $\Delta t$, the density in grid cell $(z,r)$ moves to a new position with integer indices $(k,i)$. We define fractional parts $f_z$ and $f_r$ as:
 %
 \begin{align}
@@ -249,7 +257,7 @@ The offsets $(r-1)$ and $(i-1)$ are for one-based indexing in the code. For the 
 
 % The factors \verb|8*r - 8| or \verb|8*i - 8| are specialized scalings to approximate the annular volume near the central axis or near $i=0$. They ensure that even when $r$ or $i$ equals 0 or 1, the total charge remains consistent with the expected geometry. For example, at the very center ($r=0$), a full ring circumference does not exist, so a smaller effective volume must be used. Although such \verb|8*-8| scalings can appear ad~hoc, they are designed to smoothly transition from the central axis to the first few radial rings, thereby avoiding division by zero while preserving charge.
 
-\section{Surface Drift}
+\subsection{Surface Drift}
 
 When charge carriers drift within the detector, they may encounter the passivated surface, which is handled separately. To model the surface, the lowest grid point is split into two lengths: the length of the surface and grid minus the length of the surface. We store the charges on the surface in a special row. 
 
@@ -258,7 +266,7 @@ If the height to which the charges drift is less than zero, they are fully added
 
 We employ the same methods described above for drifting and diffusing the charges present on the surface, but the drift and diffusion are suppressed by the surface drift velocity factor. This factor, typically about 0.001, is the ratio of the speed on the surface to the bulk. The charges from the surface can drift to the bulk or to other points on the surface. Points on the surface can diffuse up or to other points on the surface.
 
-\section{Courant Number and Adaptive Time Step}
+\subsection{Courant Number and Adaptive Time Step}
 
 The Courant–Friedrichs–Lewy (CFL) condition is a required condition for numerical solutions of partial differential equations which involve moving particles \cite{cfl_condition}. It is commonly used in fluid dynamics to ensure that particles only travel to the immediate grid points. We introduce the CFL condition in the {\ehd} to ensure that the time step is small enough such that the distance charges drift is not too big during a step. This helps maintain consistency for different input grid sizes. During each time step of simulations, we calculate the local Courant number at every grid point using:
 
@@ -274,7 +282,7 @@ where \( v_r \) and \( v_z \) are the drift velocities in r and z directions, re
 
 
 
-\section{Impurity Correction}
+\subsection{Impurity Correction}
 Surface events create a large amount of charge carriers that could impact local impurity and must be corrected to accurately calculate the electric potential. At a given time, impurity correction is given by:
 
 \begin{equation}
@@ -284,7 +292,7 @@ Surface events create a large amount of charge carriers that could impact local 
 The $\text{I}_{0}$ is the impurity of the crystal from production. $\rho_h(z,r)$ and $\rho_e(z,r)$ are the hole and electron densities, respectively. $\frac{e}{\epsilon}$ is the conversion factor that relates charge density to the resulting electric field, derived from Gauss’s law in Germanium with $\epsilon = 16\epsilon_0$. $\frac{e}{\epsilon} = 11.310$ in 
 charge units $10^{10}\frac{e}{cm^3}$. $(\Delta x)^2$ is the area of the grid which converts density into charge, and then the conversion factor converts it into $10^{10}\frac{e}{cm^3}$ units to match the units of impurity used.
 
-\section{Signal Calculation}
+\subsection{Signal Calculation}
 In cylindrical coordinates, each grid cell at radius $r$ and height $z$ has an approximate area proportional to $(r - 1)$. Once we read the electron 
 density $\rho_e(r,z)$ and hole density $\rho_h(r,z)$ at time $t$, the weighted sums are defined as:
 \begin{align}
@@ -320,7 +328,7 @@ Combining these quantities, the induced signal at time t is computed using:
 \end{equation}
 Since the electrons’ contribution would be negative, we subtract it from holes to get the net induced signal. Normalizing by $R_{e}(0)$ and $R_{h}(0)$ ensures that the signal is expressed as a fraction of the original total electron/hole count, so it starts near zero at $t=0$ and approaches 1 as all charges arrive at the contacts.
 
-\section{Density Snapshots}
+\subsection{Density Snapshots}
 
 The ability to store snapshots of density at each time step provides detailed information about how the charges drift in the detector. Fig. \ref{ch3_fig_ehd_path_pd_sc_0} shows a snapshot at time=$80$ns in the {\ehd} for a 5 MeV energy deposition close to the surface with no charge. The event started at r=15 mm, and the electron and hole clouds drift towards the respective electrodes.  A 5 MeV energy can create a charge cloud 1.5 mm tall. Charges in such a large charge cloud could drift and diffuse to the surface. The projected density shows the distribution of the charge in the cloud on the x-axis. The head of each signal is the peak, which is where charges would have normally traveled in bulk. The tail of the projected density has a peak that is due to the charges that were initially pushed to the surface. The points in between the two peaks are charges that drifted or diffused to the surface in intermediate steps. The drift on the surface, in this case, is set to be $1000$ slower than drift in bulk. 
 
@@ -351,7 +359,7 @@ Similarly Fig. \ref{ch3_fig_ehd_path_pd_sc_pos_0p3} shows the same event but wit
 \end{figure}
 
 
-\section{Tunable Parameters}
+\subsection{Tunable Parameters}
 {\ehd} also provides several custom tunable parameters such as surface charge, surface to bulk drift ratio, initial energy, passivated surface depth, etc. that can be used to match the data. Fig. \ref{fig:wf_comp} illustrates how the output changes with surface to bulk drift and surface charge. High surface charge means that more charges will be pulled onto the surface and thus a sharp rising part will have a lower magnitude. A faster surface to bulk ratio means that the charges on the surface will be collected faster and so the tail shape will be different. Together these tunable parameters enable fine-tuning the simulations to match the observed data.
 
 \begin{figure}%[!htb]
@@ -362,7 +370,7 @@ Similarly Fig. \ref{ch3_fig_ehd_path_pd_sc_pos_0p3} shows the same event but wit
 \end{figure}
 
 
-\section{Input and Output}
+\subsection{Input and Output}
 {\ehd} is compiled using the gcc compiler. It takes in a config file same as that of {\siggen}.The config file contains information about detector geometry, and an example can be found at \cite{ehdrift2024}. In addition to the config file, we provide flags that can be passed to the executable. Table \ref{ch3_tab_ehdrift_parameters} shows the input flags that allow setting multiple parameters related to the event.
 \input{ch3/ehd_tun_par}
 
