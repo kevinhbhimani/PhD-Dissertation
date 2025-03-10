@@ -25,7 +25,7 @@ Here $\nu$ and $ze$ are the charges of the given particle, N and Z are the numbe
 
 Eq. \ref{bethe_formula} suggests that the energy loss for non-relativistic particles is proportional to $1/\nu^2$, or the kinetic energy. Hence, the slower the velocity, the longer the particles spend in the vicinity of electrons of the material's atoms, and the higher the energy loss. Eq. \ref{bethe_formula} is proportional to z$^2$ for constant velocity. Thus, the heavier particles will have more energy loss for a given velocity. This results in alphas having a very low penetration depth, usually around $10$ micrometers.
 
-Energy loss of alpha particles can be best understood by plotting specific energy loss along the track. The plot known as the Bragg curve is shown in Fig. \ref{bragg_curve_fig}. During most of the track, the energy loss increases roughly as 1/E as predicted by Eq.\ref{bethe_formula}. As the particles slow down, electron pickup reduces the charge and the curve falls off. As a result, alpha deposits a large amount of energy in a very localized area. For Germanium, this penetration depth of alpha particles is about $17.6$ - $20.0$ microns \cite{knoll_2010}. The n+ electrode and  are too thick for alphas to penetrate and deposit energy. The p+ electrode in LEGEND detectors does have alpha events, but the charge collection is well understood as the events are collected immediately and thus can be rejected easily using PSD techniques. 
+Energy loss of alpha particles can be best understood by plotting specific energy loss along the track. The plot known as the Bragg curve is shown in Figure \ref{bragg_curve_fig}. During most of the track, the energy loss increases roughly as 1/E as predicted by Eq.\ref{bethe_formula}. As the particles slow down, electron pickup reduces the charge and the curve falls off. As a result, alpha deposits a large amount of energy in a very localized area. For Germanium, this penetration depth of alpha particles is about $17.6$ - $20.0$ microns \cite{knoll_2010}. The n+ electrode and  are too thick for alphas to penetrate and deposit energy. The p+ electrode in LEGEND detectors does have alpha events, but the charge collection is well understood as the events are collected immediately and thus can be rejected easily using PSD techniques. 
 
 \begin{figure}
 \centering
@@ -36,10 +36,10 @@ Energy loss of alpha particles can be best understood by plotting specific energ
 
 \section{Alpha Background in Data}
 
-Alpha background can vary across different detector environments and experiments. {\MJD} and the \Gerda experiment had different  spectral shapes for alpha backgrounds. In the {\MJD}, alpha events degraded more substantially into the ROI, whereas in \Gerda, prominent peaks from $^{210}Po$ and the $^{226}Ra$ chain were identified above $5$ MeV, along with lower-energy tails from partially collected surface alphas. Thus, various factors such as environment, detector geometry, and material purity can contribute to alpha background.
+Alpha background can vary across different detector environments and experiments. {\MJD} and the \Gerda experiment had different  spectral shapes for alpha backgrounds. In the {\MJD}, alpha events degraded more substantially into the ROI, whereas in \Gerda, prominent peaks from $^{210}$Po and the $^{226}$Ra chain were identified above $5$ MeV, along with lower-energy tails from partially collected surface alphas. Thus, various factors such as environment, detector geometry, and material purity can contribute to alpha background.
 
 
-Thin can further be seen in dedicated test stands that were developed to study alpha background. Two scanning systems were developed to study alpha interactions in alpha : TUBE \cite{TUBE_paper} and GALATEA \cite{galatea_paper}. These scanners yielded conflicting dependencies of collected energy on radial position. TUBE reported that energy degraded inversely with radius, whereas GALATEA reported the opposite trend. Fig. \ref{fig:dcr_waveform} shows a known alpha waveform in TUBE data. The alpha waveform, being close to the surface, has a much sharper rise than the bulk waveform. However, the tail of the alpha waveform has an upward slope towards the end. This is possible due to late collections of charges on the passivated surface. We call this effect Delayed Charge Recovery Effect \cite{Gruszko:2017kfx}. Thus it is crucial to study charge collection in alpha particles.
+Thin can further be seen in dedicated test stands that were developed to study alpha background. Two scanning systems were developed to study alpha interactions in alpha : TUBE \cite{TUBE_paper} and GALATEA \cite{galatea_paper}. These scanners yielded conflicting dependencies of collected energy on radial position. TUBE reported that energy degraded inversely with radius, whereas GALATEA reported the opposite trend. Figure \ref{fig:dcr_waveform} shows a known alpha waveform in TUBE data. The alpha waveform, being close to the surface, has a much sharper rise than the bulk waveform. However, the tail of the alpha waveform has an upward slope towards the end. This is possible due to late collections of charges on the passivated surface. We call this effect Delayed Charge Recovery Effect \cite{Gruszko:2017kfx}. Thus it is crucial to study charge collection in alpha particles.
 
 \begin{figure}[!htb]
 \centering
@@ -49,11 +49,11 @@ Thin can further be seen in dedicated test stands that were developed to study a
 \end{figure}
 
 \section{Challenges in Modeling Surface Events}
-An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration depth of about $17.6$ - $20.0$ microns on the passivated surface. This excites a lot of charge carriers and produces a dense charge cloud. In such cases, effects such as diffusion of the charges and self-repulsion among charges become significant. These effects could also push the charge onto the passivated surface. It is known from data that charges on the passivated surface move at slower speeds than in the bulk. This is possibly due to different material properties, weaker electric field, and higher charge trapping \cite{MULLOWNEY201233}.
+An alpha particle deposits energy of about $4$ - $6$ MeV with a penetration depth of about $17.6$ - $20.0$ microns on the passivated surface. This excites a lot of charge carriers and produces a dense charge cloud. In such cases, effects such as diffusion of the charges and self-repulsion among charges become significant. These effects could also push the charge onto the passivated surface. 
 
-To model the alpha background, {\Gerda} fit multiple probability density functions (PDFs) of different p+ contact thicknesses to model degraded energy of alphas. The PDFs were combined with a linear component to handle heavily degraded events and were also constrained the total alpha contribution using radioassay measurements. {\MJD} used pulse-shape discrimination (PSD) to tag surface alpha events and effectively removed them. Preliminary simulations to account for energy degradations of alphas were also developed.
+The charges on the passivated surface move at slower speeds than in the detector bulk. This is primarily due to additional scattering mechanisms and modified band structure at the surface, described in \cite{MULLOWNEY201233}. In the bulk, the hole and electron transport velocity can be approximated using a simple warped-band approximation. However, at the passivated surface, the band structure is altered by electric fields normal to the surface. This leads to a higher probability of scattering of the charges and surface-related effects such as roughness scattering. The result is a net decrease in carrier mobility and thus a substantially lower drift speed compared with that in the bulk crystal.
 
-Fig. \ref{ch3_fig_L200_surface_background} shows the {\Ltwo} physics spectrum. Muon and multiplicity cuts remove backgrounds such as muons and gamma rays, and the events left are primarily surface events background in grey. This spread-out spectrum is due to alphas from the DCR effect. This was modeled using the {\Gerda} background model. As shown in green, Pulse Shape Discrimination (PSD) cuts are highly effective in removing them, but the unknown efficiency of those cuts introduces uncertainty in the background model. This is because the spectrum shape of alphas before the cuts is unknown.
+Figure \ref{ch3_fig_L200_surface_background} shows the {\Ltwo} physics spectrum. Muon and multiplicity cuts remove backgrounds such as muons and gamma rays, and the events left are primarily surface events background in grey. This spread-out spectrum is due to alphas from the DCR effect. This was modeled using the {\Gerda} background model. As shown in green, Pulse Shape Discrimination (PSD) cuts are highly effective in removing them, but the unknown efficiency of those cuts introduces uncertainty in the background model. This is because the spectrum shape of alphas before the cuts is unknown.
 
 \begin{figure}[!htb]
 \centering
@@ -63,7 +63,7 @@ Fig. \ref{ch3_fig_L200_surface_background} shows the {\Ltwo} physics spectrum. M
 \end{figure}
 
 \section{Surface Charge Effect}
-Due to various factors such as manufacturing, experimental conditions, and transportation, the HPGe detectors can develop a static charge on the passivated surface which impacts charge collection for surface events. Fig. \ref{ch3_fig_surface_field_sc0} shows how the presence of surface charge alters the electric field close to the passivated surface. When there is no surface charge (top), the field lines are parallel to the surface. The presence of negative surface charge (middle) attracts the field lines towards the surface. Positive surface charge (bottom) repels the field lines from the surface. Negative surface charge can pull the holes to the surface where they can drift slowly. Similarly, positive surface charges can pull the electrons to the surface.
+Due to various factors such as manufacturing, experimental conditions, and transportation, the HPGe detectors can develop a static charge on the passivated surface which impacts charge collection for surface events. Figure \ref{ch3_fig_surface_field_sc0} shows how the presence of surface charge alters the electric field close to the passivated surface. When there is no surface charge (top), the field lines are parallel to the surface. The presence of negative surface charge (middle) attracts the field lines towards the surface. Positive surface charge (bottom) repels the field lines from the surface. Negative surface charge can pull the holes to the surface where they can drift slowly. Similarly, positive surface charges can pull the electrons to the surface.
 
 \begin{figure}
 \centering
@@ -76,7 +76,7 @@ Due to various factors such as manufacturing, experimental conditions, and trans
 \end{figure}
 
 
-Since surface charge changes the overall electric field of the detector, it could also alter the depletion voltage for the detector. Fig. \ref{ch3_fig_deplection_sc} shows how the depletion voltage for a LEGEND PPC detector changes with surface charge. Typically, the detector's operational voltage is higher than the depletion voltage, but if the surface charges are not properly accounted for, a detector could become depleted after being deployed in the experiment.
+Since surface charge changes the overall electric field of the detector, it could also alter the depletion voltage for the detector. Figure \ref{ch3_fig_deplection_sc} shows how the depletion voltage for a LEGEND PPC detector changes with surface charge. Typically, the detector's operational voltage is higher than the depletion voltage, but if the surface charges are not properly accounted for, a detector could become depleted after being deployed in the experiment.
 
 \begin{figure}[!htb]
 \centering
@@ -93,7 +93,7 @@ Signal formation in Germanium is well understood via the Shockley-Ramo theorem. 
 
 {\siggen} is a C-based program initially developed by David Radford at Oak Ridge National Lab for MJD pulse shape simulations \cite{siggen_paper}. It consists of two components: \texttt{fieldgen} and {\siggen}. \texttt{fieldgen} is used to calculate the electric potential and weighting potential of point-contact detectors in two-dimensional cylindrical coordinates. The {\siggen} part uses the weighting potential calculated from \texttt{fieldgen} to generate a signal using the Shockley–Ramo theorem. The simulations can also calculate the depletion voltage, the volume of the depletion region, and the capacitance of the detector. Diffusion in {\siggen} is approximated using a Gaussian convolution, and there is no mechanism to account for the self-repulsion of charges as {\siggen} uses point charges to represent the entire charge cloud. {\siggen} has been crucial in LEGEND detector design and manufacturing as it allows precise modeling of electric fields and PSD performance.
 
-% A simulated event in {\siggen} is shown in Fig. \ref{fig:{\siggen}_1d}.
+% A simulated event in {\siggen} is shown in Figure \ref{fig:{\siggen}_1d}.
 
 % \begin{figure}
 % \centering
@@ -117,9 +117,9 @@ SolidStateDetectors.jl (\texttt{SSD}) is a software package developed by the gro
 
 
 \section{{\ehd}}
-{\ehd} is a method to simulate surface events while directly simulating diffusion and self-repulsion effects. They are a specialized model for surface interactions. The model uses 2-D approximations to optimize run time while adjusting for 3-D effects. They were developed in C by David Radford and built upon {\siggen}. As charges drift through the detectors, they keep track of charge densities at a pixel-by-pixel level, which allows for nonspherical charge clouds. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\ehd} also enables the simulation of the effects of surface charges. The simulation is performed in the r and z-directions while assuming $\phi$ symmetry—thus the charge cloud is simulated by a ring and accounted for the 3-D effects using approximations. The charges that end up on the surface have their velocities reduced by a predetermined factor.
+{\ehd} is a method to simulate surface events while directly simulating diffusion and self-repulsion effects. They are a specialized model for surface interactions. The model uses 2-D approximations to optimize run time while adjusting for 3-D effects. They were developed in C by David Radford and built upon {\siggen}. As charges drift through the detectors, they keep track of charge densities at a pixel-by-pixel level, which allows for nonspherical charge clouds. The charges that end up on the surface have their velocities reduced by a predetermined factor. {\ehd} also enables the simulation of the effects of surface charges. The simulation is performed in the r and z-directions while assuming $\phi$ symmetry—thus the charge cloud is simulated by a ring and accounts for the 3-D effects using approximations. The charges that end up on the surface have their velocities reduced by a predetermined factor.
 
-Inspired by Fluid mechanics, {\ehd} take the Lagrangian Splitting approach. This means that each step, such as diffusion, charge drift, etc., is solved independently, and then the net effect is calculated by combining them. Fig. \ref{fig:ehd_flowchart} shows how the {\ehd} program works. The detector is divided into a grid, and charge densities are distributed at a given location based on the impact energy, usually over two adjacent grid points. The initial densities are determined using:
+Inspired by Fluid mechanics, {\ehd} take the Lagrangian Splitting approach. This means that each step, such as diffusion, charge drift, etc., is solved independently, and then the net effect is calculated by combining them. Figure \ref{fig:ehd_flowchart} shows how the {\ehd} program works. The detector is divided into a grid, and charge densities are distributed at a given location based on the impact energy, usually over two adjacent grid points. The initial densities are determined using:
 
 \begin{equation}
     \rho_H = \rho_E= \frac{\text{ E}\times 10^7 }{1000 \times 0.003 \times \text{grid}^3}
@@ -206,7 +206,7 @@ computed by:
 v(E) \;=\; \text{drift offset}[i]
 \;+\; \text{drift slope}[i] \,\bigl( E - E_i \bigr),
 \]
-with $E_i \le E < E_{i+1}$. The fig. \ref{ch3:fig:dv_vs_e} simulates the relation for the Drift Velocity versus Electric field.  For simplicity, we only use the $<100>$ direction velocities in the current model. The drift velocity is then multiplied by the time step to find where the charges will drift, and then the charges are moved to the new location.
+with $E_i \le E < E_{i+1}$. The Figure \ref{ch3:fig:dv_vs_e} simulates the relation for the Drift Velocity versus Electric field.  For simplicity, we only use the $<100>$ direction velocities in the current model. The drift velocity is then multiplied by the time step to find where the charges will drift, and then the charges are moved to the new location.
 
 \begin{figure}[!htb]
     %[trim={left bottom right top},clip]
@@ -330,7 +330,7 @@ Since the electrons’ contribution would be negative, we subtract it from holes
 
 \subsection{Density Snapshots}
 
-The ability to store snapshots of density at each time step provides detailed information about how the charges drift in the detector. Fig. \ref{ch3_fig_ehd_path_pd_sc_0} shows a snapshot at time=$80$ns in the {\ehd} for a 5 MeV energy deposition close to the surface with no charge. The event started at r=15 mm, and the electron and hole clouds drift towards the respective electrodes.  A 5 MeV energy can create a charge cloud 1.5 mm tall. Charges in such a large charge cloud could drift and diffuse to the surface. The projected density shows the distribution of the charge in the cloud on the x-axis. The head of each signal is the peak, which is where charges would have normally traveled in bulk. The tail of the projected density has a peak that is due to the charges that were initially pushed to the surface. The points in between the two peaks are charges that drifted or diffused to the surface in intermediate steps. The drift on the surface, in this case, is set to be $1000$ slower than drift in bulk. 
+The ability to store snapshots of density at each time step provides detailed information about how the charges drift in the detector. Figure \ref{ch3_fig_ehd_path_pd_sc_0} shows a snapshot at time=$80$ns in the {\ehd} for a 5 MeV energy deposition close to the surface with no charge. The event started at r=15 mm, and the electron and hole clouds drift towards the respective electrodes.  A 5 MeV energy can create a charge cloud 1.5 mm tall. Charges in such a large charge cloud could drift and diffuse to the surface. The projected density shows the distribution of the charge in the cloud on the x-axis. The head of each signal is the peak, which is where charges would have normally traveled in bulk. The tail of the projected density has a peak that is due to the charges that were initially pushed to the surface. The points in between the two peaks are charges that drifted or diffused to the surface in intermediate steps. The drift on the surface, in this case, is set to be $1000$ slower than drift in bulk. 
 
 \begin{figure}%[!htb]
     %[trim={left bottom right top},clip]
@@ -339,7 +339,7 @@ The ability to store snapshots of density at each time step provides detailed in
     \label{ch3_fig_ehd_path_pd_sc_0}
 \end{figure}
 
-Fig. \ref{ch3_fig_ehd_path_pd_sc_neg_0p3} shows the same event but with a negative charge on the surface. The negative charges alter the field in a way that the holes are pulled onto the surface, and electrons are repelled. Thus, the holes component has significant charges attracted to the surface, as shown by their projected densities. Electrons, being repelled from the surface, have no slow-moving component.
+Figure \ref{ch3_fig_ehd_path_pd_sc_neg_0p3} shows the same event but with a negative charge on the surface. The negative charges alter the field in a way that the holes are pulled onto the surface, and electrons are repelled. Thus, the holes component has significant charges attracted to the surface, as shown by their projected densities. Electrons, being repelled from the surface, have no slow-moving component.
 
 
 \begin{figure}%[!htb]
@@ -349,7 +349,7 @@ Fig. \ref{ch3_fig_ehd_path_pd_sc_neg_0p3} shows the same event but with a negati
     \label{ch3_fig_ehd_path_pd_sc_neg_0p3}
 \end{figure}
 
-Similarly Fig. \ref{ch3_fig_ehd_path_pd_sc_pos_0p3} shows the same event but with a positive charge on the surface. In this case, the electrons are pulled onto the surface and drift slowly, while the holes are repelled and have no surface drift. 
+Similarly Figure \ref{ch3_fig_ehd_path_pd_sc_pos_0p3} shows the same event but with a positive charge on the surface. In this case, the electrons are pulled onto the surface and drift slowly, while the holes are repelled and have no surface drift. 
 
 \begin{figure}%[!htb]
     %[trim={left bottom right top},clip]
@@ -360,7 +360,7 @@ Similarly Fig. \ref{ch3_fig_ehd_path_pd_sc_pos_0p3} shows the same event but wit
 
 
 \subsection{Tunable Parameters}
-{\ehd} also provides several custom tunable parameters such as surface charge, surface to bulk drift ratio, initial energy, passivated surface depth, etc. that can be used to match the data. Fig. \ref{fig:wf_comp} illustrates how the output changes with surface to bulk drift and surface charge. High surface charge means that more charges will be pulled onto the surface and thus a sharp rising part will have a lower magnitude. A faster surface to bulk ratio means that the charges on the surface will be collected faster and so the tail shape will be different. Together these tunable parameters enable fine-tuning the simulations to match the observed data.
+{\ehd} also provides several custom tunable parameters such as surface charge, surface to bulk drift ratio, initial energy, passivated surface depth, etc. that can be used to match the data. Figure \ref{fig:wf_comp} illustrates how the output changes with surface to bulk drift and surface charge. High surface charge means that more charges will be pulled onto the surface and thus a sharp rising part will have a lower magnitude. A faster surface to bulk ratio means that the charges on the surface will be collected faster and so the tail shape will be different. Together these tunable parameters enable fine-tuning the simulations to match the observed data.
 
 \begin{figure}%[!htb]
     %[trim={left bottom right top},clip]

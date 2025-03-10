@@ -63,8 +63,10 @@
 \ifpdf
   \DeclareGraphicsRule{*}{mps}{*}{}
 \fi
-\newcommand{\khb}       {Kevin Hargovindbhai Bhimani}
-\newcommand{\thesistitle}       {Next-Generation Pulse Shape Modelling: GPU-Accelerated Surface-Event Simulations and Neural Network–Based Pulse Translation}
+\newcommand{\authorname}       {Kevin Hargovindbhai Bhimani}
+\newcommand{\thesistitle}      {New Techniques in Germanium Detector Pulse Shape Modeling: GPU-Accelerated Surface Event Simulations and Neural Network–Based Electronics Modeling} 
+
+%{Next-Generation Pulse Shape Modeling: GPU-Accelerated Surface-Event Simulations and Neural Network–Based Pulse Translation}
 
 
 
@@ -83,9 +85,20 @@
 \newcommand{\cpp}       {C\texttt{++}}
 \newcommand{\ponama}    {PONaMa-1}
 
-
 % PDF links
-\usepackage[hidelinks]{hyperref} % backref=page
+\usepackage{hyperref} 
+\hypersetup{
+    pdfborder={0 0 1},  % 1pt border around links
+    linktocpage=true, % Set a visible border around links (1pt width)
+    linkcolor=red,          % color of internal links (change box color with 
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan,           % color of external links
+    colorlinks=false,       % false: boxed links; true: colored links
+    pdftitle={\thesistitle},
+    pdfauthor={\authorname},
+    bookmarksopen={false}
+    }
 
 \input{common/layout}
 
