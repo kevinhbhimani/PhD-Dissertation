@@ -2,11 +2,11 @@
 
 \section{Introduction}
 
-Neutrinoless double-beta decay is primarily a single-site event. LEGEND thus seeks to distinguish between single-site and multi-site events using PSD techniques. In order to have accurate simulations, the ATN needs to replicate the correct ensemble distribution for the distribution. The FEP peak is an excellent region for training given that it has a lot of events and it contains a mixture of single and multi-site events. SEP and DEP peaks can then be used as a validation data set, evaluating the model's response to multi-site and single-site events, respectively. We trained the CPU-Net on 110,000 FEP waveforms and then used the SEP and DEP for validation. In this chapter, we present the result analysis of ATN's ability to reproduce detector waveforms using some critical parameters used in PSD. 
+Neutrinoless double-beta decay is primarily a single-site event. LEGEND thus seeks to distinguish between single-site and multi-site events using PSD techniques. In order to have accurate simulations, the ATN needs to reproduce the correct ensemble distribution of the parameters used in PSD. The FEP peak is an excellent region for training, given that it has a lot of events and contains a mixture of single- and multi-site events. SEP and DEP peaks can then be used as a validation data set, evaluating the model's response to multi-site and single-site events, respectively. We trained the CPU-Net on 110,000 FEP waveforms and then used SEP and DEP for validation. In this chapter, we present the result analysis of ATN's ability to reproduce detector waveforms using some critical parameters used in PSD. 
 
 
 \section{Training progression}
-The progression of training losses is shown in Figure \ref{fig:training_loss}. The cycle-consistent and identity losses converge rapidly towards zero. The adversarial training is evident in the losses for the discriminators and generators. Early in training, the discriminator initially `wins' and its loss decreases while the generator’s loss increases. As training continues, the generator catches up and the networks approach an equilibrium in which each attempts to out-compete the other. Thus, the loss functions fluctuate as they continuously adapt and improve.
+The progression of training losses is shown in Figure \ref{fig:training_loss}. The cycle-consistent and identity losses converge rapidly towards zero. The adversarial training is evident in the losses for the discriminators and generators. During training, the discriminator initially wins, and its loss decreases while the generator loss increases. As training continues, the generator catches up and the networks approach an equilibrium in which each attempts to out-compete the other. Thus, the loss functions fluctuate as they continuously adapt and improve.
 
 
 \begin{figure}%[htb!]
@@ -24,114 +24,133 @@ The progression of training losses is shown in Figure \ref{fig:training_loss}. T
 % \end{figure}
 
 \section{Waveform Translation}
-Figure \ref{fig:cycle_bab} and \ref{fig:cycle_aba} show the cycle consistency in the CPU-Net on the SEP waveforms. The network effectively translates the waveforms in forward and reverse translations. In the {\siggen} simulations, the RC discharge effect is not modeled, resulting in a flat tail slope of zero. ATN learns to transform this flat tail into an exponentially decaying one, matching the observed behavior in real detector data, and IATN learns to transform it back to a zero slope, matching the simulations.
+Figure \ref{fig:cycle_bab} and \ref{fig:cycle_aba} show the SEP waveforms as they progress through the cycle in the CPU-Net. The network effectively translates the waveforms in forward and reverse translations. In the {\siggen} simulations, the RC discharge effect is not modeled, resulting in a flat tail slope of zero. ATN learns to transform this flat tail into an exponentially decaying one, matching the observed behavior in real detector data, and IATN learns to transform it back to a zero slope, matching the simulations.
 
 % A simple way to understand the electronics response is to look at the signal waveform tail. . This is usually corrected in post signal processing stage where the `pole' cause by the RC decay is corrected by integrating a `zero' into the transfer functions, called pole-zero correction. While the pole-zero correction has proved reliable for HPGe experiments, it is a first order correction and often higher corrections are warranted. \cite{MJD_electronics}\cite{mjd_pole_zero}
 
-\begin{figure}[htb!]
+\begin{figure}%[htb!]
     \centering
     %trim={0pc 0pc 0pc 3pc},clip
     \includegraphics[width=0.99\linewidth]{ch8/figs/SEP_result_comp_1x3_cycle_BAB.pdf}
-    \caption{Illustration of bi-directional cycle consistency in waveform translation in forward direction. Starting with 10 simulated waveforms, the ATN first translates them into detector-like waveforms, and then IATN translates them back to the simulation like waveforms.}
+    \caption{Cycle consistency in waveform translation in forward direction. Starting with 10 simulated waveforms, the ATN first translates them into detector-like waveforms, and then IATN translates them back to the simulation like waveforms.}
     \label{fig:cycle_bab}
 \end{figure}
 
-\begin{figure}[htb!]
+\begin{figure}%[htb!]
     \centering
     %trim={0pc 0pc 0pc 3pc},clip
     \includegraphics[width=0.99\linewidth]{ch8/figs/SEP_result_comp_1x3_cycle_ABA.pdf}
-    \caption{Illustration of bi-directional cycle consistency in waveform translation in backward direction. Beginning with 10 detector waveforms, the IATN translates them into simulated-like waveforms, and then ATN translates back to detector-like waveforms.}
+    \caption{Cycle consistency in waveform translation in backward direction. Beginning with 10 detector waveforms, the IATN translates them into simulated-like waveforms, and then ATN translates back to detector-like waveforms.}
     \label{fig:cycle_aba}
 \end{figure}
 
 \section{Validation of Key Waveform Parameters}
- The accuracy of translations can be assessed at a distributional level by plotting the histogram of key reconstruction parameters. We use the Intersection over Union (IoU) metric to measure the overlap between distributions.
+ The accuracy of translations can be assessed at a distributional level by plotting the histogram of key reconstruction parameters. We use the Intersection over Union (IoU) metric to measure the overlap between distributions $A$ and $B$. We first calculate the histogram of the distribution being compared using the same binning. The \textit{intersection} is $\sum_{i} \min(\text{bin}_i^A, \text{bin}_i^B)$, the \textit{union} is $\sum_{i} \max(\text{bin}_i^A, \text{bin}_i^B)$, and
+ 
+\begin{equation}
+  \text{IoU} \;=\; \frac{\sum_{i} \min(\text{bin}_i^A, \text{bin}_i^B)}{\sum_{i} \max(\text{bin}_i^A, \text{bin}_i^B)}.    
+\end{equation}
+
+
+
+
+We express the result in percentages. An IoU of $100\%$ indicates perfect agreement and $0\%$ indicates no agreement between the histograms.
  
 \subsection{Drift Time Distribution}
 
-- how drift time is calculated.
+The electric field of the HPGe detector allows events at different locations to have a unique waveform, enabling reconstruction of the event topology. As shown in Figure \ref{ch7_fig_eng_dep_sim}, each location has a different drift time, making it a crucial parameter for waveform analysis. The data waveform has a slower drift time than simulations because of the integration of the preamplifier. To calculate the drift time, we define two time points shown in Figure \ref{fig_ch8_time_calc}. $tp0$ is defined as the time the waveform reached $1\%$ of its maximum value, and $tp 99$ represents the times the waveform reached $99\%$ of its maximum value. The time points are found by first finding the maximum time point and then searching backward to find the point when the waveform first crosses that amplitude. The drift time $T_{Drift}$ of the waveform is the time between the two points. 
 
-
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
     \centering
     %trim={0pc 0pc 0pc 3pc},clip
-    \includegraphics[width=0.99\linewidth]{ch8/figs/time_calc.pdf}
-    \caption{Calculating the time points of the waveform}
-    \label{fig:ch8:time_calc}
+    \includegraphics[width=0.9\linewidth]{ch8/figs/time_calc.pdf}
+    \caption{Calculating the time points of the waveform.}
+    \label{fig_ch8_time_calc}
 \end{figure}
 
 
- Figures \ref{fig:drift_times_sep} and \ref{fig:drift_times_dep} illustrate the distribution of drift time $T_{Drift}$. Data show a slower $T_{Drift}$ due to the influence of the preamplifier. ATN nets learn to slow the drift time of the waveforms while keeping matching the distribution of the data.  The SEP $T_{Drift}$ IoU increases to $62.4\%$ from $39.5\%$.
+ Figures \ref{fig:drift_times_sep} and \ref{fig:drift_times_dep} illustrate the distribution of $T_{Drift}$ in the SPE and DEP validation datasets. ATN nets learn to slow the drift time of the simulated waveforms to match the distribution of the data.  The SEP $T_{Drift}$ IoU increases to $62.4\%$ from $39.5\%$. The DEP IoU increases to $22.5\%$ from $5.4\%$.
  
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 %[trim={left bottom right top},clip]
 \centering
-\includegraphics[width=0.99\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/sep_drift_time.pdf}
+\includegraphics[width=0.9\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/sep_drift_time.pdf}
 \caption{The distribution of the 1\%–100\% drift time on SEP dataset.}
 \label{fig:drift_times_sep}
 \end{figure}
 
-\begin{figure}[!htb]
+\begin{figure}%[!htb]
 %[trim={left bottom right top},clip]
 \centering
-\includegraphics[width=0.95\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/dep_drift_time.pdf}
+\includegraphics[width=0.9\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/dep_drift_time.pdf}
 \caption{The distribution of the 1\%–100\% drift time on DEP dataset.}
 \label{fig:drift_times_dep}
 \end{figure}
 
 \subsection{Current Amplitude}
 
-The maximum current amplitude ($I_{max}$) is determined by differentiating the waveform and identifying the maximum value of its derivative. For a given event energy, single-site events produce a localized energy deposition, resulting in a sharper and faster increase in $I_{max}$. In contrast, multisite events, characterized by energy deposition at multiple locations within the detector, yield broader and more gradual current peaks. This distinction makes $I_{max}$ highly effective in differentiating single-site from multi-site events, thereby establishing it as a crucial parameter in waveform shape simulations \cite{mjd_psd}. 
+For a given event energy, single-site events produce a localized energy deposition, resulting in a sharper and faster increase in $I_{max}$. In contrast, multisite events, characterized by energy deposition at multiple locations within the detector, yield broader and more gradual current peaks. This distinction makes $I_{max}$ highly effective in differentiating single-site from multi-site events, thereby establishing it as a crucial parameter in waveform shape simulations \cite{mjd_psd}.
 
-The method for calculating the current amplitude is as follows. 
-\begin{figure}[!htb]
+The maximum current amplitude $I_{max}$ is determined by differentiating the waveform and identifying the maximum value of its derivative. Fig.\ref{fig_ch8_curr_amp_calc} shows the steps taken to calculate the current amplitude. The waveform example used here is from an event that deposited energy in two locations in the detector. The current amplitude thus has two peaks. Then the maximum current would be lower than one for a single site event, which would only have a single peak and thus higher $I_{max}$. This is why current amplitude is highly accurate in distinguishing single and multi site events.
+
+
+\begin{figure}%[!htb]
     \centering
     %[trim={left bottom right top},clip]
-    \includegraphics[width=0.99\linewidth, trim={0pc 1pc 0pc 0pc},clip]{ch8/figs/curr_amp_calc.pdf}
-    \caption{Steps involved in calculating the maximum current amplitude of the waveform}
-    \label{fig:ch8:curr_amp_calc}
+    \includegraphics[width=0.99\linewidth, trim={0.4cm 0pc 0.3cm 0pc},clip]{ch8/figs/curr_amp_calc.pdf}
+    \caption{Steps involved in calculating the maximum current amplitude of the waveform. First the discreet derivative of the waveform is calculated which is then up-sampled by a factor (16) to extract finer detail. Then the current is smooth to reduce the noise and the maximum value is $I_{max}$.}
+    \label{fig_ch8_curr_amp_calc}
 \end{figure}
 
-Figure \ref{fig:current_amp} illustrates the distribution of $I_{max}$.  ATN learns to correctly slow the current amplitude of the simulated waveforms to align with the data. The SEP $I_{max}$ increases to IoU to $63.71\%$ from $27.53\%$.
+Figures \ref{ch8_fig_current_amp_sep} and \ref{ch8_fig_current_amp_dep} illustrate the distribution of $I_{max}$ for both validation datasets. DEP distributions have two peaks, the higher one corresponds to single site events and the smaller one corresponds to multi-site events. DEP has only one peak for single-site events. ATN learns to correctly slow the current amplitude of the simulated waveforms to align with the data. The SEP $I_{max}$ increases to the IoU of $63.71\%$ from $27.53\%$. The DEP IoU increases to $15.5\%$ from $4.2\%$. 
   
-\begin{figure}[htb!]
+\begin{figure}%[htb!]
 \centering
-\includegraphics[width=0.99\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/SEP_amp.pdf}
+\includegraphics[width=0.9\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/SEP_amp.pdf}
 \caption{ Distribution of maximum current amplitude ($I_{max}$) on SEP validation datasets.}
-\label{fig:current_amp_sep}
+\label{ch8_fig_current_amp_sep}
 \end{figure}
 
-\begin{figure}[htb!]
+\begin{figure}%[htb!]
 \centering
-\includegraphics[width=0.99\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/DEP_amp.pdf}
+\includegraphics[width=0.9\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/DEP_amp.pdf}
 \caption{ Distribution of maximum current amplitude ($I_{max}$) on DEP validation datasets.}
-\label{fig:current_amp_dep}
+\label{ch8_fig_current_amp_dep}
 \end{figure}
 
-The scatter plot between $I_{max}$ of the simulated waveforms and the translated waveforms of ATN shows that ATN performs this while maintaining the relative order of events.
 
-\begin{figure}[htb!]
+Fig.\ref{ch8_fig_current_amp_sep} plots the $I_{max}$ of the ATN against $I_{max}$ of the simulated pulses. This shows that the ATN performs the translation while maintaining the relative order of the events. The waveforms are translated in a consistent way: waveforms that had the larger $I_{max}$ in the simulations have larger $I_{max}$ after translation.
+
+\begin{figure}%[htb!]
 \centering
-\includegraphics[width=0.99\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/SEP_scatter_current_amplitude.png}
+\includegraphics[width=0.9\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch8/figs/SEP_scatter_current_amplitude.png}
 \caption{Scatter plot between $I_{max}$ of simulated waveforms and ATN translated waveforms. ATN shits the amplitude distribution to align with data while maintaining the relative ordering of individual events.}
 \label{fig:current_amp}
 \end{figure}
 
 
-
 \subsection{Tail Slope}
-The strength of the RC decay can be measured by the mean tail slope parameter $c_{tail}$. The tail slope was calculated by a linear fit of the logarithm of 300 samples of the waveform. The simulation waveforms do not have an RC decay and thus have a mean tail slope of zero; the data waveform was found to have a tail slope of $-2.946\times10^{-4}$.  Figure \ref{ch8_fig_tail_slope_comp} shows the relative magnitude of the tail slopes for simulations, data, and ATN translated waveforms. The ATN learns to match the data very well, within $0.58\%$ of the actual value.
+The strength of the RC decay can be measured by the mean tail slope parameter $c_{tail}$. Since the RC decay is an exponential decay, $c_{tail}$ was calculated by a linear fit of the logarithm of 300 samples of the waveform as shown in Figure \ref{ch8_fig_tail_slope_calc}. The simulation waveforms do not have an RC decay and thus have a mean tail slope of zero. The data waveform was found to have a mean $c_{tail}$ of $-2.9307\times10^{-4}$, while the ATN translated waveform had a mean $c_{tail}$e of $-2.9769\times10^{-4}$, which is a difference $1.58\%$ from the actual value. Figure \ref{ch8_fig_tail_slope_comp} shows this relative magnitude of $c_{tail}$ for simulations, data, and ATN translated waveforms. 
+
+\begin{figure}%[!htb]
+    \centering
+    %trim={0pc 0pc 0pc 3pc},clip
+    \includegraphics[width=0.99\linewidth, trim={0.4cm 0pc 0.3cm 0cm},clip]{ch8/figs/tail_slope_calc.pdf}
+    \caption{Calculating the $c_{tail}$ of the waveform. We take the logarithm last 300 samples of the waveform and linear fit it to find the slope.}
+    \label{ch8_fig_tail_slope_calc}
+\end{figure}
 
 
 \begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[width=0.97\linewidth,trim={2pc 0pc 2pc 0pc},clip]{ch8/figs/SEP_sim_ts.pdf}
-\caption{Distribution of tail slope for simulations, data, and ATN translated waveforms.}
+\includegraphics[width=0.9\linewidth,trim={2pc 0pc 2pc 0pc},clip]{ch8/figs/SEP_ts_with_sim.pdf}
+\caption{Distribution of $c_{tail}$ for simulations, data, and ATN translated waveforms.}
 \label{ch8_fig_tail_slope_comp}
 \end{figure}
 
-Figure \ref{ch8_fig_tail_slope_sim} shows the comparison of the tail slope between the data and the ATN translated waveforms. The distributions are not identical. This could be due to numerical precision and adversarial training.
+Figure \ref{ch8_fig_tail_slope_sim} shows the comparison of the $c_{tail}$ distribution between the data and the ATN translated waveforms. The distributions are not match, suggesting that the model is not learning this parameter distribution well. This could be a numerical precision issue since the tail slope magnitude is quite small. It could also be that at some step in training the generator determined that the RC decay tail it was adding to the simulated waveforms was enough to fool the discriminator and thus does not improve further to match the distribution of the data. In the next chapter, we suggest some way to improve the model.
+
 
 \begin{figure}%[!htb]
 \centering

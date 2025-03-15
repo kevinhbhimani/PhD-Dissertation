@@ -2,28 +2,30 @@
 \label{chap:ehd_res}
 
 \section{Introduction}
-In previous chapters, we established that {\ehd} better models the passivated surface and that we can achieve a significant run time improvement using GPUs. In this section, we present the first results from the simulations. The chapter begins with an overview of prepossessing the output waveform, then shows how {\ehd} can match the experimental data from the scanner. We then show how the model can be used to estimate the collection efficiency of {\onbb} events and finally create a simple background spectrum using them.
+In previous chapters, we established that {\ehd} better models the passivated surface and that we can achieve a significant runtime improvement using GPUs. In this section, we present the first results from the simulations. The chapter begins with an overview of prepossessing the output waveform, then shows how {\ehd} can match the experimental data from the previous scanners. We then show how the model can be used to estimate the collection efficiency of {\onbb} events and finally create a simple background spectrum using them.
 
 \section{Post-Processing}
 
-In HPGe detector, adding a filter to the waveform can reduce the electronic noise, and thus improve the energy resolution by averaging fluctuations in charge collection. We apply a trapezoidal filter to the pulse to match the way the energy is picked in the experimental data in LEGEND. Figure \ref{ch5_fig_trap_filter} shows how the waveform and trap filter output. Then the energy is picked from the time on the flat top.
+In HPGe detector, adding a filter to the waveform can reduce the electronic noise, and thus improve the energy resolution by averaging fluctuations in charge collection. We applied a trapezoidal filter to the pulse to match the way the energy is picked in the experimental data in LEGEND. Figure \ref{ch5_fig_trap_filter} shows how the waveform and trap filter output. Then the energy is picked from the time on the flat top.
 
 \begin{figure}%[!htb]
+\centering
 \includegraphics[trim={0cm 0cm 0cm 0cm},clip,width=0.9\linewidth]{ch5/figs/trap_filt.pdf}
-\caption{Trap filter on highly degraded surface waveform. Filter had a rise time of 3000 ns, flat time of 2000 ns and the value was picked oof at 4000 ns.}
+\caption{Trap filter on highly degraded surface waveform. Filter had a rise time of $10 \mu s$, flat time of $3 \mu s$, and the value was picked of at $13 \mu s$,.}
 \label{ch5_fig_trap_filter}
 \end{figure}
 
-To understand the charge collection at different points on the detector, we map the detector using about 100 points, coarsely spaced, as shown in Figure \ref{ch5_fig_activeness_points_neg}. These points can be used to generate an activeness map for a detector such as in Figure \ref{ch5_fig_activeness_map_neg}. This map is produced by interpolating using cubic interpolation. The activeness map gives an understanding of how the charge collection efficiency works. Points at the same height but larger radii have a lower activeness, as holes must travel a longer distance, increasing the likelihood of being pulled onto the surface by the negative surface charge. Since each event takes a few minutes to run, it is important to know the optimum number of events needed to sample the map enough for interpolation. We estimate that about 100 points sampled in total in the r and z directions are enough.
+To understand the charge collection at different points on the detector, we map the detector using about 100 points, coarsely spaced, as shown in Figure \ref{ch5_fig_activeness_points_neg}. These points can be used to generate an activeness map for a detector such as in Figure \ref{ch5_fig_activeness_map_neg}. This map is produced by interpolating using cubic interpolation. The activeness map gives an understanding of how the charge collection efficiency works in the detectors. Points at the same height but larger radii have a lower activeness, as holes must travel a longer distance, increasing the likelihood of being pulled onto the surface by the negative surface charge. Since each event takes a few minutes to run, it is important to know the optimum number of events needed to sample the map enough for interpolation. We estimate that about 100 points sampled in total in the r and z directions are enough.
 
 \begin{figure}%[!htb]
 %[trim={left bottom right top},clip]
-\includegraphics[trim={0cm 0.5cm 3.2cm 1.15cm},clip,width=0.9\linewidth]{ch5/figs/activenss_map_ponama_1_-0.3.pdf}
+\includegraphics[trim={0cm 0.5cm 3.2cm 1.15cm},clip,width=0.9\linewidth]{ch5/figs/activenss_map_ponama_1_-0.3_5000.pdf}
 \caption{Activeness values to map a PPC detector \ehd with initial energy 5000 keV and negative surface charge. The radius points were uniformly spaced while the height points were densely sampled close to the surface.}
 \label{ch5_fig_activeness_points_neg}
 \end{figure}
 
 \begin{figure}%[!htb]
+\centering
 %[trim={left bottom right top},clip]
 \includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=0.9\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_ponama_1_5000.png}
 \caption{Interpolated activeness map for a PPC detector using \ehd with negative surface charge. Larger radius higher chance of hole component being pulled onto the surface causing higher loss of activeness.}
@@ -33,14 +35,16 @@ To understand the charge collection at different points on the detector, we map 
 Figure \ref{ch5_fig_interpolated_activeness_map_0} illustrates the activeness maps without any surface charge. In this case, there is not much reduction in activeness. 
 
 \begin{figure}%[!htb]
+\centering
 \includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.9\linewidth]{ch5/figs/activeness_map_cubic_sc=0_ponama_1_5000.png}
 \caption{Interpolated activeness map for a PPC detector using \ehd with zero positive surface charge. Without surface charge there is almost full collection.}
 \label{ch5_fig_interpolated_activeness_map_0}
 \end{figure}
 
-Figure \ref{ch5_fig_interpolated_activeness_map_pos} shows the activeness map for positive surface charge; points at the same height but lower radii have lower activeness, as electrons must travel a longer distance, increasing the likelihood of being pulled onto the surface by the negative surface charge. The activeness loss is less than that of negative surface charges since electrons are the minority charge carriers.
+Figure \ref{ch5_fig_interpolated_activeness_map_pos} shows the activeness map for positive surface charge. The loss of activeness is smaller than that of negative surface charges, since electrons are the minority charge carriers. Points at the same height but lower radii have a lower activeness because electrons must travel a longer distance, increasing the probability of being pulled onto the surface by a negative surface charge.
 
 \begin{figure}%[!htb]
+\centering
 \includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.9\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000.png}
 \caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge. Lower radius higher chance of electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
 \label{ch5_fig_interpolated_activeness_map_pos}
@@ -55,15 +59,16 @@ To validate EH-Drift against existing measurements, we modeled alpha events stud
 \begin{figure}%[!htb]
 %[trim={left bottom right top},clip]
 \includegraphics[trim={0.3cm 0.1cm 1.7cm 0.1cm},clip,width=\linewidth]{ch5/figs/tube_fit.pdf}
-\caption{Fitting the activeness in TUBE scanner with \ehd{}.}
+\caption{Fitting the activeness in TUBE scanner with \ehd{}. A positive surface charge can help explain the increase in collected energy with radius. Offset can account for dead region in the surface and uncertainty in the source position.}
 \label{fig:tube_fit}
 \end{figure}
 
 
 \begin{figure}%[!htb]
+\centering
 %[trim={left bottom right top},clip]
 \includegraphics[trim={0.3cm 0.1cm 1.7cm 1cm},clip,width=\linewidth]{ch5/figs/gal_fit.pdf}
-\caption{Fitting the activeness in GALATEA scanner with \ehd{}.}
+\caption{Fitting the activeness in GALATEA scanner with \ehd{}. A negative surface charge can help explain the decrease in collected energy with radius.}
 \label{fig:gal_fit}
 \end{figure}
 
@@ -71,9 +76,9 @@ We found a positive surface charge that explains the behavior observed in TUBE. 
 
 In the GALATEA scanner, the behavior can be explained using a negative surface charge as shown in Figure \ref{fig:gal_fit}. The negative surface attracts holes to the surface and since the holes are collected at the point contact, located at r=0, the higher the radius, the more charges end up on the surface. Thus, the collected energy falls inversely with the radius.
 
-\section{\label{res:2} Estimating efficiency in ROI}
-
-We can use the maps created by EH to estimate the efficiency of signature event collection such as {\onbb}. Experiments such as Legend have a region-of-interest (ROI) band determined by the energy resolutions of the detector. ROI is used to classify whether an event is a signature event or not; however, if the event occurs close to the surface, there is a chance that the collected energy would be degraded enough to not register as an event in ROI. To understand this effect, we created activeness maps for detectors with 2039 keV initial energy for various surface charges. We then randomly sampled points uniformly in the detector and estimated their activeness using the interpolated map. A 3 keV threshold is defined for the Region of Interest (ROI), which means that if the activeness at a point falls below 3 keV, that event is not registered as a {\onbb} event. Each point is assigned a value of 1 if it is counted as {\onbb}, or 0 otherwise. Figure\ref{ch5_fig_binary_activenss} shows this binary activeness for a PPC detector with negative surface charge. The overall efficiency is then calculated as the sum of activeness values divided by the total number of points, as well as factoring in the phi dependence.
+\section{Efficiency Estimations in the Region of Interest}
+\label{res:2} 
+We can use the maps created by {\ehd} to estimate the efficiency of {\onbb} event collection. LEGEND has a region-of-interest (ROI) band which is determined by the energy resolutions of the detector. ROI is used to classify whether an event is a signature event or not. However, if the event occurs close to the surface, there is a chance that the collected energy would be degraded enough to not register as an event in ROI. To understand this effect, we created activeness maps for detectors with a 2039 keV initial energy, which is the Q value of {\onbb} in Germanium. We did this for various surface charges. We then randomly sampled 20,000 points uniformly in the detector and estimated their activeness using the interpolated map. A 3 keV threshold is defined for the Region of Interest (ROI), which means that if the activeness at a point falls below 3 keV, that event is not registered as a {\onbb} event. Each point is assigned a value of 1 if it is counted as {\onbb}, or 0 otherwise. Figure\ref{ch5_fig_binary_activenss} shows this binary activeness for a PPC detector with negative surface charge. The overall efficiency is then calculated as the sum of activeness values divided by the total number of points, while factoring in the phi dependence.
 
 \begin{figure}%[!htb]
 \centering
@@ -86,15 +91,17 @@ We can use the maps created by EH to estimate the efficiency of signature event 
 Figure \ref{fig:efficiency_sc_plot} shows the estimated efficiency versus surface charge for the {\ponama} detector, a LEGEND PPC detector, and a LEGEND ICPC detector. The efficiency drops rapidly for negative surface charges in both PPC detectors; however, it decreases most sharply for {\ponama}, which has a lower depletion voltage and thus a weaker electric field near the surface. The LEGEND PPC detector also loses efficiency quickly due to its larger passivated surface, but its higher electric field moderates the overall loss more than in {\ponama}.
 
 \begin{figure}%[!htb]
+\centering
 %[trim={left bottom right top},clip]
 \includegraphics[trim={1.6cm 0.3cm 2cm 1.8cm},clip,width=\linewidth]{ch5/figs/efficiency_0nbb.pdf}
-\caption{Efficiency in the ROI versus surface charge.}
+\caption{Efficiency in the ROI versus surface charge calculated using the binary activeness.}
 \label{fig:efficiency_sc_plot}
 \end{figure}
 
-The Mirion-style ICPC detector exhibits virtually no reduction in activeness, primarily because it has a much smaller passivated surface. The collection efficiency is $99.82\%$. To understand this slight reduction in efficiency, one can look at the electric field at the ditch of the detector shown in Figure \ref{ch5_fig_elect_field_lines_surface_V07647A}. The field lines indicate that the electron components near the surface will be pulled onto the ditch which is passivated. This loss in activeness is much smaller than in other types of detectors. Since LEGEND-1000 plans to use Mirion-style ICPC detectors, surface backgrounds in that experiment are expected to be significantly reduced.
+The Mirion-style ICPC detector exhibits virtually no reduction in activeness, primarily because it has a much smaller passivated surface. The collection efficiency is $99.82\%$. To understand this slight reduction in efficiency, one can look at the electric field in the ditch of the detector shown in Figure \ref{ch5_fig_elect_field_lines_surface_V07647A}. The field lines indicate that the electron components near the surface will be pulled onto the ditch, which is passivated. This loss in activeness is much smaller than in other types of detectors. Since LEGEND-1000 plans to use Mirion-style ICPC detectors, surface backgrounds in that experiment are expected to be significantly reduced.
 
 \begin{figure}%[!htb]
+\centering
 %[trim={left bottom right top},clip]
 \includegraphics[trim={0cm 3cm 0cm 4.69cm},clip,width=0.99\linewidth]{ch5/figs/elect_field_lines_surface_V07647A_sc_-0.5.pdf}
 \caption{Electric magnitude and field lines near the ditch of a Mirion ICPC detector with negative surface charge. The field lines attract electron component to the surface which drift slowly. The reduction in activeness is fraction of other dector geometries.}
@@ -104,17 +111,17 @@ The Mirion-style ICPC detector exhibits virtually no reduction in activeness, pr
 
 \section{\label{res:3} Generating Background Spectra}
 
-Geant4 is a Monte Carlo-based toolkit that can simulate the passage of particles through matter. To demonstrate how EH-Drift can be used to create a background model, we performed a {\geant} simulation of a germanium detector exposed to a planar 5\,MeV alpha source. We recorded the resulting hits from alpha particles entering the detector. We then used the activeness map to estimate the energy that would be collected due to surface effects. Figure \ref{fig:eng_spec_degradation} how the collected energy spectrum would look like for various surface charge scenarios. Notably, the spectrum for negative surface charge closely matches alpha spectra estimated in experimental data.
+Geant4 is a Monte Carlo-based toolkit that can simulate the passage of particles through matter. To demonstrate how EH-Drift can be used to create a background model, we performed a {\geant} simulation of a Germanium detector exposed to a planar 5\,MeV alpha source. We recorded the resulting hits from alpha particles entering the detector. We then used the activeness map to estimate the energy that would be collected from surface effects. Figure \ref{fig:eng_spec_degradation} shows what the collected energy spectrum would look like for various surface charge scenarios. Notably, the spectrum for the negative surface charge closely matches the alpha spectra estimated in the experimental data.
 
 \begin{figure}%[!htb]
   \centering
       %[trim={left bottom right top},clip]
   \includegraphics[trim={2cm 0.5cm 4.5cm 1.7cm},clip,width=0.99\linewidth]{ch5/figs/eng_deg_hist.pdf}
-  \caption{Degradation of the alpha-particle energy spectrum under various surface charges. The initial alpha energy was 5\,MeV.}
+  \caption{Degradation of the alpha-particle energy spectrum under various surface charges. The hits of alpha particles were generated using a {\geant} simulation of planar alpha source of 5\,MeV. Energy degradation for an alpha event was calculated from interpolated map for each surface charge. The unit of surface charge is in $10^{-10} \frac{e}{cm^2}$.}
   \label{fig:eng_spec_degradation}
 \end{figure}
 
-To understand the effect of passivated surface on Beta particles, we simulated the spectrum of K$^{42}$ using {\geant}. The output energy spectrum is shown by the blue histogram in Figure\ref{ch5_figs_k_42_degrad}. The spectrum has a prominent gamma line at 1500 keV and a broad beta continuum extending to 3500 keV, which is the Q-value of the decay. Using {\ehd} we estimated the activeness of the passivated surface assuming $2039$ keV energy map. The resulting spectrum is shown by the yellow curve.
+To understand the effect of the passivated surface on Beta particles, we simulated the spectrum of K$^{42}$ using {\geant}. The output energy spectrum is shown by the blue histogram in Figure\ref{ch5_figs_k_42_degrad}. The spectrum has a prominent gamma line at 1500 keV and a broad beta continuum extending to 3500 keV, which is the Q-value of the decay. Using {\ehd} we estimate the activeness of the passivated surface assuming a $2039$ keV energy map. The resulting spectrum is shown by the yellow curve.
 
 \begin{figure}%[!htb]
   \centering

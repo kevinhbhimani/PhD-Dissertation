@@ -1,7 +1,7 @@
 \chapter{Data Preparation \& Model Training} \label{chap:training}
 
 \section{Introduction}
-CPU-Net provides a powerful way to learn the electronics response. Ideally, the ATN should be trained with paired waveforms of simulations and data. In reality, collecting such a paired dataset is a huge challenge. Although we can simulate $\mathcal{T}_{Source}$ from an arbitrary $\mathcal{D}_{Source}$, obtaining a corresponding $\mathcal{T}_{Target}$ such that $\mathcal{D}_{Source} = \mathcal{D}_{Target}$ is difficult without precise knowledge of $P(X'|Y')$. Consequently, training must be performed on unpaired datasets, where $\mathcal{D}_{Source} \neq \mathcal{D}_{Target}$. The CycleGAN framework~\cite{CycleGAN} provides an unsupervised learning approach to train the ATN using adversarial losses.
+CPU-Net provides a powerful way to learn the electronics response. Ideally, the ATN should be trained with paired waveforms of simulations and data. In reality, collecting such a paired dataset is a big challenge. Although we can simulate $\mathcal{T}_{Source}$ from an arbitrary $\mathcal{D}_{Source}$, obtaining a corresponding $\mathcal{T}_{Target}$ such that $\mathcal{D}_{Source} = \mathcal{D}_{Target}$ is difficult without precise knowledge of $P(X'|Y')$. Consequently, training must be performed on unpaired datasets, where $\mathcal{D}_{Source} \neq \mathcal{D}_{Target}$. The CycleGAN framework~\cite{CycleGAN} provides an unsupervised learning approach to train the ATN using adversarial losses.
 
 In this chapter, we describe the training process. First, we outline the detector data collection and processing. Then, we discuss how we obtained the simulation dataset. Finally, we detail the training of the network using CycleGAN.
 
@@ -29,7 +29,7 @@ If one of the annihilation gamma rays leaves the detector without depositing its
 \centering
   %[trim={left bottom right top},clip]
     \includegraphics[width=0.99\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch7/figs/energy_spectrum_comparison.pdf}
-    \caption{Measured energy spectrum from a $^{228}$Th source compared to the Monte Carlo simulation results. Key peaks from $^{228}$Th source are labeled.}
+    \caption{Calibrated energy spectrum from a $^{228}$Th source at ORNL compared to the Monte Carlo simulation results. Key peaks from $^{228}$Th source are labeled.}
    \label{ch7_fig_eng_spec_comp}
 \end{figure}
 
@@ -41,14 +41,14 @@ Waveforms for multi-site events are created by energy-weighted summing of indivi
 \begin{figure}[htb!]
   %[trim={left bottom right top},clip]
     \includegraphics[width=0.99\linewidth,trim={1pc 0pc 1pc 0pc},clip]{ch7/figs/hit_sims.pdf}
-    \caption{(Left) Hit locations for each event. (Right) Energy-weighted waveforms for the corresponding events. Hits produced using \texttt{Geant4} simulations and waveforms generated using {\siggen} software.}
+    \caption{Production of energy weighted waveform in simulations for 4 events. Left figures show the location of hit locations for each event.  The magnitude of energy deposited for hits in each event is shown in middle figure. Right figure show the energy-weighted waveforms for the corresponding events. Hits produced using \texttt{Geant4} simulations and waveforms are generated using {\siggen} software.}
    \label{ch7_fig_eng_dep_sim}
 \end{figure}
 
 
 \section{Post Processing}
 
-Normalizing and aligning the waveforms are crucial for training the network. The sim waveforms are already normalized between 0 and 1. The raw data waveforms are normalized by dividing by the $80\%$ of the average of the last five samples. The waveform is then shifted so that the average of the first 200 samples is zero. This ensures that all waveforms have their RC decay tails and baseline aligned. Then we used the $99.9\%$ rise time to align the waveform. We found that this method was more effective in training the network than aligning by the zero time point. The waveforms are padded to ensure that there are 400 samples on both sides of the $99.9\%$ rise time. The tail slope $\tau$ is calculated by the slope of a linear fit of the logarithm of the last 300 waveform samples. Events with poor fit quality $\chi^2$ or anomalous $\tau$ are used to identify pile-up waveforms and remove them from the training. Figure \ref{ch7:figs:in_out} shows the processed data and sim waveforms.
+Normalizing and aligning the waveforms are crucial for training the network. The sim waveforms are already normalized between 0 and 1. The raw data waveforms are normalized by dividing by the $80\%$ of the average of the last five samples. The waveform is then vertically shifted so that the average of the first 200 samples is zero. This ensures that all waveforms have their RC decay tails and baseline aligned, which can help the model learn the features better. Then we used the $99.9\%$ rise time to horizontally align the waveform. We found that this method was more effective in training the network than aligning by the zero time point. The waveforms are padded to ensure that there are 400 samples on both sides of the $99.9\%$ rise time. The tail slope $\tau$ is calculated by the slope of a linear fit of the logarithm of the last 300 waveform samples. Events with poor fit quality $\chi^2$ or anomalous $\tau$ are used to identify pile-up waveforms and remove them from the training. Figure \ref{ch7:figs:in_out} shows the processed data and sim waveforms that are fed into the neural networks.
 
 \begin{figure}%[!htb]
     % \hspace{0.05\linewidth}
@@ -69,22 +69,21 @@ The training and validation of CPU-Net is conducted in PyTorch~\cite{pytorch}. W
     % \hspace{0.05\linewidth}
     %[trim={left bottom right top},clip]
     \includegraphics[width=0.99\linewidth,trim={5.5pc 20pc 6.3pc 19pc},clip]{ch7/figs/cycle_gan_training.pdf}
-    \caption{Training in CPU net. ATN transfers sim to data while IATN transfers sim to data. Discriminator A differentiates data like waveform output ATN from data. Discriminator B differentiates sim like waveform output IATN from simulations.}
+    \caption{Training in CPU net. ATN transfers simulation to data like while IATN transfers data to simulation. Discriminator A differentiates data like waveform output ATN from data. Discriminator B differentiates simulation like waveform output IATN from simulations.}
    \label{fig:network_training}
 \end{figure}
 
 
-During training, a simulated waveform $X$ is first fed to $\Lambda$ to produce a translated waveform $\Lambda(X)$. The discriminator $\delta_{T}$ attempts to distinguish $\Lambda(X)$ from real data waveforms while $\Lambda(X)$ attempts to 'fool' $\delta_{T}$. Then $\Lambda(X)$ is fed to $\bar{\Lambda}$ to translate back to $\mathcal{X}$ space by $\bar{\Lambda}(\Lambda(\mathcal{X}))$. A second discriminator $\delta_{S}$ attempts to distinguish $\bar{\Lambda}(\Lambda(\mathcal{X}))$ from $\mathcal{X}$, while $\bar{\Lambda}$ attempts to ``fool'' $\delta_{S}$. The $\mathcal{X}\rightarrow{}\Lambda(\mathcal{X})\rightarrow{}\bar{\Lambda}(\Lambda(\mathcal{X}))$ translation path is termed the forward cycle. The same process is performed in the other direction, starting with the detector waveform $\mathcal{X}'\rightarrow{}\bar{\Lambda}(\mathcal{X}')\rightarrow{}\Lambda(\bar{\Lambda}(\mathcal{X}'))$ and called the backward cycle.
+During training, a simulated waveform $X$ is first fed to $\Lambda$ to produce a translated waveform $\Lambda(X)$. The discriminator $\delta_{T}$ attempts to distinguish $\Lambda(X)$ from real data waveforms while $\Lambda(X)$ attempts to `fool' $\delta_{T}$. Then $\Lambda(X)$ is fed to $\bar{\Lambda}$ to translate back to $\mathcal{X}$ space by $\bar{\Lambda}(\Lambda(\mathcal{X}))$. A second discriminator $\delta_{S}$ attempts to distinguish $\bar{\Lambda}(\Lambda(\mathcal{X}))$ from $\mathcal{X}$, while $\bar{\Lambda}$ attempts to `fool' $\delta_{S}$. The $\mathcal{X}\rightarrow{}\Lambda(\mathcal{X})\rightarrow{}\bar{\Lambda}(\Lambda(\mathcal{X}))$ translation path is termed the forward cycle. The same process is performed in the other direction, starting with the detector waveform $\mathcal{X}'\rightarrow{}\bar{\Lambda}(\mathcal{X}')\rightarrow{}\Lambda(\bar{\Lambda}(\mathcal{X}'))$ and called the backward cycle.
 
 \section{Loss Functions}
 
+Since there is no direct comparison loss, we define three losses that are optimized during training to help the network learn the translations. $L_{\mathrm{Identity}}$ ensures that the ATN retains its shape when a actual detector waveform $X'$ is fed into $\Lambda$, shown in the equation. \ref{eq:loss_ided}. The cycle-consistent loss in Equation \ref{eq:loss_cyc} ensures that the circular translation path preserves the original waveform shape. 
 
-Since there is no direct comparison loss, we define three losses that are optimized during training to help the network learn the feature. $L_{\mathrm{Identity}}$ ensures that the ATN retains its shape when a actual detector waveform $X'$ is fed into $\Lambda$, shown in the equation. \ref{eq:loss_ided}. The cycle-consistent loss in Equation \ref{eq:loss_cyc} ensures that the circular translation path preserves the original waveform shape. 
-
-In both cycles and identities, the waveform is compared with another waveform. For comparison, we define a specialized L1 loss that emphasizes different parts of the waveform by assigning them varying weights. It is designed to give more importance to the rising and falling edges of the waveform, which are critical for accurate waveform shape analysis.
+In both cycles and identities, the waveform is compared with another waveform. For such a comparison, we define a specialized L1 loss that emphasizes different parts of the waveform by assigning them varying weights. It is designed to give more importance to the rising and falling edges of the waveform, which are critical for accurate pulse shape analysis.
 
 
-The GAN loss Equation \ref{eq:loss_gan} calculates the loss associated with ``fooling'' the discriminator.  Binary Cross-Entropy Loss is used for the discriminator $\delta_{T}$.
+The GAN loss Equation \ref{eq:loss_gan} calculates the loss associated with `fooling' the discriminator.  The discriminators output a single value between 0 and 1. A value close to 1 means that the discriminator classifies it as data, while a value 0 close to zero means that the discriminator classifies it as simulation. Binary cross-entropy loss is used to quantify the performance of the discriminators $\delta_{T}$ and $\delta_{S}$. The loss calculations are summarized in Table \ref{ch8_tab_loss_summary}.
 
 \begin{equation}\label{eq:loss_ided}
     L_{\mathrm{Identity}} = |X' - \Lambda(X')|
@@ -96,7 +95,7 @@ The GAN loss Equation \ref{eq:loss_gan} calculates the loss associated with ``fo
     L_{\mathrm{Adversarial}} = E_{\mathcal{X'}}\log(\delta(X')) - E_{\Lambda(\mathcal{X})}\log(1 - \delta(\Lambda(X)))
 \end{equation}
 
-An additional three complementary losses are defined for the detector waveform translation path. Therefore, a total of six losses are optimized simultaneously for the generators and two for the discriminators.  The different types of loss are summarized in Table \ref{ch8_tab_loss_summary}.
+An additional three complementary losses are defined for the detector waveform translation path. Therefore, a total of six losses are optimized simultaneously for the generators and two for the discriminators.  
 
 \input{ch7/loss_tab}
 
@@ -105,17 +104,16 @@ AdamW~\cite{adam_w_paper} optimizers are used for all losses. Compared to the tr
 
 % Combining all these, we obtain the Cyclic Positional U-Net~(CPU-Net) for Ad-hoc waveform shape simulation.
 \section{Hyperparameter Tuning}
-Achieving stability in CycleGAN training can be challenging. This is because the loss optimization process is complex as there is not one metric such as mean squared difference being optimized. Training must balance the learning progress of generators and discriminators while preventing gradients from exploding or going to zero. To improve training, we introduced hyperparameters at different levels of the model that are summarized in Table \ref{tab:hyperparameters}.
+Achieving stability in CycleGAN training can be challenging. This is because the loss optimization process is complex as there is not one metric such as mean squared difference being optimized. Training must balance the learning progress of generators and discriminators while preventing gradients from exploding or imploding to zero. To improve training, we introduced hyperparameters at different levels of the model that are summarized in Table \ref{tab:hyperparameters}.
 
 \input{ch7/hyper_para}
 
-It was found that the discriminator typically overpowers the generator since the generator has a more complex task of generating waveforms while maintaining the cycle and identity consistency, and also fooling the discriminator. To balance this, we optimize the generator more frequently than the discriminator. We introduced a hyperparameter for the number of intervals after which the discriminator is updated. This allowed the generator enough steps to adapt to changes in the discriminator without destabilizing the adversarial process.
+It was found that the discriminator typically overpowers the generator, since the generator has a more complex task of generating waveforms while maintaining the cycle and identity consistency and also fooling the discriminator. To balance this, we update the weights of the generators more frequently than the discriminators. We introduced a hyperparameter for the number of intervals after which the discriminator is updated. This allowed the generator enough steps to adapt to changes in the discriminator without destabilizing the adversarial process.
 
-The weighting of the adversarial, cycle-consistency, and identity losses enables fine-tuning the learning of the generators. At some point, the generator would have learned just enough to fool the discriminator, and further learning might be hampered. The loss weights are used to emphasize the generator to learn translation, such as the cycle and identity consistency even if it has been successful at overpowering the discriminator. These hyperparameters are carefully tuned to achieve a balance as values that are too high will cause the gradient to explode; too low will cause the model to not learn much. 
+The weighting of the adversarial, cycle-consistency, and identity losses enables fine-tuning the learning of the generators. At some point, the generator would have learned just enough to fool the discriminator, and further learning might be hampered. The loss weights are used to emphasize the generator to learn translation, such as the cycle and identity consistency even if it has been successful at overpowering the discriminator. These hyperparameters are carefully tuned to achieve a balance, as values that are too high will cause the gradient to explode; too low will cause the model to not learn much. 
 
-We also introduced a learning rate decay. The learning rate is intentionally kept high for the model to explore the entire parameter space, then the learning rate decays linearly to help it converge in the right direction. This is particularly important for the optimizer for ATN since it is optimizing six losses, and this ensures that all the space is explored.
+We also introduced a learning rate decay for the optimizers. In the beginning, the learning rate is intentionally kept high for the model to explore the entire parameter space, then the learning rate decays linearly to help it converge in the right direction. This is particularly important for the ATN optimizer, as it is optimizing six losses, and this ensures that all the space is explored.
 
-To prevent overfitting during training, weight decay is applied to the optimizers so that it penalizes the large weights and ensures generalization among all parameters. Gradient clipping is applied, limiting the norm of gradients during training and preventing exploding gradients, particularly in layers of the U-Net. The threshold to clip the magnitude of gradients is kept high since the loss is multiplied by different loss weights multiple times, which can increase the magnitude.
+To prevent overfitting during training, weight decay is applied to the optimizers so that it penalizes the large weights and ensures generalization among all parameters. Gradient clipping is applied, limiting the norm of gradients during training and preventing exploding gradients, particularly in layers of the U-Net. The threshold for clipping the magnitude of gradients is kept high, since the loss is multiplied by different loss weights multiple times, which can increase the magnitude.
 
-Together, these parameters enable price fine-tuning CPU-Net training to get the right balance during training. A single training takes about 1 GPU hour on a NVIDIA A100 GPU. The trained CPU-Net generates both an ATN and an Inverse ATN, which enable bidirectional translation between the simulation and data domains. The ATN is the primary focus of this work, but the Inverse ATN can also enhance analysis by refining waveform reconstruction. In the next chapter, we discuss some results from the ATN
-output.
+Together, these parameters enable price fine-tuning CPU-Net training to obtain the right balance during training. A single training takes about 1 GPU hour on a NVIDIA A100 GPU. The trained CPU-Net generates both an ATN and an inverse ATN, which enable bidirectional translation between the simulation and data domains. The ATN is the primary focus of this work, but the reverse ATN can also enhance analysis by refining the waveform reconstruction. In the next chapter, we discuss some results from the ATN output.
