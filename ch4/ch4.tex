@@ -187,7 +187,7 @@ The GPU program accurately reproduced the CPU results with less than 0.69 $\%$ d
 
 However, the GPU program was extremely fast with grid-size-independent execution time. Figure \ref{fig:GPU_time} shows the time taken by each program. For a grid size of $10$ microns, the CPU program took $24642$ seconds ($\sim$ 7 hours) to run, while the GPU program took $394$ seconds ($\sim$ 7 min) to run, representing a speed increase of 62.5x. The biggest contribution to speed up was the implementation of the electric potential calculation on the GPU, which was also grid-size independent. Other contributions were the fact that the densities did not have to be written to a file to generate the signal and that there was no need for a transfer of data from GPU memory to CPU memory at each time step. This speed-up will allow for running thousands of simulations and building a waveform library with different configurations.
 
- \begin{figure}[!htb]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.99\linewidth]{ch4/figs/gpu_comp.pdf}
 \caption{\label{ch4:fig:GPU_comp} Program run time on various GPU models. The faster GPU results in lower run time.}
