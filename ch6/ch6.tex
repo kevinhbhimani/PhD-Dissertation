@@ -172,7 +172,6 @@ RNN is an ideal model for tasks involving time series data because the position 
 
 The RNN model is shown in Figure\ref{ch6_fig_detail_network}. During training, the raw input waveforms are first embedded in the $m=128$ space. Embedding is done by initializing a lookup table that maps integer indices to dense vectors of fixed size. These vector representations are learned during training iterations to capture meaningful waveform features. We used an embedding trick that optimizes computation by directly retrieving the corresponding row from the embedding matrix instead of performing unnecessary matrix multiplications. 
 
-
 The embedded waveform is fed into a GRU that processes them sequentially while maintaining hidden states to capture temporal dependencies. This yields a 64-dimensional output $\vec{I}(t)$ at each intermediate step $t$ as well as a final output $\vec{F}$. We then use an attention mechanism~\cite{attention} which can boost the performance of RNNs by allowing it to focus on different parts of the waveforms, such as the rising edge during different steps of the training. The attention mechanism contains an attention matrix A of dimension (64,64), which is used to calculate the attention score between $\vec{F}$ and each $\vec{I}(t)$. This calculates how much each time step contributes to the final output:
 \begin{equation}
     s(t) = \mathrm{Softmax}[\vec{I}(t) A \vec{F}]

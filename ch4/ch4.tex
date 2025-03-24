@@ -16,7 +16,7 @@ Figure \ref{fig:CPU_time} shows the run time for a $5$MeV event in {\ehd} for di
 One way to speed up {\ehd} is by using parallel calculations with Graphic Processing Units (GPUs). We can transform the entire detector into the GPU memory so that each GPU kernel represents a grid point. Then we can perform the calculations at each grid point in parallel, and instead of going through the program one grid point at a time, the points can be updated simultaneously. We explored this possibility using the NVIDIA CUDA {\cpp} framework. It is expected that performing the relaxation algorithm on the GPU would have the greatest improvement in run time. We thus begin with a discussion of 2-D Poisson equation solvers based on iterative relaxation methods, then explain how we adapted them to GPU architectures.
 
 \section{Iterative Relaxation Algorithms for Solving 2-D Poisson Equation}
-
+\label{ch4_sec_relax_algo}
 The electric potential inside the detector can be solved by solving Poisson’s equation,
 
 \begin{equation}
