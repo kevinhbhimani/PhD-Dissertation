@@ -6,9 +6,9 @@ As discussed in chapter \ref{chap:detectors}, HPGe detectors provide excellent e
 
 This chapter begins with an overview of typical HPGe detector readout electronics. It is followed by an overview of {\Ltwo}  electronics and how electronics introduce distortions in waveforms, called the electronics response. This is followed by challenges in modeling the electronics response and a neural network approach to it.
 
-\section{{\Ltwo} readout electronics}
+\section{{\Ltwo} Readout Electronics}
 
-{\Ltwo} uses a resistive feedback charge sensitive amplifier (CSA) to minimize noise and achieve low radioactive background and is shown in Figure \ref{ch6_fig_l200_elec_model}. The first stage is termed the Low Mass Front End (LMFE). LMFE is placed inside the liquid argon cryostat of the experiment, only a few millimeters from the point of contact of each HPGe detector \cite{Willers_2020}. LMFE is therefore constructed with high radiopure materials with tolerance typically on the order of $1\mu$ Bq per channel. LMFE builds upon one developed by {\MJD} and is produced using Suprasil substrates, titanium-gold (TiAu) traces, an in-die junction field effect transistor (JFET, Moxtek MX11), and thin-film amorphous germanium feedback resistors that can operate at cryogenic temperatures. The first stage is connected to the second stage using four ultra-pure Axon pico-coaxial cables.
+{\Ltwo} uses a resistive feedback charge sensitive amplifier (CSA) to minimize noise and achieve a low radioactive background, as shown in Figure \ref{ch6_fig_l200_elec_model}. The first stage is termed the Low Mass Front End (LMFE). LMFE is placed inside the liquid argon cryostat of the experiment, only a few millimeters from the point of contact of each HPGe detector \cite{Willers_2020}. LMFE is therefore constructed with high radiopure materials with tolerance typically on the order of $1\mu$ Bq per channel. LMFE builds upon one developed by {\MJD} and is produced using Suprasil substrates, titanium-gold (TiAu) traces, an in-die junction field effect transistor (JFET, Moxtek MX11), and thin-film amorphous germanium feedback resistors that can operate at cryogenic temperatures. The first stage is connected to the second stage using four ultra-pure Axon pico-coaxial cables.
 
 \begin{figure}[!htb]%[htb!]
   %[trim={left bottom right top},clip]
@@ -40,7 +40,7 @@ The baseline is the region before $t_0$, the start of the waveform. Ideally, thi
 
 The rising edge, shown in the orange region, is the most visible part of the waveform resulting from the movement of holes and electrons from the energy deposition. The long cable and folded-cascode amplifier stages introduce a finite bandwidth, effectively acting as a low-pass filter that damps the highest-frequency components. As a result, the observed rising edge in real data tends to be broader and smoother than in simulations. 
 
-The RC decay tail (light blue region) develops from the CSA feedback network in the LMFE, where the detector current is integrated on a feedback capacitor and slowly discharged by the feedback resistor. The second stage of amplification has a shorter differentiator-like time constant, further modifying the decay shape seen in the data. Taken together, these processes create a waveform with a multiexponential decay. 
+The RC decay tail (light blue region) develops from the CSA feedback network in the LMFE, where the detector current is integrated on a feedback capacitor and slowly discharged by the feedback resistor. The second stage of amplification has a shorter differentiator-like time constant, further modifying the decay shape seen in the data. Together, these processes create a waveform with multiexponential decay. 
 
 
 In general, the three waveform regions, the baseline, the rising edge, and the tail, are each influenced by different parts of the LEGEND-200 electronic chain. Circuit simulations such as SPICE can reproduce some of the bulk features, but minute responses such as parasitic inductance, JFET nonlinearity, or thermal drifts are hard to model.
@@ -56,13 +56,11 @@ In general, the three waveform regions, the baseline, the rising edge, and the t
 
 Pulse shape simulation aims at generating waveforms that are similar to the actual detector waveforms. Having a direct mapping between a simulated waveform and its corresponding incident particle would enable applying the same cuts to the simulations as data. This would help us understand the efficiency of cuts such as multi-site cuts ~\cite{AvsE}.  
 
-
 A frequency-dependent response function must be added to the simulations to reproduce the detector response. The electronic transfer function describes the series of linear transformations on the detector output signal by the readout electronic components. The electron response is typically derived from the circuit response to a step function input. However, the experimental conditions commonly used in low-background and cryogenic experiments, such as long cable runs and extended amplification chains, make it difficult to generate waveforms close to the detector. This poses significant challenges in measuring the electronics response directly. Figure \ref{ch6_fig_l200_elec_model_real} shows the front-end electronics of {\Ltwo}, a contrast to Fig. \ref{ch6_fig_l200_elec_model} showing how in practice the electronics setup can be quite complicated.
 
-Although simulations can account for some of these effects, they are inherently limited by assumptions. These assumptions often fail to capture the complexities of real-world behavior, such as detector-specific anomalies, non-linearity in the amplification chain, or subtle effects from experimental conditions. Furthermore, inaccuracies in simulation assumptions, such as incorrect drift velocity calculations in the electric field or oversimplified charge cloud dynamics, can exacerbate discrepancies between simulated and real detector waveforms. The result is a persistent mismatch between the simulated and measured waveforms, necessitating ad hoc corrections. 
+Although simulations can account for some of these effects, they are inherently limited by assumptions. These assumptions often fail to capture the complexities of real-world behavior, such as detector-specific anomalies, nonlinearity in the amplification chain, or subtle effects from experimental conditions. Furthermore, inaccuracies in simulation assumptions, such as incorrect drift velocity calculations in the electric field or oversimplified charge cloud dynamics, can exacerbate discrepancies between simulated and real detector waveforms. The result is a persistent mismatch between the simulated and measured waveforms, necessitating ad hoc corrections. 
 
 Heuristic methods are often used to approximate the electronic response. Current experiments avoid detailed electronics modeling by calculating reconstruction features directly from Monte Carlo particle-interaction simulations, relying on heuristic methods to meet most of their simulation needs ~\cite{Ben_Thesis,Sam_Thesis}. These methods fall short in their ability to account for detector-by-detector variations and operational changes in experimental conditions, which can evolve over time. This lack of adaptability introduces systematic errors and limits the fidelity of pulse shape simulations.
-
 
 Transfer Learning is an unsupervised learning approach to learn the translations between the simulated waveform and the corresponding detector waveform. In the next section, we present a new neural network model called Cyclic Positional U-Net~(CPU-Net) that allows learning the translations from the data and applying them to simulations without explicit programming.
 
@@ -86,7 +84,6 @@ The source task is written as:
     \mathcal{T}_{Source}=\{\mathcal{X},P(X|\mathcal{Y})\} \qquad X\in \mathcal{X}
     \label{eqn:source_task}
 \end{equation}
-
 
 Similarly, target domain $\mathcal{D}_{Target}$ represents the detector data waveform. It contains the feature space $\mathcal{Y'}$ whose elements follow the probability distribution $P(Y')$, $Y'$ are the reconstruction features of the detector waveforms $(X')$.
 
@@ -115,7 +112,6 @@ Similarly, we define a data translator, called Inverse Ad-hoc Translation Networ
     \label{eqn:IATN_task}
 \end{equation}
 which allows us to learn the features of $\mathcal{T}_{Target}$ without explicit programming. For a model to be deemed accurate, it must fulfill two criteria: it must replicate the ensemble distributions of the dataset accurately and maintain the integral detector physics embodied within each waveform. In the next section, we discuss two neural networks that will help us train the ATN.
-
 
 % precisely reproduce $\mathcal{T}_{Target}$ without modifying  $P(X|Y)$.
 
@@ -160,7 +156,7 @@ where p is the position index of the token in the sequence, i is the dimension i
 Finally, we added a reparametrization trick to the bottom of PU-Net. The trick was developed in the Variational Autoencoder paper~\cite{VAE} to sample a random space while preserving the gradient flow. Reference~\cite{AAE} pointed out that this trick has the ability to increase the stochasticity of machine learning models. Based on our experiments, increased stochasticity helps the model learn the reconstruction features' distributions better. Together we call this model Positional U-Net~(PU-Net).
 
 \subsection{RNN with Attention}~\label{subapp:RNN}
-RNN is an ideal model for tasks involving time series data because the position is intrinsically enforced by RNN. \cite{Rumelhart1986} An RNN consists of recurrent neurons in which each neuron has an output and a hidden state, which is passed to the next-step neuron. Thus, the RNN remembers the previous time state and uses it for the current output; however, the RNN can suffer from the vanishing gradient problem, where the gradients used to update the network become very small and do not allow it to learn the long-range dependencies well across time steps. A Gated Recurrent Unit can help address this challenge by using "gates" that regulate the flow of information and gradients. ~\cite{GRU}. We developed a bidirectional RNN that adopts a Gated Recurrent Unit~\cite{GRU} as internal structure.
+RNN is an ideal model for tasks involving time series data because the position is intrinsically enforced by RNN. \cite{Rumelhart1986} An RNN consists of recurrent neurons in which each neuron has an output and a hidden state, which is passed to the next-step neuron. Thus, the RNN remembers the previous time state and uses it for the current output; however, the RNN can suffer from the vanishing gradient problem, where the gradients used to update the network become very small and do not allow it to learn the long-range dependencies well across time steps. A Gated Recurrent Unit can help address this challenge by using "gates" that regulate the flow of information and gradients. ~\cite{GRU}. We developed a bidirectional RNN that adopts a Gated Recurrent Unit~\cite{GRU} as its internal structure.
 
 
 \begin{figure}[htb!]
