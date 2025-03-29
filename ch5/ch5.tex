@@ -1,10 +1,10 @@
-\chapter{Surface Simulations results}
+\chapter{Surface Simulations Results}
 \label{chap:ehd_res}
 
 \section{Introduction}
 In previous chapters, we established that {\ehd} better models the passivated surface and that we can achieve a significant runtime improvement using GPUs. In this section, we present the first results from the simulations. The chapter begins with an overview of prepossessing the output waveform, then shows how {\ehd} can match the experimental data from the previous scanners. We then show how the model can be used to estimate the collection efficiency of {\onbb} events and finally create a simple background spectrum using them.
 
-\section{Post-Processing}
+\section{Post-Processing and Activeness Maps}
 
 In HPGe detector, adding a filter to the waveform can reduce the electronic noise, and thus improve the energy resolution by averaging fluctuations in charge collection. We applied a trapezoidal filter to the pulse to match the way the energy is picked in the experimental data in LEGEND. Figure \ref{ch5_fig_trap_filter} shows how the waveform and trap filter output. Then the energy is picked from the time on the flat top.
 
@@ -19,15 +19,17 @@ To understand the charge collection at different points on the detector, we map 
 
 \begin{figure}%[!htb]
 %[trim={left bottom right top},clip]
-\includegraphics[trim={0cm 0.5cm 3.2cm 1.15cm},clip,width=0.9\linewidth]{ch5/figs/activenss_map_ponama_1_-0.3_5000.pdf}
-\caption{Activeness values to map a PPC detector \ehd with initial energy 5000 keV and negative surface charge. The radius points were uniformly spaced while the height points were densely sampled close to the surface.}
+\includegraphics[trim={0cm 0.5cm 3.2cm 1.15cm},clip,width=0.95\linewidth]{ch5/figs/activenss_map_ponama_1_-0.3_5000.pdf}
+\caption{Activeness values to map a PPC detector \ehd with initial energy 2039 keV and negative surface charge. The radius points were uniformly spaced while the height points were densely sampled close to the surface.}
 \label{ch5_fig_activeness_points_neg}
 \end{figure}
 
 \begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=0.9\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_ponama_1_5000.png}
+\includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_ponama_1_5000.png}
+% \includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_2039.png}
+
 \caption{Interpolated activeness map for a PPC detector using \ehd with negative surface charge. Larger radius higher chance of hole component being pulled onto the surface causing higher loss of activeness.}
 \label{ch5_fig_activeness_map_neg}
 \end{figure}
@@ -36,7 +38,8 @@ Figure \ref{ch5_fig_interpolated_activeness_map_0} illustrates the activeness ma
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.9\linewidth]{ch5/figs/activeness_map_cubic_sc=0_ponama_1_5000.png}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=0.0_ponama_1_5000.png}
+% \includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0_V07647A_2039.png}
 \caption{Interpolated activeness map for a PPC detector using \ehd with zero positive surface charge. Without surface charge there is almost full collection.}
 \label{ch5_fig_interpolated_activeness_map_0}
 \end{figure}
@@ -45,9 +48,20 @@ Figure \ref{ch5_fig_interpolated_activeness_map_pos} shows the activeness map fo
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.9\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000.png}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000.png}
+% \includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.9\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_V07647A_2039.png}
 \caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge. Lower radius higher chance of electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
 \label{ch5_fig_interpolated_activeness_map_pos}
+\end{figure}
+
+Figure \ref{ch5_fig_interpolated_icpc_activeness_map} shows the activeness maps for the Mirion ICPC detectors. The ICPC detectors have a smaller passivated surface and thus have a lower loss in activeness compared to the PPC detectors. 
+
+\begin{figure}%[!htb]
+\centering
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_2039.png}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_V07647A_2039.png}
+\caption{Interpolated activeness map for a Mirion ICPC detector using \ehd with negative (left) and positive surface (right) charge. The ICPC detector have significant less reduction in activeness than PPC detectors. The activeness loss also does not depend on the surface charge. This is explained in \ref{ch5_res_efficiency} by looking at electric field near the ditch of the detectors.}
+\label{ch5_fig_interpolated_icpc_activeness_map}
 \end{figure}
 
 
@@ -81,18 +95,21 @@ We found a positive surface charge that explains the behavior observed in TUBE. 
 In the GALATEA scanner, the behavior can be explained using a negative surface charge as shown in Figure \ref{fig:gal_fit}. The negative surface attracts holes to the surface and since the holes are collected at the point contact, located at r=0, the higher the radius, the more charges end up on the surface. Thus, the collected energy falls inversely with the radius.
 
 \section{Efficiency Estimations in the Region of Interest}
-\label{res:2} 
-We can use the maps created by {\ehd} to estimate the efficiency of {\onbb} event collection. LEGEND has a region-of-interest (ROI) band which is determined by the energy resolutions of the detector. ROI is used to classify whether an event is a signature event or not. However, if the event occurs close to the surface, there is a chance that the collected energy would be degraded enough to not register as an event in ROI. To understand this effect, we created activeness maps for detectors with a 2039 keV initial energy, which is the Q value of {\onbb} in Germanium. We did this for various surface charges. We then randomly sampled 20,000 points uniformly in the detector and estimated their activeness using the interpolated map. A 3 keV threshold is defined for the Region of Interest (ROI), which means that if the activeness at a point falls below 3 keV, that event is not registered as a {\onbb} event. Each point is assigned a value of 1 if it is counted as {\onbb}, or 0 otherwise. Figure\ref{ch5_fig_binary_activenss} shows this binary activeness for a PPC detector with negative surface charge. The overall efficiency is then calculated as the sum of activeness values divided by the total number of points, while factoring in the phi dependence.
+\label{ch5_res_efficiency} 
+We can use the maps created by {\ehd} to estimate the efficiency of {\onbb} event collection. LEGEND has a region-of-interest (ROI) band which is determined by the energy resolutions of the detector. ROI is used to classify whether an event is a signature event or not. However, if the event occurs close to the surface, there is a chance that the collected energy would be degraded enough to not register as an event in ROI. To understand this effect, we created activeness maps for detectors with a 2039 keV initial energy, which is the Q value of {\onbb} in Germanium. We did this for various surface charges. We then randomly sampled 20,000 points uniformly in the detector and estimated their activeness using the interpolated map. A 3 keV threshold is defined for the Region of Interest (ROI), which means that if the activeness at a point falls below 3 keV, that event is not registered as a {\onbb} event. Each point is assigned a value of 1 if it is counted as {\onbb}, or 0 otherwise. Figure\ref{ch5_fig_binary_activenss} shows this binary activeness for a PPC and Mirion ICPC detector with negative surface charge. The overall efficiency is then calculated as the sum of activeness values divided by the total number of points, while factoring in the phi dependence.
+
+\input{ch5/efficiency_results_tab}
 
 \begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[trim={1.5cm 0cm 6cm 1.77cm},clip,width=0.9\linewidth]{ch5/figs/bianry_act_ponama_1_-0.03.png}
-\caption{Binary activeness for {\ponama} detector with negative surface charge. A $3$ keV energy resolution threshold is defined. If energy is degraded above it, it is labeled zero, else 1. The blue dots show where {\onbb} events would be not be recorded for this detector.}
+\includegraphics[trim={1.5cm 0cm 6cm 1.77cm},clip,width=0.49\linewidth]{ch5/figs/bianry_act_ponama_1_-0.03.png}
+\includegraphics[trim={1.5cm 0cm 6cm 1.77cm},clip,width=0.49\linewidth]{ch5/figs/bianry_act_V07647A_-0.03.png}
+\caption{Binary activeness for {\ponama} detector and Mirion ICPC detector with negative surface charge. A $3$ keV energy resolution threshold is defined. If energy is degraded above it, it is labeled zero, else 1. The blue dots show where {\onbb} events would be not be recorded for the detectors.}
 \label{ch5_fig_binary_activenss}
 \end{figure}
 
-Figure \ref{fig:efficiency_sc_plot} shows the estimated efficiency versus surface charge for the {\ponama} detector, a LEGEND PPC detector, and a LEGEND ICPC detector. The efficiency drops rapidly for negative surface charges in both PPC detectors; however, it decreases most sharply for {\ponama}, which has a lower depletion voltage and thus a weaker electric field near the surface. The LEGEND PPC detector also loses efficiency quickly due to its larger passivated surface, but its higher electric field moderates the overall loss more than in {\ponama}.
+Table \ref{ch5_tab_efficiency_surface_charge} summarizes the results of the study for the {\ponama} detector, a LEGEND PPC detector, and a Mirion ICPC detector. Figure \ref{fig:efficiency_sc_plot} plots the efficiency against the surface charge. The efficiency drops rapidly for negative surface charges in both PPC detectors; however, it decreases most sharply for {\ponama}, which has a lower depletion voltage and thus a weaker electric field near the surface. The LEGEND PPC detector also loses efficiency quickly due to its larger passivated surface, but its higher electric field moderates the overall loss more than in {\ponama}.
 
 \begin{figure}%[!htb]
 \centering
