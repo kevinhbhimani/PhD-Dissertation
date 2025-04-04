@@ -66,7 +66,7 @@ Transfer Learning is an unsupervised learning approach to learn the translations
 
 \section{Deep Leaning Approach to Electronics Modeling}
 \subsection{Mathematical Formulism}
-The task of learning the transfer function of electronics from data and adding them to the simulation can be reformulated under the transfer learning framework. The goal is to translate simulated waveforms into real waveforms by learning the differences between them.
+The following derivation was performed by Aobo Li in \cite{Li_2022jon}. The task of learning the transfer function of electronics from data and adding them to the simulation can be reformulated under the transfer learning framework. The goal is to translate simulated waveforms into real waveforms by learning the differences between them.
 
 In this approach, the source domain $\mathcal{D}_{Source}$ represents the simulated waveforms. It includes features of the simulated waveforms, such as energy, maximal current amplitude, tail slope, etc. These features form a feature space ($\mathcal{Y}$) and follow a probability distribution $(P(Y))$. The source task refers to the relationship between the reconstruction features $(Y)$ in the source domain and the simulated waveforms ($\mathcal{X}$). This is captured by the conditional distribution $P(X|Y)$, which describes how each parameter set $(Y)$ is assigned to a specific simulated waveform $(X)$. For instance, if we know the energy and rise time of a waveform, the source task models how these features produce a simulated waveform. Mathematically, we write the source domain as follows:
 
@@ -153,7 +153,7 @@ where p is the position index of the token in the sequence, i is the dimension i
 
 
 
-Finally, we added a reparametrization trick to the bottom of PU-Net. The trick was developed in the Variational Autoencoder paper~\cite{VAE} to sample a random space while preserving the gradient flow. Reference~\cite{AAE} pointed out that this trick has the ability to increase the stochasticity of machine learning models. Based on our experiments, increased stochasticity helps the model learn the reconstruction features' distributions better. Together we call this model Positional U-Net~(PU-Net).
+Finally, we added a reparametrization trick to the bottom of PU-Net. The trick was developed in the Variational Autoencoder paper~\cite{VAE} to sample a random space while preserving the gradient flow. Reference~\cite{AAE} pointed out that this trick has the ability to increase the stochasticity of machine learning models. Based on our experiments, increased stochasticity helps the model learn the reconstruction features' distributions better. Together we call this model Positional U-Net~(PU-Net). Together, the PU-Net model has 7,213,781 trainable parameters.
 
 \subsection{RNN with Attention}~\label{subapp:RNN}
 RNN is an ideal model for tasks involving time series data because the position is intrinsically enforced by RNN. \cite{Rumelhart1986} An RNN consists of recurrent neurons in which each neuron has an output and a hidden state, which is passed to the next-step neuron. Thus, the RNN remembers the previous time state and uses it for the current output; however, the RNN can suffer from the vanishing gradient problem, where the gradients used to update the network become very small and do not allow it to learn the long-range dependencies well across time steps. A Gated Recurrent Unit can help address this challenge by using "gates" that regulate the flow of information and gradients. ~\cite{GRU}. We developed a bidirectional RNN that adopts a Gated Recurrent Unit~\cite{GRU} as its internal structure.
@@ -172,5 +172,5 @@ The embedded waveform is fed into a GRU that processes them sequentially while m
 \begin{equation}
     s(t) = \mathrm{Softmax}[\vec{I}(t) A \vec{F}]
 \end{equation}
-A context vector is produced by summing $\vec{I}(t)$ with the weight $s(t)$ at each $t$. Finally, the context vector and the final output vector are concatenated and fed into a fully connected layer that produces a single-scalar output.
+A context vector is produced by summing $\vec{I}(t)$ with the weight $s(t)$ at each $t$. Finally, the context vector and the final output vector are concatenated and fed into a fully connected layer that produces a single-scalar output. This model has 130,817 trainable parameters.
 

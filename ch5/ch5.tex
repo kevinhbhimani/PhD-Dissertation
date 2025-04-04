@@ -38,9 +38,9 @@ Figure \ref{ch5_fig_interpolated_activeness_map_0} illustrates the activeness ma
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=0.0_ponama_1_5000.png}
-% \includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0_V07647A_2039.png}
-\caption{Interpolated activeness map for a PPC detector using \ehd with zero positive surface charge. Without surface charge there is almost full collection.}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.0_ponama_1_5000_linear_full.png}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.0_ponama_1_5000_linear.png}
+\caption{Interpolated activeness map for a PPC detector using \ehd with zero positive surface charge. Without surface charge there is almost full collection. Right plot shown using using narrow color scale.}
 \label{ch5_fig_interpolated_activeness_map_0}
 \end{figure}
 
@@ -48,9 +48,9 @@ Figure \ref{ch5_fig_interpolated_activeness_map_pos} shows the activeness map fo
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000.png}
-% \includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.9\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_V07647A_2039.png}
-\caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge. Lower radius higher chance of electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear_full.png}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear.png}
+\caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge. The right plit is shown using narrow color scale. Lower radius higher chance of electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
 \label{ch5_fig_interpolated_activeness_map_pos}
 \end{figure}
 
@@ -58,9 +58,10 @@ Figure \ref{ch5_fig_interpolated_icpc_activeness_map} shows the activeness maps 
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_2039.png}
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_V07647A_2039.png}
-\caption{Interpolated activeness map for a Mirion ICPC detector using \ehd with negative (left) and positive surface (right) charge. The ICPC detector have significant less reduction in activeness than PPC detectors. The activeness loss also does not depend on the surface charge. This is explained in \ref{ch5_res_efficiency} by looking at electric field near the ditch of the detectors.}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_2039_linear_full.png}
+\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_2039_linear.png}
+
+\caption{Interpolated activeness map for a Mirion ICPC detector using \ehd with negative charge. The right plot is show in a narrow color scale. The ICPC detector have significant less reduction in activeness than PPC detectors. The activeness loss also does not depend on the surface charge and the same activeness is found for positive and negative surface charge. This is explained in \ref{ch5_res_efficiency} by looking at electric field near the ditch of the detectors.}
 \label{ch5_fig_interpolated_icpc_activeness_map}
 \end{figure}
 
@@ -124,7 +125,7 @@ The Mirion-style ICPC detector exhibits virtually no reduction in activeness, pr
 \begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[trim={0cm 3cm 0cm 4.69cm},clip,width=0.99\linewidth]{ch5/figs/elect_field_lines_surface_V07647A_sc_-0.5.pdf}
+\includegraphics[trim={0cm 3cm 0cm 4.69cm},clip,width=0.99\linewidth]{ch5/figs/elect_field_lines_surface_V07647A_sc_-0.3.pdf}
 \caption{Electric magnitude and field lines near the ditch of a Mirion ICPC detector with negative surface charge. The field lines attract electron component to the surface which drift slowly. The reduction in activeness is fraction of other dector geometries.}
 \label{ch5_fig_elect_field_lines_surface_V07647A}
 \end{figure}
