@@ -2,10 +2,10 @@
 \label{chap:detectors}
 
 \section{Introduction}
-${}^{76}Ge$ double-beta decays into ${}^{76}Se$, represented by the equation \ref{germanium_0nbb_eq}. It has several advantages as a source for $0\nu\beta\beta$ decay experiments. As a semiconductor, it can be made into detectors with excellent energy resolution, which is critical because energy is the only observable that is both necessary and sufficient for a discovery. Its Q value is $2.039$ MeV, which is above the energies of most gamma events. The crystal growth process for Germanium has purification stages that can greatly reduce internal backgrounds such as $^{238}$U and $^{232}$Th chain contaminants. Germanium is abundant in nature and can be easily enriched, allowing for large-scale experiments. Signal formation inside Germanium is well understood and enables precise topology-based discrimination between background and signal events through pulse shape discrimination (PSD) techniques. High-purity germanium (HPGe) detectors thus have a long history in nuclear physics and rare event searches.
+${}^{76}Ge$ double-beta decays into ${}^{76}Se$, represented by the equation \ref{germanium_2nbb_eq}. It has several advantages as a source for $0\nu\beta\beta$ decay experiments. As a semiconductor, it can be made into detectors with excellent energy resolution, which is critical because energy is the only observable that is both necessary and sufficient for a discovery. Its Q value is $2.039$ MeV, which is above the energies of most gamma events. The crystal growth process for Germanium has purification stages that can greatly reduce internal backgrounds such as $^{238}$U and $^{232}$Th chain contaminants. Germanium is abundant in nature and can be easily enriched, allowing for large-scale experiments. Signal formation inside Germanium is well understood and enables precise topology-based discrimination between background and signal events through pulse shape discrimination (PSD) techniques. High-purity germanium (HPGe) detectors thus have a long history in nuclear physics and rare event searches.
 
 
-\begin{equation}\label{germanium_0nbb_eq}
+\begin{equation}\label{germanium_2nbb_eq}
 {}_{32}^{76}Ge \rightarrow {}_{34}^{76}Se + 2e^- + 2\bar{\nu}_e
 \end{equation}
 
@@ -14,7 +14,7 @@ Figure ~\ref{past_ge_exp} shows a timeline of HPGe-based experiments. Over the y
 \begin{figure}[!htb]
 \centering
 \includegraphics[trim=0.1cm 0 0.1cm 0,clip, width=0.99\linewidth]{ch2/figs/0nbb-ge76-history-future.pdf}
-\caption{A plot showing a timeline of past and future HPGe $o\nu\beta\beta$ decay experiments. The half-lives probed by them is shown along with their background index. Next generation experiments aim to continue improve half life limit while having the lowest background index. Picture credit: Luigi Pertoldi}
+\caption{A plot showing a timeline of past and future HPGe {\onbb} decay experiments. The half-lives probed by them is shown along with their background index. Next generation experiments aim to continue improve half life limit while having the lowest background index. Picture credit: Luigi Pertoldi}
 \label{past_ge_exp}
 \end{figure}
 
@@ -109,7 +109,7 @@ MJD achieved excellent energy resolution, primarily due to its low noise and low
 
 \begin{figure}[!htb]
   \includegraphics[trim=15 30 15 20,clip,width=\linewidth]{ch2/figs/Det-geo-2.pdf}
-\caption{The three point contact detector geometries used in LEGEND: {\MJD} PPC detectors (left), {\Gerda} BEGe detectors (middle), and newly developed ICPC detectors (right).The color bar depicts weighting potential within each detector's cross section.The thick black and gray lines are the p$^+$ and n$^+$ electrode, respectively. The yellow points are locations of simulated energy depositions. The holes travel along the white lines to the p$^+$ electrode, while electrons travel along the while line to the n$^+$ electrode. Figure from \cite{Comellato:2020ljj}.}
+\caption{The three point contact detector geometries used in LEGEND: {\MJD} PPC detectors (left), {\Gerda} BEGe detectors (middle), and newly developed ICPC detectors (right).The color bar depicts weighting potential within each detector's cross section.The thick black and gray lines are the p$^+$ and n$^+$ electrode, respectively. The yellow points are locations of simulated energy depositions. The holes travel along the white lines to the p$^+$ electrode, while electrons travel along while line to the n$^+$ electrode. Figure from \cite{Comellato:2020ljj}.}
 \label{fig:det-compare}
   \end{figure}
   
@@ -119,7 +119,7 @@ The three types of point contact detector geometries that LEGEND uses are illust
 {\Ltwo} took physics data in a 142 kg source configuration from March 2023 until February 2024. The first data set was unblinded on 13 June 2024. After applying analysis cuts, a total of seven events were observed in the region of interest, corresponding to a background index of $ (5.3 \pm 2.2) \times 10^{-4} \text{ cts/(keV$\cdot$kg$\cdot$yr)}$. In a combined fit of {\Gerda}, {\MJD}, and {\Ltwo}, the lower limit on the 0$\nu\beta\beta$ half-life was set at $T^{0\nu}_{1/2} > 1.9 \times 10^{26} \text{ yr} \quad \text{(90\% C.L.)}$ with an expected sensitivity of $2.8 \times 10^{26}$ years. \cite{Pertoldi2024}
 
 \subsection{LEGEND-1000}
-The subsequent phase of LEGEND is a proposed ton-scale experiment that will probe the entire inverted ordering mass hierarchy, with the capability to make an unambiguous discovery of {\onbb} with $3\sigma$ certainty for the $m_{\beta\beta}$ range of $9$-$21$ MeV. It would also cover half of the normal ordering parameter space, under certain assumptions \cite{l1000_pcdr}. LEGEND-1000 builds on the innovation and research done in {\Ltwo}. It will use only ICPC detectors, which have demonstrated lower surface backgrounds, excellent energy resolution, and precise pulse shape discrimination. The experiment also plans to use underground-sourced liquid Ar, which would greatly reduce the $^{42}$K background. LEGEND-1000 would probe a half-life of $10^{28}$ years after 10 years of live time. The preconceptual design report for LEGEND-1000, with a detailed design description and information about the discovery potential, can be found at \cite{l1000_pcdr}. {\Ltwo} will be the main scope of this thesis, with the aim of developing techniques for {\Lthou}.
+The subsequent phase of LEGEND is a proposed ton-scale experiment that will probe the entire inverted ordering mass hierarchy, with the capability to make an unambiguous discovery of {\onbb} with $3\sigma$ certainty for the $m_{\beta\beta}$ range of $9$-$21$ meV. It would also cover half of the normal ordering parameter space, under certain assumptions \cite{l1000_pcdr}. LEGEND-1000 builds on the innovation and research done in {\Ltwo}. It will use only ICPC detectors, which have demonstrated lower surface backgrounds, excellent energy resolution, and precise pulse shape discrimination. The experiment also plans to use underground-sourced liquid Ar, which would greatly reduce the $^{42}$K background. LEGEND-1000 would probe a half-life of $10^{28}$ years after 10 years of live time. The preconceptual design report for LEGEND-1000, with a detailed design description and information about the discovery potential, can be found at \cite{l1000_pcdr}. {\Ltwo} will be the main scope of this thesis, with the aim of developing techniques for {\Lthou}.
 
 
 %\subsection{Pulse Shape Discrimination}

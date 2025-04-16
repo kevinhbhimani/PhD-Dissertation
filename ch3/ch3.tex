@@ -27,7 +27,7 @@ The energy loss of the alpha particles can be best understood by plotting the sp
 \begin{figure}
 \centering
 \includegraphics[width=0.5\linewidth]{ch3/figs/bragg_curve.png}
-\caption{The specific energy loss in a material for an alpha particle with several MeV initial energy. Plots are shown for a single alpha particle track and for the average behavior of a parallel beam of alpha particles. Alphas loss most of their energies in a small region. Picture from \cite{knoll_2010}}. 
+\caption{The specific energy loss in a material for an alpha particle with several MeV initial energy. Plots are shown for a single alpha particle track and for the average behavior of a parallel beam of alpha particles. Alphas lose most of their energies in a small region. Picture from \cite{knoll_2010}}. 
 \label{bragg_curve_fig}
 \end{figure}
 
@@ -70,10 +70,10 @@ In operation, the HPGe detectors can accumulate static charge on the passivated 
 \begin{figure}
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[trim={1.5cm 3.5cm 0.2cm 4.6cm},clip,width=0.95\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.pdf}
-\includegraphics[trim={1.5cm 3.5cm 0.2cm 4.6cm},clip,width=0.95\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_-0.5.pdf}
-\includegraphics[trim={1.5cm 3.5cm 0.2cm 4.6cm},clip,width=0.95\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.5.pdf}
-\caption{Electric field magnitude and field lines in a region near the passivated surface of a the {\ponama} PPC detector with different surface charges. The white arrows shows the direction of electric field lines. Geometry information for the detector can be found in table \ref{ch5_5_tab_ponama1_geometry}. Charges on the passivated surface can pull electrons and holes to the surface and cause energy loss and slow charge collection. Top figure has no surface charge and the field lines are parallel to surface. Middle figure has a surface charge of $-0.5 \times 10^{10} \frac{e}{cm}$ which pulls the filed lines to the surface. Bottom figure has surface charge of $0.5 \times 10^{10} \frac{e}{cm}$ that repels the filed lines form the surface.}
+\includegraphics[trim={1.5cm 3.2cm 0.10cm 4.6cm},clip,width=0.95\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.0.pdf}
+\includegraphics[trim={1.5cm 3.2cm 0.1cm 4.6cm},clip,width=0.95\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_-0.5.pdf}
+\includegraphics[trim={1.5cm 3.2cm 0.1cm 4.6cm},clip,width=0.95\linewidth]{ch3/figs/elect_field_lines_surface_ponama_1_sc_0.5.pdf}
+\caption{Electric field magnitude and field lines in a region near the passivated surface of the {\ponama} PPC detector with different surface charges. The white arrows shows the direction of electric field lines. Geometry information for the detector can be found in table \ref{ch5_5_tab_ponama1_geometry}. Charges on the passivated surface can pull electrons and holes to the surface and cause energy loss and slow charge collection. Top figure has no surface charge and the field lines are parallel to surface. Middle figure has a surface charge of $-0.5 \times 10^{10} \frac{e}{cm}$ which pulls the filed lines to the surface. Bottom figure has surface charge of $0.5 \times 10^{10} \frac{e}{cm}$ that repels the field lines form the surface.}
 \label{ch3_fig_surface_field_sc0}
 \end{figure}
 
@@ -143,7 +143,7 @@ During the initial setup, the detector is divided into a grid. The coordinates o
 \begin{figure}[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[width=0.80\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch3/figs/ppc_coordinates.pdf}
+\includegraphics[width=0.9\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch3/figs/ppc_coordinates.pdf}
 \caption{Diagram showing a simple setup and coordinates in {\ehd} for a PPC detector. The n$^+$ electrode is kept at high voltage while p$^+$ is kept at zero. Passivated region is the region in between the two electrodes.}
 \label{ch3_fig_coordinates}
 \end{figure}
@@ -224,7 +224,7 @@ Germanium has a diamond-cubic lattice structure, where each lattice point hosts 
 \centering
     %[trim={left bottom right top},clip]
     \includegraphics[trim={0cm 0 0cm 0},clip,width=0.6\linewidth]{ch3/figs/ge_crystal_axes.jpg}
-    \caption{Germanium crystal unit cell, showing the crystal axis and the crystallographic basis axes. The atoms on the corners, faces and inside the cube are shown in black, orange and blue circles respectively. $\langle 001\rangle$, $\langle 010\rangle$, and $\langle 100\rangle$ are the axes of Ge crystal unit cell. And $\langle 100\rangle$, $\langle 110\rangle$, and $\langle 111\rangle$) are the crystallographic basis axes. The crystallographic basis axes are the direction used to describe physical properties such as mobility and energy band structure. Source: \cite{HervasAguilar2023} and \cite{Kittel2005}.}
+    \caption{Germanium crystal unit cell, showing the crystal axis and the crystallographic basis axes. The atoms on the corners, faces and inside the cube are shown in black, orange and blue circles respectively. $\langle 001\rangle$, $\langle 010\rangle$, and $\langle 100\rangle$ are the axes of Ge crystal unit cell. And $\langle 100\rangle$, $\langle 110\rangle$, and $\langle 111\rangle$) are the crystallographic basis axes. The crystallographic basis axes are the direction used to describe physical properties such as mobility and energy band structure. Source: \cite{HervasAguilar2023, Kittel2005}}.
     \label{ch3_figs_ge_crystal_axes}
 \end{figure}
 
@@ -252,7 +252,7 @@ with $E_i \le E < E_{i+1}$. Figure \ref{ch3_fig_dv_vs_e} shows the relation betw
 \begin{figure}[!htb]
     %[trim={left bottom right top},clip]
     \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/ehd_dv_e.pdf}
-    \caption{Relation of drift velocity verses electric field in {\ehd}. The points shows the experimental values adapted from \cite{OMAR19871351}. To show how {\ehd} estimates the values we create 500 samples between 0 and 5000 V/cm and performed the piecewise linear interpolation between the points. Only $<100>$ direction velocities are used in the current model.}
+    \caption{Relation of drift velocity versus electric field in {\ehd}. The points shows the experimental values adapted from \cite{OMAR19871351}. To show how {\ehd} estimates the values we create 500 samples between 0 and 5000 V/cm and performed the piecewise linear interpolation between the points. Only $<100>$ direction velocities are used in the current model.}
     \label{ch3_fig_dv_vs_e}
 \end{figure}
 
@@ -264,7 +264,7 @@ f_z \;=\; \lceil \Delta z \rceil - \Delta z\\
 i \;=\; r + \Delta r ,\quad
 f_r \;=\; \lceil \Delta r \rceil - \Delta r
 \end{align}
-where $\lfloor \Delta z \rfloor$ means the charges are split using these fractions:
+where $\lceil \Delta z \rceil$ means the floor of z. The charges are split using these fractions:
 \begin{align}
 &\text{fraction in }(k, i)   \;=\; f_{r} \times f_{z} \\
 &\text{fraction in }(k, i+1) \;=\; (1 - f_{r}) \times f_{z}\\
@@ -324,7 +324,7 @@ During this calculation, we make an inherent assumption that the drift component
 \begin{figure}%[!htb]
     %[trim={left bottom right top},clip]
     \includegraphics[trim={0cm 0 0cm 0},clip,width=0.99\linewidth]{ch3/figs/ehd_pde_comps.pdf}
-    \caption{Maximum values of terms in the charge transport equation \ref{ch3_eq_charge_transport} at every time step for an event in {\ehd}. The drift terms are order of magnitude large than the diffusion terms throughout the time evolution of the charge cloud. This justifies the use of drift velocity to define the timestep used for Courant number calculation.}    
+    \caption{Maximum values of terms in the charge transport equation \ref{ch3_eq_charge_transport} at a given time step for an event in {\ehd}. The drift terms are about two orders of magnitude large than the diffusion terms throughout the time evolution of the charge cloud. This justifies the use of drift velocity to define the timestep used for Courant number calculation.}    
     \label{ch3_fig_ehd_pde_comp}
 \end{figure}
 

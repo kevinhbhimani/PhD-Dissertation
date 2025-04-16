@@ -9,18 +9,19 @@ In HPGe detectors, digital filtering is used to determine the energy of each eve
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={0cm 0cm 0cm 0cm},clip,width=0.9\linewidth]{ch5/figs/trap_example.pdf}
+\includegraphics[trim={1cm 0cm 1cm 0cm},clip,width=0.99\linewidth]{ch5/figs/trap_example.pdf}
 \caption{A simulated waveform and the resulting trapezoidal filtered waveform for a highly energy degraded surface waveform from {\ehd} simulations. The filter had a rise time of $10 \mu s$, flat time of $3 \mu s$, and the energy estimate is based on the value of the filtered waveform $13 \mu s$ after the start of the pulse rise.}
 \label{ch5_fig_trap_filter}
 \end{figure}
 
 Although many results in this chapter focus on maps at a single initial energy, the same detector location can exhibit a different partial charge at different energies. 
-Figure \ref{ch5_fig_act_eng} shows this variation of activity with initial energy in {\ponama} for various surface charges. The measured activity increases with radius. One possible explanation is that, for higher energy, larger charge clouds are more susceptible to self-repulsion, which can push the charges away from the surface. This means that a smaller fraction of charges is pulled onto the surface in relation to their total number of carriers. Therefore, to accurately model background processes that span a range of energies, we would have to create activeness maps with different positions and initial energies.
+Figure \ref{ch5_fig_act_eng} shows this variation of activity with initial energy in {\ponama} for various surface charges. The measured activeness increases with radius. One possible explanation is that, for higher energy, larger charge clouds are more susceptible to self-repulsion, which can push the charges away from the surface. This means that a smaller fraction of charges is pulled onto the surface in relation to their total number of carriers. Therefore, to accurately model background processes that span a range of energies, we would have to create activeness maps with different positions and initial energies.
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={0cm 0cm 0cm 0cm},clip,width=0.95\linewidth]{ch5/figs/activness_vs_eng.pdf}
-\caption{Activeness versus initial energy for event at the same location in {\ponama} detector. The lower activeness loss for higher energy could be due to self repulsion pushing charges away from surface thus leading to smaller fraction of total charges on surface.}
+%[trim={left bottom right top},clip]
+\includegraphics[trim={2cm 0cm 3cm 0cm},clip,width=0.99\linewidth]{ch5/figs/activness_vs_eng.pdf}
+\caption{Activeness versus initial energy for event at r=$14$mm and z=$1.00$mm in {\ponama} detector. The lower activeness loss for higher energy could be due to self-repulsion pushing charges away from surface thus leading to smaller fraction of total charges on surface.}
 \label{ch5_fig_act_eng}
 \end{figure}
 
@@ -36,9 +37,8 @@ To understand the charge collection at different points on the detector, we map 
 \begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_ponama_1_5000.png}
+\includegraphics[trim={1.0cm 0.5cm 3.2cm 1.5cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_ponama_1_5000_linear_full.png}
 % \includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_2039.png}
-
 \caption{Interpolated activeness map for a PPC detector using \ehd with negative surface charge. For a larger radius events there is a higher chance of having the hole component pulled onto the surface, causing higher loss of activeness.}
 \label{ch5_fig_activeness_map_neg}
 \end{figure}
@@ -47,8 +47,8 @@ Figure \ref{ch5_fig_interpolated_activeness_map_0} illustrates the activeness ma
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.0_ponama_1_5000_linear_full.png}
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.0_ponama_1_5000_linear.png}
+\includegraphics[trim={1.0cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.0_ponama_1_5000_linear_full.png}
+\includegraphics[trim={1.0cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.0_ponama_1_5000_linear.png}
 \caption{Interpolated activeness map for a PPC detector using \ehd with zero surface charge. Without surface charge there is nearly full collection. Right plot shows the same map with using narrow color scale.}
 \label{ch5_fig_interpolated_activeness_map_0}
 \end{figure}
@@ -57,8 +57,8 @@ Figure \ref{ch5_fig_interpolated_activeness_map_pos} shows the activeness map fo
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear_full.png}
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear.png}
+\includegraphics[trim={1cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear_full.png}
+\includegraphics[trim={1cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear.png}
 \caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge. The right plot is shown using narrow color scale. At a smaller radius, there is a higher chance of the electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
 \label{ch5_fig_interpolated_activeness_map_pos}
 \end{figure}
@@ -67,9 +67,8 @@ Figure \ref{ch5_fig_interpolated_icpc_activeness_map} shows the activeness maps 
 
 \begin{figure}%[!htb]
 \centering
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_5000_linear_full.png}
-\includegraphics[trim={1.5cm 0cm 3.3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_5000_linear.png}
-
+\includegraphics[trim={1.0cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_5000_linear_full.png}
+\includegraphics[trim={1.0cm 0cm 3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_5000_linear.png}
 \caption{Interpolated activeness map for a Mirion ICPC detector using \ehd with negative charge. The right plot is show in a narrow color scale. The ICPC detector have significant less reduction in activeness than PPC detectors. The activeness loss also does not depend on the surface charge and the same activeness is found for positive and negative surface charge.}
 \label{ch5_fig_interpolated_icpc_activeness_map}
 \end{figure}
@@ -116,7 +115,7 @@ To understand this effect, we created activeness maps for detectors with a $2039
 %[trim={left bottom right top},clip]
 \includegraphics[trim={1.5cm 0cm 6cm 1.77cm},clip,width=0.49\linewidth]{ch5/figs/bianry_act_ponama_1_-0.03.png}
 \includegraphics[trim={1.5cm 0cm 6cm 1.77cm},clip,width=0.49\linewidth]{ch5/figs/bianry_act_V07647A_-0.03.png}
-\caption{Binary activeness for {\ponama} detector and Mirion ICPC detector with negative surface charge. A $3$ keV energy resolution threshold is defined. If energy is degraded above it, it is labeled zero, else 1. The purple dots show where {\onbb} events would be not be recorded for the detectors.}
+\caption{Binary activeness for {\ponama} detector and Mirion ICPC detector with negative surface charge. A $3$ keV energy resolution threshold is defined. If energy is degraded above it, it is labeled zero, else 1. The purple dots show where {\onbb} events would be not recorded for the detectors.}
 \label{ch5_fig_binary_activenss}
 \end{figure}
 
@@ -125,7 +124,7 @@ Table \ref{ch5_tab_efficiency_surface_charge} summarizes the results of the stud
 \begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[trim={1.6cm 0.3cm 2cm 1.8cm},clip,width=\linewidth]{ch5/figs/efficiency_0nbb.pdf}
+\includegraphics[trim={1.2cm 0.3cm 2cm 1.8cm},clip,width=\linewidth]{ch5/figs/efficiency_0nbb.pdf}
 \caption{Efficiency in the ROI versus surface charge calculated using the binary activeness.}
 \label{fig:efficiency_sc_plot}
 \end{figure}
@@ -135,7 +134,7 @@ The Mirion-style ICPC detector exhibits virtually no reduction in activeness, pr
 \begin{figure}%[!htb]
 \centering
 %[trim={left bottom right top},clip]
-\includegraphics[trim={0cm 3cm 0cm 4.69cm},clip,width=0.99\linewidth]{ch5/figs/elect_field_lines_surface_V07647A_sc_-0.3.pdf}
+\includegraphics[trim={1cm 3cm 0cm 4.69cm},clip,width=0.99\linewidth]{ch5/figs/elect_field_lines_surface_V07647A_sc_-0.3.pdf}
 \caption{Electric magnitude and field lines near the ditch of a Mirion ICPC detector with negative surface charge. In Mirion ICPC, the flat p$^+$ point contact, where the field lines end, extend to the start of ditch at r=$12$. The n$^+$ contact starts at end of ditch at r=15, shown by the origin of field lines. The field lines attract electron component to the surface which drift slowly. The reduction in activeness is fraction of other detector geometries.}
 \label{ch5_fig_elect_field_lines_surface_V07647A}
 \end{figure}
@@ -147,7 +146,7 @@ Geant4 is a Monte Carlo-based toolkit that can simulate the passage of particles
 \begin{figure}%[!htb]
   \centering
       %[trim={left bottom right top},clip]
-  \includegraphics[trim={2cm 0.5cm 3.5cm 1.7cm},clip,width=0.99\linewidth]{ch5/figs/eng_deg_hist.pdf}
+  \includegraphics[trim={1.5cm 0.0cm 3.5cm 1.7cm},clip,width=0.99\linewidth]{ch5/figs/eng_deg_hist.pdf}
   \caption{Degradation of the alpha-particle energy spectrum under various surface charges. The location of hits of alpha particles were generated using a {\geant} simulation of planar alpha source of 5\,MeV on {\ponama} detector. Energy degradation for an alpha event was calculated from interpolated map for each surface charge. The unit of surface charge is in {\scunit}.}
   \label{fig:eng_spec_degradation}
 \end{figure}

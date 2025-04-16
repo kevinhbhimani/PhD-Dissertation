@@ -27,7 +27,7 @@ This chapter begins with an overview of typical HPGe detector readout electronic
 \end{figure}
 
 
-The second amplifier is based on a folded cascode arrangement and is located $30$ -$150$ cm from the detector to provide additional gain and convert the signal to a differential output. This stage can tolerate slightly higher radioactivity levels of $50\mu$ Bq per channel and is built using commercial surface mount components on Kapton circuit boards called the CC4. The second stage is connected to the data acquisition system using a $\thicksim 10$ m long transmission line. An active buffer called the Head Electronics, located outside the cryostat, receives the signals from the second stage. It adjusts offsets and gain while providing impedance matching. Finally, the signals are fed into a FlashCam digitizer, where the signal is digitized and stored for analysis.
+The second amplifier is based on a folded cascode arrangement and is located $30$ -$150$ cm from the detector to provide additional gain and convert the signal to a differential output. This stage can tolerate slightly higher radioactivity levels of $50\mu$ Bq per channel and is built using commercial surface mount components on Kapton circuit boards called the CC4. The second stage is connected to the data acquisition system using a $\sim 10$ m long transmission line. An active buffer called the Head Electronics, located outside the cryostat, receives the signals from the second stage. It adjusts offsets and gain while providing impedance matching. Finally, the signals are fed into a FlashCam digitizer, where the signal is digitized and stored for analysis.
 
 Together, these design choices enable sub-3 keV FWHM energy resolution in the ROI at $Q_{\beta\beta}$ 2039 keV while minimally contributing to the overall radioactive background. They also enable a fast rise time of $\leq 100$ ns, which allows for pulse shape discrimination of the signals. In addition, they have a high range of up to 10 MeV that enables the measurement of high-energy alpha decays, which would provide additional information for background modeling.
 
@@ -38,21 +38,21 @@ The baseline is the region before $t_0$, the start of the waveform. Ideally, thi
 
 The rising edge, shown in the orange region, results from the movement of holes and electrons in the bulk of the detector, from the initial energy deposition to the end of normal charge collection. The long cable and folded-cascode amplifier stages introduce a finite bandwidth, effectively acting as a low-pass filter that damps the highest-frequency components. As a result, the observed rising edge in real data tends to be broader and smoother than in simulations. 
 
-The RC decay tail (light blue region) develops from the CSA feedback network in the LMFE, where the detector current is integrated on a feedback capacitor and slowly discharged by the feedback resistor. The second stage of amplification has a shorter, differentiator-like time constant, further modifying the decay shape seen in the data. Together, these processes create a waveform with multiexponential decay. 
+The RC decay tail (light blue region) develops from the CSA feedback network in the LMFE, where the detector current is integrated on a feedback capacitor and slowly discharged by the feedback resistor. The second stage of amplification has a shorter, differentiator-like time constant, further modifying the decay shape seen in the data. Together, these processes create a waveform with multi-exponential decay. 
 
 In general, the three waveform regions, the baseline, the rising edge, and the tail, are each influenced by different parts of the LEGEND-200 electronics chain. Circuit simulations, such as SPICE, can reproduce some of the bulk features, but subtle responses, such as parasitic inductance, JFET nonlinearity, or thermal drifts, are hard to model.
 
 \begin{figure}[!htb]%[htb!]
   %[trim={left bottom right top},clip]
     \includegraphics[width=\linewidth,trim={2.5cm 0pc 3.5cm 0pc},clip]{ch6/figs/wf_comp_sim_data.pdf}
-    \caption{Comparison of a simulated waveform with a real data waveform. The two pulses were randomly sampled from datasets and are aligned for clarity. Three components of the waveforms are labeled. The data pulses contain electronics effects such as RC decay tail, electronics noise and preamp integration.}
+    \caption{Comparison of a simulated waveform with a real data waveform. Both pulses were randomly sampled from datasets and are aligned for clarity. Three components of the waveforms are labeled. The data pulses contain electronics effects such as RC decay tail, electronics noise and preamplifier integration.}
     \label{fig:sim_data_comp}
 \end{figure}
 
 \section{Challenges in Modeling Electronics Response}
 Pulse shape simulation aims to generate waveforms that are similar to the actual detector waveforms. Having a direct mapping between a simulated waveform and its corresponding incident particle would enable applying the same cuts to the simulations as to the data. This would help us understand the efficiency of cuts such as multi-site cuts ~\cite{AvsE}.  
 
-A frequency-dependent response function must be added to the simulations to reproduce the detector response. The electronics transfer function describes the series of linear transformations on the detector output signal by the readout electronics components. The electron response is typically derived from the circuit response to a step function input. However, the experimental conditions commonly used in low-background and cryogenic experiments, such as long cable runs and extended amplification chains, make it difficult to generate step-like waveforms close to the detector. This poses significant challenges in measuring the electronics response directly. Figure \ref{ch6_fig_l200_elec_model_real} shows the front-end electronics of {\Ltwo}. This contrasts with figure \ref{ch6_fig_l200_elec_model}, which shows how, in practice, the realization of the electronics chain can be quite complicated.
+A frequency-dependent response function must be added to the simulations to reproduce the detector response. The electronics transfer function describes the series of linear transformations on the detector output signal by the readout electronics components. The electronics response is typically derived from the circuit response to a step function input. However, the experimental conditions commonly used in low-background and cryogenic experiments, such as long cable runs and extended amplification chains, make it difficult to generate step-like waveforms close to the detector. This poses significant challenges in measuring the electronics response directly. Figure \ref{ch6_fig_l200_elec_model_real} shows the front-end electronics of {\Ltwo}. This contrasts with figure \ref{ch6_fig_l200_elec_model}, which shows how, in practice, the realization of the electronics chain can be quite complicated.
 
 Although simulations can account for some of these effects, they are inherently limited by assumptions. These assumptions often fail to capture the complexities of real-world behavior, such as detector-specific anomalies, nonlinearity in the amplification chain, or subtle effects from experimental conditions. Furthermore, inaccuracies in simulation assumptions, such as incorrect drift velocity calculations in the electric field or oversimplified charge cloud dynamics, can exacerbate discrepancies between simulated and real detector waveforms. The result is a persistent mismatch between the simulated and measured waveforms, necessitating ad hoc corrections. 
 
@@ -61,7 +61,7 @@ Heuristic methods are often used to approximate the electronics response. Curren
 The electronics response is a series of frequency-dependent transformations applied to each waveform, and deep learning could provide a method to learn these transformations. Transfer learning is an unsupervised learning approach to learn the translations between the simulated waveform and the corresponding detector waveform. In the next section, we present a new neural network model called Cyclic Positional U-Net (CPU-Net) that allows learning the translations from the data and applying them to simulations without explicit programming. To correctly model the electronics transformation, a transfer learning model needs to meet two requirements. First, it must preserve underlying physical features like multi-site or single-site waveform. Thus, a single-site waveform must be translated to a single-site waveform, and a multi-site waveform must be translated to a multi-site waveform. Second, it must reproduce ensemble distributions of key pulse shape features, such as tail slope and current amplitude distribution. In the next sections, we discuss two neural networks that we designed for this purpose.
 
 
-\section{Deep Leaning Approach to Electronics Modeling}
+\section{Deep Learning Approach to Electronics Modeling}
 \subsection{Mathematical Formalism}
 The following formalism was developed by Aobo Li in Reference \cite{Li_2022jon}. The task of learning the transfer function of electronics from data and adding its effects to the simulation can be reformulated under the transfer learning framework. The goal is to translate simulated waveforms into real waveforms by learning the differences between them.
 
@@ -117,7 +117,7 @@ which allows us to learn the features of $\mathcal{T}_{Target}$ without explicit
     \includegraphics[width=0.7\linewidth]{ch6/figs/unet.png}
     \label{fig:cpunet}
     % \hspace{0.05\linewidth}
-    \caption{Layer wise breakdown of the Positional U-Net. The blue lines represents the  skip connections between contracting and expanding paths of the U-Net. Positional encoding layers are also shown for all levels. Credit: Aobo Li}
+    \caption{Layer-wise breakdown of the Positional U-Net. The blue lines represent the skip connections between contracting and expanding paths of the U-Net. Positional encoding layers are also shown for all levels. Credit: Aobo Li}
    \label{fig:network_schematic}
 \end{figure}
 
@@ -129,7 +129,7 @@ We explored a U-Net~\cite{UNet}, a convolutional neural network initially develo
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.3\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch6/figs/conv1d.png}
+    \includegraphics[width=0.4\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch6/figs/conv1d.png}
     \caption{Components of the Conv1d Module in the PU-Net from Figure~\ref{fig:network_schematic}.  Credit: Aobo Li}
     \label{ch6:fig:cov1d_break_down}
 \end{figure}
@@ -147,14 +147,14 @@ PE_{(p, 2i+1)} = \cos\left(\frac{p}{10000^{\frac{2i}{d_{\text{ch}}}}}\right)
 \end{equation}
 where p is the position index of the token in the sequence, $i$ is the dimension index, and $d_{ch}$ is the dimension of input and output tensors. 10000 was the default value used in the transformer paper \cite{Transformer}. We added the position encoding to the layers of U-Net to preserve the positional information at each stage. Since each U-Net layer outputs a tensor with a different shape, $\mathcal{M}_{\mathrm{position}}$ must be generated separately for each layer and added to the layer output, as shown in Figure~\ref{fig:network_schematic}.
 
-Finally, we added a reparametrization trick to the bottom of PU-Net. The trick was developed in the Variational Autoencoder paper~\cite{VAE} to sample a random space while preserving the gradient flow. Reference~\cite{AAE} pointed out that this trick has the ability to increase the stochasticity of machine learning models. Based on our experiments, increased stochasticity helps the model learn the distributions of the reconstruction features better. We call this model Positional U-Net~(PU-Net). Together, the PU-Net model has 7,213,781 trainable parameters.
+Finally, we added a reparameterization trick to the bottom of PU-Net. The trick was developed in the Variational Autoencoder paper~\cite{VAE} to sample a random space while preserving the gradient flow. Reference~\cite{AAE} pointed out that this trick has the ability to increase the stochasticity of machine learning models. Based on our experiments, increased stochasticity helps the model learn the distributions of the reconstruction features better. We call this model Positional U-Net~(PU-Net). Together, the PU-Net model has 7,213,781 trainable parameters.
 
 \subsection{RNN with Attention}~\label{subapp:RNN}
 RNN is an ideal model for tasks involving time series data because the position is intrinsically enforced by RNN. \cite{Rumelhart1986} An RNN consists of recurrent neurons in which each neuron has an output and a hidden state, which are passed to the next-step neuron. Thus, the RNN remembers the previous time state and uses it for the current output; however, the RNN can suffer from the vanishing gradient problem, where the gradients used to update the network become very small and do not allow it to learn long-range dependencies well across time steps. A Gated Recurrent Unit can help address this challenge by using "gates" that regulate the flow of information and gradients. ~\cite{GRU}. We developed a bidirectional RNN that adopts a Gated Recurrent Unit \cite{GRU} as its internal structure.
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.7\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch6/figs/rnnAttention.png}
+    \includegraphics[width=0.8\linewidth,trim={0pc 0pc 0pc 0pc},clip]{ch6/figs/rnnAttention.png}
     \caption{The attention coupled RNN discriminator. Waveform are embedded into 128 dimension space and then passed to a GRU unit. The outputs of the GRU are used to calculate the attention score. Credit: Aobo Li}
     \label{ch6_fig_detail_network}
 \end{figure}
