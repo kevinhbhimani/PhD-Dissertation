@@ -7,7 +7,7 @@ Surface backgrounds are potentially the largest components for the future LEGEND
 
 Another challenge in accurately simulating HPGe detector waveforms is to correctly model the effects of the readout electronics. It is quite challenging to use first-principles corrections to fully account for the electronics response. We developed a CycleGAN network that learns to translate simulated pulse shapes into data-like signals without explicitly modeling any of the electronics. The model combines a positional U-Net generator with an RNN-based discriminator. This model trains on unpaired data sets of simulated and detector pulses that are collected during routine calibration measurements. {\cpunet} successfully translates simulated pulses to output waveforms that closely resemble actual detector pulses by applying corrections using a neural network.  We show that {\cpunet} preserves the necessary physics in the waveforms and correctly reproduces the critical pulse shape parameters.
 
-\section{Future Direction}
+\section{Future Directions}
 This work has laid the foundation for improving pulse shape simulations in LEGEND by addressing some longstanding challenges in modeling surface events and the detector electronics response. Looking ahead, there are several avenues for improvement in the two models. The first step would be a detailed validation of the results, which would allow for refining the models.
 
 \subsection{Validation of Results}
@@ -23,7 +23,7 @@ The future development in pulse shape simulations for Germanium detectors will b
 
 The techniques developed in {\ehd} such as GPU-based drift and diffusion and surface drift can be used to improve {\ssd}. Although {\ssd} already uses GPUs for field calculations, performing drift and diffusion on GPUs will enable simulations using large charge cloud surface events more efficiently in {\ssd}. In {\ssd} the number of charges used is an important input. The higher the number of charges, the better the results are, but after a certain number, there is a diminishing return in improvement. A study comparing {\ehd} results and {\ssd} can help find this optimal point to get accurate simulations while optimizing runtime. We performed some initial {\ssd} simulations with surface drift effects included, and the results looked promising.
 
-\subsection{Challenges in Cycle-GAN based Model}
+\subsection{Challenges in CycleGAN based Model}
 The {\cpunet} was quite effective at translating simulated waveforms to data-like pulses, while matching the current amplitude and drift time distribution. However, the CycleGAN training can be quite unstable and requires fine-tuning of several hyperparameters to get the right balance. This can be seen in figure \ref{ch8_fig_tail_slope_sim}, where the distribution of data and the ATN output waveform do not match. We also noticed that the noise added by {\cpunet} is not always consistent with what we see in the data. 
 
 To test both effects, we added pole-zero decay and pink noise to the simulated waveform. This gave us a direct one-to-one data set for validation. We trained {\cpunet} with simulations plus electronics effects as data. After training, we observed that while the ATN output waveform resembled the data waveform better, there was still a significant difference between them. This shows that the model learns the electronics response to an extent to fool the discriminator, but not necessarily to the high precision we would like to achieve.

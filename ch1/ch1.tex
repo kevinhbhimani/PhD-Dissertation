@@ -77,10 +77,10 @@ The third approach is to use neutrino oscillation experiments, though these can 
 \begin{bmatrix} \nu_e \\ \nu_\mu \\ \nu_\tau \end{bmatrix} = \begin{bmatrix} U_{e1} & U_{e2} & U_{e3}\\ U_{\mu 1} & U_{\mu 2} & U_{\mu 3} \\ U_{\tau 1} & U_{\tau 2} & U_{\tau 3} \end{bmatrix} \begin{bmatrix} \nu_1 \\ \nu_2 \\ \nu_3 \end{bmatrix}
 \end{equation}
 
-Eq. \ref{pmns_matrix} is often expressed using three mixing angles $\theta_{12}$, $\theta_{23}$, $\theta_{13}$ and three phase angles ($\delta_{CP}$, $\alpha_1$ and $\alpha_2$).
+Equation \ref{pmns_matrix} is often expressed using three mixing angles $\theta_{12}$, $\theta_{23}$, $\theta_{13}$ and three phase angles ($\delta_{CP}$, $\alpha_1$ and $\alpha_2$).
 
 \begin{equation}\label{pmns_matrix_expanded}
-U = \begin{bmatrix} 1 & 0 & 0\\ 0 & c_{23} & s_{23} \\ 0 & -s_{23} & c_{23} \end{bmatrix} \begin{bmatrix} c_{13} & 0 & s_{13}e^{-i\delta_{cp}}\\ 0 & 1 & 0 \\ -s_{13}e^{-i\delta_{cp}} & 0 & c_{13} \end{bmatrix} \begin{bmatrix} c_{12} & s_{12} & 0\\ -s_{12} & -c_{12} & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 & 0\\ 0 & e^{i\frac{\alpha_1}{2}} & 0 \\ 0 & 0 & e^{i\frac{\alpha_2}{2}}\end{bmatrix}
+U = \begin{bmatrix} 1 & 0 & 0\\ 0 & c_{23} & s_{23} \\ 0 & -s_{23} & c_{23} \end{bmatrix} \begin{bmatrix} c_{13} & 0 & s_{13}e^{-i\delta_{CP}}\\ 0 & 1 & 0 \\ -s_{13}e^{-i\delta_{CP}} & 0 & c_{13} \end{bmatrix} \begin{bmatrix} c_{12} & s_{12} & 0\\ -s_{12} & -c_{12} & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 & 0\\ 0 & e^{i\frac{\alpha_1}{2}} & 0 \\ 0 & 0 & e^{i\frac{\alpha_2}{2}}\end{bmatrix}
 \end{equation}
 
 where $c_{ij}=\mathrm{cos}(\theta_{i,j})$ and $s_{ij}=\mathrm{sin}(\theta_{i,j})$. This gives the probability that a neutrino of flavor $\alpha$ oscillates to flavor $\beta$ as:
@@ -89,7 +89,7 @@ where $c_{ij}=\mathrm{cos}(\theta_{i,j})$ and $s_{ij}=\mathrm{sin}(\theta_{i,j})
 P_{\alpha\rightarrow\beta} = \left|\sum_i U^*_{\alpha i}U_{\beta i} e^{-i\frac{m_i^2L}{2E}}\right|^2
 \end{equation}
 
-It can be shown that Eq. \ref{n_oscillation} depends on $\Delta m^2_{i,j}=m^2_i-m^2_j$ and not on individual masses. Thus, neutrino oscillation experiments can determine the squared difference of the masses and their sign, but not the individual masses of different flavors of neutrinos. We know from experiments such as SNO that $m_2>m_1$, but no information is available about the sign of $\Delta m_{23}^2$. Thus, it is not known which neutrino is the heaviest, nor the values of each of the mass eigenstates. This problem is called the neutrino mass hierarchy problem. If the mass $m_3$ is heavier than the mass $m_2$, the hierarchy is called normal, but if it is lighter, it is said to be inverted, as shown in figure \ref{mass_hierarchies_fig}.
+It can be shown that equation \ref{n_oscillation} depends on $\Delta m^2_{i,j}=m^2_i-m^2_j$ and not on individual masses. Thus, neutrino oscillation experiments can determine the squared difference of the masses and their sign, but not the individual masses of different flavors of neutrinos. We know from experiments such as SNO that $m_2>m_1$, but no information is available about the sign of $\Delta m_{23}^2$. Thus, it is not known which neutrino is the heaviest, nor the values of each of the mass eigenstates. This problem is called the neutrino mass hierarchy problem. If the mass $m_3$ is heavier than the mass $m_2$, the hierarchy is called normal, but if it is lighter, it is said to be inverted, as shown in figure \ref{mass_hierarchies_fig}.
 
 \begin{figure}[!htb]
 \centering
@@ -142,7 +142,7 @@ The phase space term $G^{0\nu}$ corresponds to a phase space into which the elec
 \noindent
 $U_{ei}$ are the components of the PMNS neutrino mixing. This process described above assumes an exchange of a light Majorana neutrino, but there can be other exotic physics that can contribute to the decay rate (see \cite{Schechter_1982} for an example). However, all of these processes still imply that the neutrino is a Majorana particle.
 
-Eq. \ref{0nbbdecay_rate} depends on the mass hierarchy and can help to probe the absolute neutrino mass scale. The observed decay rate would be different depending on the neutrino mass hierarchy. Figure \ref{majorana_mass} shows the range of $m_{\beta\beta}$ as a function of the lightest neutrino mass $m_l$ for the normal ordering and inverted ordering scenarios. If the neutrino masses are large compared to the size of the mass splittings, we do not expect a significant effect on $m_{\beta\beta}$, as both hierarchies merge at higher masses; however, if the neutrino masses are similar in magnitude to the mass splittings, there would be a difference in $m_{\beta\beta}$ based on the hierarchy. {\onbb} studies provide a fourth and unique way to understand neutrino mass, as they probe the effective Majorana mass $\langle m_{\beta\beta}\rangle$ and provide a direct way to measure the ordering of neutrino mass. However, detecting this extremely rare process requires meticulous background reduction and large-mass experiments.
+Equation \ref{0nbbdecay_rate} depends on the mass hierarchy and can help to probe the absolute neutrino mass scale. The observed decay rate would be different depending on the neutrino mass hierarchy. Figure \ref{majorana_mass} shows the range of $m_{\beta\beta}$ as a function of the lightest neutrino mass $m_l$ for the normal ordering and inverted ordering scenarios. If the neutrino masses are large compared to the size of the mass splittings, we do not expect a significant effect on $m_{\beta\beta}$, as both hierarchies merge at higher masses; however, if the neutrino masses are similar in magnitude to the mass splittings, there would be a difference in $m_{\beta\beta}$ based on the hierarchy. {\onbb} studies provide a fourth and unique way to understand neutrino mass, as they probe the effective Majorana mass $\langle m_{\beta\beta}\rangle$ and provide a direct way to measure the ordering of neutrino mass. However, detecting this extremely rare process requires meticulous background reduction and large-mass experiments.
 
 \begin{figure}[!htb]
 \centering
@@ -160,7 +160,7 @@ Numerous experiments have searched for neutrinoless double-beta decay ($0\nu\bet
 \begin{equation}\label{roi_candidate}
 N=\ln(2)\frac{N_A}{W}\left(\frac{a\epsilon MT}{T^{0\nu}_{1/2}}\right)
 \end{equation}
-where $N_A$ is Avogadro's number, $W$ is the molar mass of the source, $a$ is the isotopic abundance of the parent isotope, $\epsilon$ is the detector efficiency of the signal in the ROI, and $t$ is the observed time. Using Eq. \ref{roi_candidate}, we can understand how the half-life sensitivity depends on the detector:
+where $N_A$ is Avogadro's number, $W$ is the molar mass of the source, $a$ is the isotopic abundance of the parent isotope, $\epsilon$ is the detector efficiency of the signal in the ROI, and $t$ is the observed time. Using equation \ref{roi_candidate}, we can understand how the half-life sensitivity depends on the detector:
 
 \begin{equation}\label{det_sensitivity}
 T^{0\nu}_{1/2} \propto

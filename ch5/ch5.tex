@@ -5,7 +5,7 @@
 In the previous chapters, we introduced {\ehd} as a new method to model passivated surfaces in germanium detectors and showed that we can achieve a significant runtime improvement using GPUs. In this chapter, we present the first results from the simulations. The chapter begins with an overview of preprocessing the output waveform, then shows how {\ehd} can be used to simulate varying conditions and match the experimental data from the previous scanners. We then show how the model can be used to estimate the collection efficiency of {\onbb} events and finally demonstrate how it can be used to model background source spectral components with two examples.
 
 \section{Post-Processing and Activeness Maps}
-In HPGe detectors, digital filtering is used to determine the energy of each event. The use of a filter can reduce the electronic noise, and thus improve the energy resolution. We applied a trapezoidal filter to the pulse to match one of the techniques used to determine the event energy in the experimental data in LEGEND. Figure \ref{ch5_fig_trap_filter} shows the waveform and trap filter output. Then the energy is picked from the indicated time on the flat top, taken a fixed time after the start time of the pulse's rise. We call the output of the filter the activeness value. Activeness represents the fraction of the initially deposited energy that is collected. Since {\ehd} waveforms are normalized, the activeness values range between 0 and 1, with 0 representing no collection and 1 representing full collection. 
+In HPGe detectors, digital filtering is used to determine the energy of each event. The use of a filter can reduce the electronic noise, and thus improve the energy resolution. We applied a trapezoidal filter to the pulse to match one of the techniques used to determine the event energy in the experimental data in LEGEND. Figure \ref{ch5_fig_trap_filter} shows the waveform and trap filter output. Then the energy is picked from the indicated time on the flat top, taken a fixed time after the start time of the pulse's rise. We call the output of the filter the activeness value. Activeness represents the fraction of the initially deposited energy that is collected. Since {\ehd} waveforms are normalized, the activeness values range between $0$ and $1$, with $0$ representing no collection and 1 representing full collection. 
 
 \begin{figure}%[!htb]
 \centering
@@ -14,8 +14,9 @@ In HPGe detectors, digital filtering is used to determine the energy of each eve
 \label{ch5_fig_trap_filter}
 \end{figure}
 
-Although many results in this chapter focus on maps at a single initial energy, the same detector location can exhibit a different partial charge at different energies. 
-Figure \ref{ch5_fig_act_eng} shows this variation of activity with initial energy in {\ponama} for various surface charges. The measured activeness increases with radius. One possible explanation is that, for higher energy, larger charge clouds are more susceptible to self-repulsion, which can push the charges away from the surface. This means that a smaller fraction of charges is pulled onto the surface in relation to their total number of carriers. Therefore, to accurately model background processes that span a range of energies, we would have to create activeness maps with different positions and initial energies.
+Although many results in this chapter focus on maps at a single initial energy, the same detector location can exhibit a different partial charge at different energies. The {\ponama} detector (PPC from ORTEC made from Natural Material) is a research and development PPC detector manufactured by ORTEC using natural abundance Germanium. Its properties are given in table \ref{ch5_5_tab_ponama1_geometry}. Figure \ref{ch5_fig_act_eng} shows this variation of activity with initial energy in {\ponama} detector for various surface charges. The measured activeness increases with radius. One possible explanation is that, for higher energy, larger charge clouds are more susceptible to self-repulsion, which can push the charges away from the surface. This means that a smaller fraction of charges is pulled onto the surface in relation to their total number of carriers. Therefore, to accurately model background processes that span a range of energies, we would have to create activeness maps with different positions and initial energies.
+
+\input{ch5/ponama_table}
 
 \begin{figure}%[!htb]
 \centering
@@ -25,12 +26,12 @@ Figure \ref{ch5_fig_act_eng} shows this variation of activity with initial energ
 \label{ch5_fig_act_eng}
 \end{figure}
 
-To understand the charge collection at different points on the detector, we map the detector using about 100 points, as shown in figure \ref{ch5_fig_activeness_points_neg}. The varying vertical spacing of the points was chosen to accurately capture the behavior in the rapidly varying region nearest to the surface. These points can be used to generate an activeness map for a detector such as in figure \ref{ch5_fig_activeness_map_neg}. This map is produced by interpolating using cubic interpolation. The activeness map gives an understanding of how the charge collection efficiency works in the detectors. Points at the same height but larger radii have a lower activeness, as holes must travel a longer distance, increasing the likelihood of being pulled onto the surface by the negative surface charge. Since each event takes a few minutes to run, it is important to know the optimum number of events needed to sample the map enough for interpolation. We found that approximately 100 points sampled in total in the r and z directions were sufficient.
+To understand the charge collection at different points on the detector, we map the detector using about $100$ points, as shown in figure \ref{ch5_fig_activeness_points_neg}. The varying vertical spacing of the points was chosen to accurately capture the behavior in the rapidly varying region nearest to the surface. These points can be used to generate an activeness map for a detector such as in figure \ref{ch5_fig_activeness_map_neg}. This map is produced by interpolating using cubic interpolation. The activeness map gives an understanding of how the charge collection efficiency works in the detectors. Points at the same height but larger radii have a lower activeness, as holes must travel a longer distance, increasing the likelihood of being pulled onto the surface by the negative surface charge. Since each event takes a few minutes to run, it is important to know the optimum number of events needed to sample the map enough for interpolation. We found that approximately 100 points sampled in total in the r and z directions were sufficient.
 
 \begin{figure}%[!htb]
 %[trim={left bottom right top},clip]
 \includegraphics[trim={0cm 0.5cm 3.2cm 1.15cm},clip,width=0.95\linewidth]{ch5/figs/activenss_map_ponama_1_-0.3_5000.pdf}
-\caption{Activeness values to map a PPC detector \ehd with an initial energy $5000$ keV and negative surface charge. The radius points were uniformly spaced while the height points were densely sampled close to the surface.}
+\caption{Activeness values to map a PPC detector \ehd with an initial energy $5000$ keV and negative surface charge ($-0.30 \times$ {\scunit}). The radius points were uniformly spaced while the height points were densely sampled close to the surface.}
 \label{ch5_fig_activeness_points_neg}
 \end{figure}
 
@@ -39,7 +40,7 @@ To understand the charge collection at different points on the detector, we map 
 %[trim={left bottom right top},clip]
 \includegraphics[trim={1.0cm 0.5cm 3.2cm 1.5cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_ponama_1_5000_linear_full.png}
 % \includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_2039.png}
-\caption{Interpolated activeness map for a PPC detector using \ehd with negative surface charge. For a larger radius events there is a higher chance of having the hole component pulled onto the surface, causing higher loss of activeness.}
+\caption{Interpolated activeness map for a PPC detector using \ehd with negative surface charge ($-0.30 \times$ {\scunit}). For a larger radius events there is a higher chance of having the hole component pulled onto the surface, causing higher loss of activeness.}
 \label{ch5_fig_activeness_map_neg}
 \end{figure}
 
@@ -53,13 +54,13 @@ Figure \ref{ch5_fig_interpolated_activeness_map_0} illustrates the activeness ma
 \label{ch5_fig_interpolated_activeness_map_0}
 \end{figure}
 
-Figure \ref{ch5_fig_interpolated_activeness_map_pos} shows the activeness map for positive surface charge. The loss of activeness is smaller than that for negative surface charges, since electrons are the minority charge carriers. Points at the same height but lower radii have a lower activeness because electrons must travel a longer distance, increasing the probability that they are pulled onto the surface by a negative surface charge.
+Figure \ref{ch5_fig_interpolated_activeness_map_pos} shows the activeness map for positive surface charge. The loss of activeness is smaller than that for negative surface charges, since electrons are the minority charge carriers. Points at the same height but lower radii have lower activeness because electrons must travel a longer distance, increasing the probability that they are pulled onto the surface by a negative surface charge.
 
 \begin{figure}%[!htb]
 \centering
 \includegraphics[trim={1cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear_full.png}
 \includegraphics[trim={1cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear.png}
-\caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge. The right plot is shown using narrow color scale. At a smaller radius, there is a higher chance of the electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
+\caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge ($0.3 \times$ {\scunit}). The right plot is shown using narrow color scale. At a smaller radius, there is a higher chance of the electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
 \label{ch5_fig_interpolated_activeness_map_pos}
 \end{figure}
 
@@ -69,17 +70,15 @@ Figure \ref{ch5_fig_interpolated_icpc_activeness_map} shows the activeness maps 
 \centering
 \includegraphics[trim={1.0cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_5000_linear_full.png}
 \includegraphics[trim={1.0cm 0cm 3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_5000_linear.png}
-\caption{Interpolated activeness map for a Mirion ICPC detector using \ehd with negative charge. The right plot is show in a narrow color scale. The ICPC detector have significant less reduction in activeness than PPC detectors. The activeness loss also does not depend on the surface charge and the same activeness is found for positive and negative surface charge.}
+\caption{Interpolated activeness map for a Mirion ICPC detector using \ehd with negative charge ($-0.30 \times$ {\scunit}). The right plot is shown in a narrow color scale. The ICPC detector has significant less reduction in activeness than PPC detectors. The activeness loss also does not depend on the surface charge and the same activeness is found for positive and negative surface charge.}
 \label{ch5_fig_interpolated_icpc_activeness_map}
 \end{figure}
 
 
 \section{\label{res:1} Reproduction of Results from Established Test Stands}
-To validate EH-Drift against existing measurements, we modeled alpha events studied for a detector operated in the TUBE \cite{TUBE_paper} and GALATEA \cite{galatea_paper} scanning test stands. The {\ponama} detector (PPC from ORTEC made from Natural Material) is a research and development PPC detector manufactured by ORTEC using natural abundance Germanium. Its properties are given in table \ref{ch5_5_tab_ponama1_geometry}. The teams that took these measurements hypothesized that the difference in behavior observed between them was due to opposite-sign charge build-up on the detector's passivated surface. If this hypothesis is correct and the {\ehd} code is correctly modeling the charge collection behavior in this region, varying the surface charge in the model should allow for an accurate fit to both sets of data.
+To validate EH-Drift against existing measurements, we modeled alpha events studied for {\ponama} detector operated in the TUBE \cite{TUBE_paper} and GALATEA \cite{galatea_paper} scanning test stands. The teams that took these measurements hypothesized that the difference in behavior observed between them was due to opposite-sign charge build-up on the detector's passivated surface. If this hypothesis is correct and the {\ehd} code is correctly modeling the charge collection behavior in this region, varying the surface charge in the model should allow for an accurate fit to both sets of data.
 
-\input{ch5/ponama_table}
-
-We simulated events using various surface charges in the {\ponama} detector.  We then fit those different curves to the data to estimate the surface charge needed to match the behavior observed in each measurement.
+We simulated events using various surface charges in the {\ponama} detector. We then fit those different curves to the data to estimate the surface charge needed to match the behavior observed in each measurement.
 
 %We generated 8$\mu$s pulse using {\ehd} and applied a trap filter of 4$\mu$s rise time, 3$\mu$s flat-top time, and picked off energy at 7$\mu$s.
 \begin{figure}%[!htb]
