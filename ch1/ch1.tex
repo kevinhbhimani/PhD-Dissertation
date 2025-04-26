@@ -15,7 +15,7 @@ Through the development of theory and experimental observation, neutrinos have b
 \centering
 \includegraphics[width=0.85\linewidth]{ch1/figs/n_mass_comp.png}
 \vspace{0.3cm}
-\caption{Comparison of the masses of fermions in the Standard Model. Neutrino masses are six orders of magnitude lower than other fermions in Standard Model. Neutrino masses were estimated assuming the normal mass hierarchy and a loose upper bound \cite{Hewett:2012ns}.}
+\caption{Comparison of the masses of fermions in the Standard Model. Neutrino masses are six orders of magnitude lower than other fermions. Neutrino masses were estimated assuming the normal mass hierarchy and a loose upper bound \cite{Hewett:2012ns}.}
 \label{n_mass_comp}
 \end{figure}
 
@@ -27,7 +27,7 @@ During a weak decay, different final-state particles are produced depending on t
 \input{ch1/figs/beta_decay_types}
 
 
-In particle physics, the Lepton number is the net number of leptons in a reaction. Particles are given a unit positive lepton number and antiparticles a unit negative number. Two emergent properties from the Standard Model of Physics are that the lepton flavor and total lepton number \( L \) are conserved quantities. Conservation of the lepton number has no theoretical motivation and is not associated with any gauge symmetry. The discovery of neutrino oscillations provided the first evidence that lepton flavor is not strictly conserved, suggesting there is physics beyond the Standard Model (BSM). Understanding the mechanism by which the neutrino gets its mass can provide additional evidence for physics beyond the Standard Model (BSM) physics. 
+In particle physics, the Lepton number is the net number of leptons in a reaction. Particles are given a unit positive lepton number and antiparticles a unit negative number. Two emergent properties from the Standard Model of Physics are that the lepton flavor and total lepton number $L$ are conserved quantities. Conservation of the lepton number has no theoretical motivation and is not associated with any gauge symmetry. The discovery of neutrino oscillations provided the first evidence that lepton flavor is not strictly conserved, suggesting there is physics beyond the Standard Model (BSM). Understanding the mechanism by which the neutrino gets its mass can provide additional evidence for physics beyond the Standard Model (BSM) physics. 
 
 \section{Neutrino Mass}
 \subsection{Dirac Mass Mechanism}
@@ -38,20 +38,6 @@ A different approach is to consider neutrinos as Majorana fermions. Then the rig
 
 \subsection{See-Saw Mechanism}
 The See-Saw mechanism attempts to explain the relatively low observed neutrino mass limits by including both Dirac and Majorana masses in the Lagrangian. This suggests that there would be two light neutrino and two heavy neutrino terms such that the Lagrangian is given by:
-
-% and the Majorana term will have the form of:
-% \begin{equation}\label{majorana_mass_terms}
-% -\frac{1}{2}m^L_M(\bar{\nu}_L\nu_L^c+\bar{\nu}_L^c\nu_L)-\frac{1}{2}m^R_M(\bar{\nu}_R\nu_R^c+\bar{\nu}_R^c\nu_R)
-% \end{equation}
-
-% Using the charge conjugation operator C, charge conjugation of the field can be expressed as:
-% \begin{equation}\label{charge_conjugation1}
-% \nu^C=C\nu=i\gamma^2\nu^*
-% \end{equation}
-% and
-% \begin{equation}\label{charge_conjugation2}
-% \bar{\nu}^C=\nu^TC=\nu^Ti\gamma^2
-% \end{equation}
 
 \begin{equation}\label{mass_lagrangian}
 \mathcal{L}_{mass} = -\frac{1}{2}(\bar{\nu}_L\bar{\nu}_R^c) \begin{bmatrix} m_M^L & m_D \\ m_D & m_M^R \end{bmatrix} \begin{bmatrix} \nu_L^c \\ \nu_R \end{bmatrix} + hc
@@ -66,7 +52,7 @@ $m_D$ is the Dirac mass term, $m_M^L$ and $m_M^R$ are the left- and right-handed
 The resulting eigenvalues are $M_\nu \approx \frac{m^2_D}{m_R}$ and $M_N \approx m_R$. We have thus identified the mass eigenstates for neutrinos. If one of the mass terms increases, the other has to decrease, explaining the origin of the `See-Saw' nomenclature. This would explain the very small mass of observed neutrinos. The left-handed light neutrinos and right-handed light antineutrinos would be the ones observed in current experiments. The heavy right-handed neutrinos and left-handed antineutrinos would have a huge phase space, thus a shorter half-life, and would have decayed quickly in the early universe. Experiments measuring neutrino mass would give insight into this mechanism. 
 
 \subsection{Measuring neutrino mass}
-There are four ways to study the neutrino mass. The first is to use results from cosmology. The Lambda-CDM model-based spectral fit to the Planck data and other observations of large-scale structures in the universe can be used to measure the sum of the neutrino masses. The sum of masses is one of the model's free parameters, and the current limit implies a $\Sigma m_\nu<0.23$ meV \cite{Planck_2015fie}. However, this sum is model-dependent and relies on an extensive understanding of how the universe evolved. 
+There are four ways to study the neutrino mass. The first is to use results from cosmology. The Lambda-CDM model-based spectral fit to the Planck data and other observations of large-scale structures in the universe can be used to measure the sum of the neutrino masses. The sum of masses is one of the model's free parameters, and the current limit implies a $\Sigma m_\nu<0.23$ eV \cite{Planck_2015fie}. However, this sum is model-dependent and relies on an extensive understanding of how the universe evolved. 
 
 A model-independent approach is to measure the mass of a neutrino kinematically. This is done by studying the endpoint of a beta decay spectrum, which would have a slight variation in shape depending on the neutrino mass. The KATRIN collaboration is performing such a direct mass measurement by looking at the tritium $\beta$-decay spectrum and has achieved a sensitivity of $m_\beta < 0.45 \text{ eVc}^{-2}$ at a $90\%$ confidence level \cite{katrin2025}.
 
@@ -94,7 +80,7 @@ It can be shown that equation \ref{n_oscillation} depends on $\Delta m^2_{i,j}=m
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.75\linewidth]{ch1/figs/mass_hierarchies.png}
-\caption{Two possible neutrino mass hierarchies. In the normal hierarchy (left), the lightest mass state is \( m_1 \), followed by \( m_2 \) (separated by the solar mass-squared difference \( \Delta m^2_{21} \)), with \( m_3 \) being the heaviest, separated by the atmospheric mass-squared difference \( \Delta m^2_{32} \). In the inverted hierarchy (right), \( m_3 \) is the lightest, while \( m_1 \) and \( m_2 \) are heavier. Figure from \cite{Hewett:2012ns}.}
+\caption{Two possible neutrino mass hierarchies. In the normal hierarchy (left), the lightest mass state is $ m_1 $, followed by $ m_2 $ (separated by the solar mass-squared difference $ \Delta m^2_{21} $), with $ m_3 $ being the heaviest, separated by the atmospheric mass-squared difference $ \Delta m^2_{32} $. In the inverted hierarchy (right), $ m_3 $ is the lightest, while $ m_1 $ and $ m_2 $ are heavier. Figure from \cite{Hewett:2012ns}.}
 \label{mass_hierarchies_fig}
 \end{figure}
 
@@ -115,7 +101,7 @@ The necessary conditions for a double beta decay are shown in figure \ref{2nbb_c
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.85\linewidth]{ch1/figs/2nbb_cond.png}
-\caption{Ground state mass parabola for nuclei showing the necessary conditions for double-beta decay. The plot shows nuclear charge \(Z\) versus nuclear mass \(M(A,Z)\). Double-beta decay is energetically allowed when the initial even-even nucleus has a higher mass than the final nucleus, and single beta decay is forbidden. Only even-even nuclei can undergo double-beta decay due to their greater stability. Figure from \cite{2nbb_cond}.}
+\caption{Ground state mass parabola for nuclei showing the necessary conditions for double-beta decay. The plot shows nuclear charge $Z$ versus nuclear mass $M(A,Z)$. Double-beta decay is energetically allowed when the initial even-even nucleus has a higher mass than the final nucleus, and single beta decay is forbidden. Only even-even nuclei can undergo double-beta decay due to their greater stability. Figure from \cite{2nbb_cond}.}
 \label{2nbb_cond}
 \end{figure}
 
@@ -125,7 +111,6 @@ If the neutrino were a Majorana particle, it would be possible to have a double 
 \begin{equation}\label{0nbeta_decay_eq}
 (Z,A) \rightarrow (Z+2,A) + 2e^-
 \end{equation}
-
 
 \input{ch1/figs/onbb_fd}
 
@@ -149,7 +134,7 @@ Equation \ref{0nbbdecay_rate} depends on the mass hierarchy and can help to prob
 %[trim={left bottom right top},clip]
 \includegraphics[trim={0.6cm 0cm 1cm 0cm},clip,width=\linewidth]
 {ch1/figs/benato_posterior.png}
-\caption{Parameter space for $m_{\beta\beta}$ and $m_l$ for the normal (right) and inverted (left) mass ordering. The allowed parameter space assuming $3\sigma$ intervals of the neutrino oscillation observables from NuFIT is shown by the solid solid lines \cite{nufit}. The marginalized posterior distributions for $m_{\beta\beta}$ and $m_l$ is shown by the color bar. This was obtained by combing equation \ref{effective_mjd_mass} with neutrino oscillation measurements. Plot assumes QRPA NMEs and the absence of mechanisms that drive $m_{\beta\beta}$ and $m_l$ to zero. Source: \cite{PhysRevD.96.053001}}
+\caption{Parameter space for $m_{\beta\beta}$ and $m_l$ for the normal (right) and inverted (left) mass ordering. The allowed parameter space assuming $3\sigma$ intervals of the neutrino oscillation observables from NuFIT is shown by the solid lines \cite{nufit}. The marginalized posterior distributions for $m_{\beta\beta}$ and $m_l$ is shown by the color bar. This was obtained by combing equation \ref{effective_mjd_mass} with neutrino oscillation measurements. Plot assumes QRPA NMEs and the absence of mechanisms that drive $m_{\beta\beta}$ and $m_l$ to zero. Source: \cite{PhysRevD.96.053001}}
 \label{majorana_mass}
 \end{figure}
 
@@ -184,7 +169,7 @@ For a substantial probability of discovery, experiments that seek $0\nu\beta\bet
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.99\linewidth]{ch1/figs/ThreeSigDL.pdf}
-\caption{The exposure needed for 3$\sigma$ confidence level discovery of neutrinoless double beta decay for different half life limit, given the inverted hierarchy. Various lines represent scenarios with different background levels in ROI. Red line indicate the {\Lthou} background goal. The blue band shows the bottom of the inverted ordering.}
+\caption{The exposure needed for 3$\sigma$ confidence level discovery of neutrinoless double beta decay for different half life limit, given the inverted hierarchy. Various lines represent scenarios with different background levels in ROI. Red line indicates the {\Lthou} background goal. The blue band shows the bottom of the inverted ordering.}
 \label{exposure_plot}
 \end{figure}
 

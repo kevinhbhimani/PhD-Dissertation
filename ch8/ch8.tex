@@ -8,7 +8,7 @@ The progression of training losses is shown in figure \ref{fig:training_loss}. T
 
 \begin{figure}%[htb!]
     \includegraphics[width=\linewidth,trim={0.5cm 0pc 0.5cm 0pc},clip]{ch8/figs/loss_funcs.pdf}
-    \caption{Training losses for {\cpunet}. Losses have been smoothed using a moving average of 10 samples for clarity. The identity and cycle losses rapidly converged to zero while the generator and discriminator losses fluctuate.} 
+    \caption{Training losses for {\cpunet}. Curves are smoothed using a moving average of 10 samples for clarity. The identity and cycle losses rapidly converged to zero while the generator and discriminator losses fluctuate.} 
    \label{fig:training_loss}
 \end{figure}
 
@@ -41,7 +41,7 @@ Figures \ref{fig:cycle_bab} and \ref{fig:cycle_aba} show the SEP waveforms as th
 \end{figure}
 
 \section{Validation of Key Waveform Parameters}
- The accuracy of translations can be assessed at a distribution level by plotting the histogram of key reconstruction parameters. We use the Intersection over Union (IoU) metric, also known as the Jaccard index, to measure the overlap between distributions $A$ and $B$ \cite{murphy1996finley, jaccard_index}. We first calculate the histogram of the distribution being compared using the same binning. The \textit{intersection} is $\sum_{i} \min(\text{bin}_i^A, \text{bin}_i^B)$, the \textit{union} is $\sum_{i} \max(\text{bin}_i^A, \text{bin}_i^B)$, and
+ The accuracy of translations can be assessed at the distribution level by plotting the histogram of key reconstruction parameters. We use the Intersection over Union (IoU) metric, also known as the Jaccard index, to measure the overlap between distributions $A$ and $B$ \cite{murphy1996finley, jaccard_index}. We first calculate the histogram of the distribution being compared using the same binning. The \textit{intersection} is $\sum_{i} \min(\text{bin}_i^A, \text{bin}_i^B)$, the \textit{union} is $\sum_{i} \max(\text{bin}_i^A, \text{bin}_i^B)$, and
  
 \begin{equation}
   \text{IoU} \;=\; \frac{\sum_{i} \min(\text{bin}_i^A, \text{bin}_i^B)}{\sum_{i} \max(\text{bin}_i^A, \text{bin}_i^B)}.    

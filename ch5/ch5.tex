@@ -31,7 +31,7 @@ To understand the charge collection at different points on the detector, we map 
 \begin{figure}%[!htb]
 %[trim={left bottom right top},clip]
 \includegraphics[trim={0cm 0.5cm 3.2cm 1.15cm},clip,width=0.95\linewidth]{ch5/figs/activenss_map_ponama_1_-0.3_5000.pdf}
-\caption{Activeness values to map a PPC detector \ehd with an initial energy $5000$ keV and negative surface charge ($-0.30 \times$ {\scunit}). The radius points were uniformly spaced while the height points were densely sampled close to the surface.}
+\caption{Activeness values to map a PPC detector \ehd with an initial energy $5000$ keV and negative surface charge ($-0.30\times${\scunit}). The radius points were uniformly spaced while the height points were densely sampled close to the surface.}
 \label{ch5_fig_activeness_points_neg}
 \end{figure}
 
@@ -40,7 +40,7 @@ To understand the charge collection at different points on the detector, we map 
 %[trim={left bottom right top},clip]
 \includegraphics[trim={1.0cm 0.5cm 3.2cm 1.5cm},clip,width=0.95\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_ponama_1_5000_linear_full.png}
 % \includegraphics[trim={1.4cm 0.5cm 3.2cm 1.755cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_2039.png}
-\caption{Interpolated activeness map for a PPC detector using \ehd with negative surface charge ($-0.30 \times$ {\scunit}). For a larger radius events there is a higher chance of having the hole component pulled onto the surface, causing higher loss of activeness.}
+\caption{Interpolated activeness map for a PPC detector using \ehd with negative surface charge ($-0.30\times${\scunit}). For a larger radius events there is a higher chance of having the hole component pulled onto the surface, causing higher loss of activeness.}
 \label{ch5_fig_activeness_map_neg}
 \end{figure}
 
@@ -60,7 +60,7 @@ Figure \ref{ch5_fig_interpolated_activeness_map_pos} shows the activeness map fo
 \centering
 \includegraphics[trim={1cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear_full.png}
 \includegraphics[trim={1cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=0.3_ponama_1_5000_linear.png}
-\caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge ($0.3 \times$ {\scunit}). The right plot is shown using narrow color scale. At a smaller radius, there is a higher chance of the electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
+\caption{Interpolated activeness map for a PPC detector using \ehd with positive surface charge ($0.30\times${\scunit}). The right plot is shown using narrow color scale. At a smaller radius, there is a higher chance of the electron component being pulled onto the surface causing higher loss of activeness. The activeness loss is smaller than negative surface charge since electrons are minority signal component.}
 \label{ch5_fig_interpolated_activeness_map_pos}
 \end{figure}
 
@@ -70,7 +70,7 @@ Figure \ref{ch5_fig_interpolated_icpc_activeness_map} shows the activeness maps 
 \centering
 \includegraphics[trim={1.0cm 0cm 3.0cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_5000_linear_full.png}
 \includegraphics[trim={1.0cm 0cm 3cm 1cm},clip,width=0.49\linewidth]{ch5/figs/activeness_map_cubic_sc=-0.3_V07647A_5000_linear.png}
-\caption{Interpolated activeness map for a Mirion ICPC detector using \ehd with negative charge ($-0.30 \times$ {\scunit}). The right plot is shown in a narrow color scale. The ICPC detector has significant less reduction in activeness than PPC detectors. The activeness loss also does not depend on the surface charge and the same activeness is found for positive and negative surface charge.}
+\caption{Interpolated activeness map for a Mirion ICPC detector using \ehd with negative charge ($-0.30\times${\scunit}). The right plot is shown in a narrow color scale. The ICPC detector has significant less reduction in activeness than PPC detectors. The activeness loss also does not depend on the surface charge and the same activeness is found for positive and negative surface charge.}
 \label{ch5_fig_interpolated_icpc_activeness_map}
 \end{figure}
 
@@ -140,7 +140,7 @@ The Mirion-style ICPC detector exhibits virtually no reduction in activeness, pr
 
 
 \section{\label{res:3} Generating Background Spectra}
-Geant4 is a Monte Carlo-based toolkit that can simulate the passage of particles through matter. To demonstrate how EH-Drift can be used to create spectral components for background modeling, we performed a {\geant} simulation of the {\ponama} detector exposed to a planar $5$ MeV alpha source. We recorded the resulting hits from alpha particles entering the detector. We then used the activeness map to estimate the energy that would be collected from surface effects. Figure \ref{fig:eng_spec_degradation} shows what the collected energy spectrum would look like for various surface charge scenarios. In particular, the spectrum for the negative surface charge closely matches the alpha spectra observed in the {\MJD} experimental data and initial background modeling for PPC detectors in the LEGEND data.
+{\geant} is a Monte Carlo-based toolkit that can simulate the passage of particles through matter. To demonstrate how EH-Drift can be used to create spectral components for background modeling, we performed a {\geant} simulation of the {\ponama} detector exposed to a planar $5$ MeV alpha source. We recorded the resulting hits from alpha particles entering the detector. We then used the activeness map to estimate the energy that would be collected from surface effects. Figure \ref{fig:eng_spec_degradation} shows what the collected energy spectrum would look like for various surface charge scenarios. In particular, the spectrum for the negative surface charge closely matches the alpha spectra observed in the {\MJD} experimental data and initial background modeling for PPC detectors in the LEGEND data.
 
 \begin{figure}%[!htb]
   \centering
@@ -150,13 +150,13 @@ Geant4 is a Monte Carlo-based toolkit that can simulate the passage of particles
   \label{fig:eng_spec_degradation}
 \end{figure}
 
-To understand the effect of the passivated surface on beta decays such as those that form a significant background in LEGEND, we simulated the spectrum of $^{42}$K using {\geant} for {\ponama} detector. The output energy spectrum is shown by the blue histogram in figure \ref{ch5_figs_k_42_degrad}. The spectrum has a prominent gamma line at 1500 keV and a broad beta continuum extending to 3500 keV, which is the Q-value of the decay. Using {\ehd} we estimate the activeness of the passivated surface assuming a $2039$ keV energy map and a surface charge of $- 0.5 \times$ {\scunit}. The resulting spectrum is shown by the yellow curve.
+To understand the effect of the passivated surface on beta decays such as those that form a significant background in LEGEND, we simulated the spectrum of $^{42}$K using {\geant} for {\ponama} detector. The output energy spectrum is shown by the blue histogram in figure \ref{ch5_figs_k_42_degrad}. The spectrum has a prominent gamma line at 1500 keV and a broad beta continuum extending to 3500 keV, which is the Q-value of the decay. Using {\ehd} we estimate the activeness of the passivated surface assuming a $2039$ keV energy map and a surface charge of $- 0.5\times${\scunit}. The resulting spectrum is shown by the yellow curve.
 
 \begin{figure}%[!htb]
   \centering
       %[trim={left bottom right top},clip]
   \includegraphics[trim={1.5cm 0.0cm 2cm 1.76cm},clip,width=0.99\linewidth]{ch5/figs/k_42_beta_spectrum.pdf}
-  \caption{Degradation of the K-42 energy spectrum in {\ponama} detector. The detector surface had a surface charge of $- 0.5 \times$ {\scunit}. The activeness was calculated assuming $2039$ keV energy map. This result does not include a model for the dead layer created by the lithiated n$^+$ contact.}
+  \caption{Degradation of the $^{42}$K energy spectrum in {\ponama} detector. The detector surface had a surface charge of $- 0.5\times${\scunit}. The activeness was calculated assuming $2039$ keV energy map. This result does not include a model for the dead layer created by the lithiated n$^+$ contact.}
   \label{ch5_figs_k_42_degrad}
 \end{figure}
 
